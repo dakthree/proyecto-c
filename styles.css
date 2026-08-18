@@ -76,3 +76,5 @@ main > .tab-panel:not(.active){display:none !important}
 .clip-screen .clip-iframe{z-index:2}
 .clip-screen .scanline{z-index:3}
 .character-card .char-photo:before{display:none}
+
+.clip-iframe-mount{position:absolute;inset:0;z-index:2;background:#000}.clip-screen .clip-iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#000;z-index:2}.clip-screen .scanline{z-index:3;pointer-events:none}

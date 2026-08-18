@@ -248,14 +248,18 @@ let selectedClip=null;
 
 function twitchClipSrc(c){
   const parent=location.hostname.replace(/^www\./i,'');
-  if(!parent || !c?.id) return '';
-  const u=new URL('https://clips.twitch.tv/embed');
-  u.searchParams.set('clip', c.id);
+  if(!parent || !c) return '';
+  const base=c.embedUrl || (c.id ? `https://clips.twitch.tv/embed?clip=${encodeURIComponent(c.id)}` : '');
+  if(!base) return '';
+  const u=new URL(base);
+  // Twitch requires the embedding domain. Always rebuild the URL from the
+  // embed_url returned by the API and force a fresh navigation with a unique
+  // query parameter so a prior clip cannot be reused by the browser.
   u.searchParams.set('parent', parent);
   u.searchParams.set('autoplay', 'true');
   u.searchParams.set('muted', 'true');
-  // Cache-buster ensures Twitch/browser cannot reuse the previously selected clip.
-  u.searchParams.set('_pc', String(Date.now()));
+  u.searchParams.set('preload', 'auto');
+  u.searchParams.set('_pc', `${Date.now()}-${Math.random().toString(36).slice(2)}`);
   return u.toString();
 }
 function youtubeClipSrc(c){
@@ -277,35 +281,71 @@ function renderClipFeature(c){
   document.getElementById('featureDuration').textContent=c?.duration||'—';
   document.getElementById('featurePlatform').textContent=c?.platform||'—';
 
+  // Clear the player container completely before every selection.
+  clipScreen.replaceChildren();
   if(!c){
     clipScreen.innerHTML='<div class="live-placeholder">NO HAY CLIPS DISPONIBLES TODAVÍA</div>';
     return;
   }
 
-  const src=getClipSrc(c);
-  if(!src){
-    clipScreen.innerHTML=`<div class="live-placeholder">NO SE PUEDE INSERTAR ESTE CLIP.<br><a href="${c.url||'#'}" target="_blank" rel="noopener noreferrer">ABRIR EN ${c.platform||'TWITCH'} ↗</a></div>`;
-    return;
+  if(c.platform==='TWITCH'){
+    const src=twitchClipSrc(c);
+    if(!src){
+      clipScreen.innerHTML=`<div class="live-placeholder">NO SE PUEDE INSERTAR ESTE CLIP.<br><a href="${c.url||'#'}" target="_blank" rel="noopener noreferrer">ABRIR EN TWITCH ↗</a></div>`;
+      return;
+    }
+
+    const mount=document.createElement('div');
+    mount.className='clip-iframe-mount';
+    mount.setAttribute('data-clip-id', c.id || '');
+    clipScreen.appendChild(mount);
+
+    // Important: Twitch Clips are supported as non-interactive iframes, not
+    // via the Twitch JS player API. We deliberately create a brand-new iframe
+    // node and navigate it only after the old node has been removed.
+    const iframe=document.createElement('iframe');
+    iframe.id='clipEmbedFrame';
+    iframe.className='clip-iframe';
+    iframe.title=c.title||'Clip de Proyecto C';
+    iframe.allow='autoplay; fullscreen; encrypted-media; picture-in-picture';
+    iframe.allowFullscreen=true;
+    iframe.loading='eager';
+    iframe.referrerPolicy='strict-origin-when-cross-origin';
+    iframe.dataset.clipId=c.id || '';
+
+    mount.appendChild(iframe);
+    // Two-stage navigation prevents Chromium from reusing a prior iframe
+    // browsing context when several Twitch clip embeds are clicked quickly.
+    requestAnimationFrame(()=>{
+      iframe.src='about:blank';
+      setTimeout(()=>{
+        if(mount.isConnected && selectedClip && selectedClip.id===c.id){
+          iframe.src=src;
+        }
+      }, 40);
+    });
+  }else if(c.platform==='YOUTUBE'){
+    const src=youtubeClipSrc(c);
+    if(!src){
+      clipScreen.innerHTML=`<div class="live-placeholder">NO SE PUEDE INSERTAR ESTE VÍDEO.<br><a href="${c.url||'#'}" target="_blank" rel="noopener noreferrer">ABRIR EN YOUTUBE ↗</a></div>`;
+      return;
+    }
+    const iframe=document.createElement('iframe');
+    iframe.id='clipEmbedFrame';
+    iframe.className='clip-iframe';
+    iframe.title=c.title||'Vídeo de Proyecto C';
+    iframe.src=src+'&_pc='+Date.now();
+    iframe.allow='autoplay; fullscreen; encrypted-media; picture-in-picture';
+    iframe.allowFullscreen=true;
+    iframe.loading='eager';
+    iframe.referrerPolicy='strict-origin-when-cross-origin';
+    clipScreen.appendChild(iframe);
   }
 
-  // Replace the iframe completely on every selection. Twitch Clips are
-  // non-interactive embeds, so changing the URL is the reliable way to switch clips.
-  const iframe=document.createElement('iframe');
-  iframe.id='clipEmbedFrame';
-  iframe.className='clip-iframe';
-  iframe.title=c.title||'Clip de Proyecto C';
-  iframe.src=src;
-  iframe.allow='autoplay; fullscreen; encrypted-media; picture-in-picture';
-  iframe.allowFullscreen=true;
-  iframe.loading='eager';
-  iframe.referrerPolicy='strict-origin-when-cross-origin';
-
-  clipScreen.replaceChildren(iframe);
   const scan=document.createElement('div');
   scan.className='scanline';
   clipScreen.appendChild(scan);
 }
-
 function renderClips(){
   const v=filter.value;
   const list=v==='all'?clips:clips.filter(c=>c.player===v);
