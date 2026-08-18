@@ -348,7 +348,8 @@ function renderClips(){
   clipGrid.innerHTML=list.map(c=>{
     const thumb=c.thumbnail ? ` style="background-image:url('${String(c.thumbnail).replace(/'/g,'%27')}')"` : '';
     const key=clipKey(c).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
-    return `<button type="button" class="clip-card" data-clip-key="${key}" aria-label="Reproducir ${String(c.title||'clip').replace(/"/g,'&quot;')}"><div class="clip-thumb"${thumb}></div><div class="clip-card-body"><small>${c.player||'DESCONOCIDO'} · ${c.platform}</small><strong>${c.title||'Clip'}</strong><span>${c.duration||'—'} · ${c.createdAt?new Date(c.createdAt).toLocaleString('es-ES'):''}</span></div></button>`;
+    const slug=String(c.id||c.videoId||'');
+    return `<button type="button" class="clip-card tarjeta-clip" data-clip-key="${key}" data-slug="${slug.replace(/"/g,'&quot;')}" aria-label="Reproducir ${String(c.title||'clip').replace(/"/g,'&quot;')}"><div class="clip-thumb"${thumb}></div><div class="clip-card-body"><small>${c.player||'DESCONOCIDO'} · ${c.platform}</small><strong>${c.title||'Clip'}</strong><span>${c.duration||'—'} · ${c.createdAt?new Date(c.createdAt).toLocaleString('es-ES'):''}</span></div></button>`;
   }).join('') || '<div class="clip-empty">NO HAY CLIPS PARA ESTE FILTRO.</div>';
 
   document.querySelectorAll('.clip-card').forEach(card=>{
@@ -396,14 +397,21 @@ document.getElementById('randomClip').addEventListener('click',()=>{
 });
 
 clipGrid.addEventListener('click',e=>{
-  const card=e.target.closest('.clip-card');
-  if(!card) return;
+  const tarjeta=e.target.closest('.tarjeta-clip, .clip-card');
+  if(!tarjeta) return;
   e.preventDefault();
-  const key=card.dataset.clipKey;
-  const clip=clips.find(c=>clipKey(c)===key);
-  if(!clip) return;
-  console.log('Click en clip:',key,clip);
-  selectClip(clip,true);
+
+  // El slug real del clip está guardado en data-slug.
+  const slugDelClip=tarjeta.dataset.slug;
+  const key=tarjeta.dataset.clipKey;
+  const clip=clips.find(c=>clipKey(c)===key || String(c.id||c.videoId||'')===String(slugDelClip));
+  if(!clip || !slugDelClip){
+    console.warn('No se pudo resolver el clip seleccionado:', {slugDelClip, key});
+    return;
+  }
+
+  console.log('Click manual en clip:', {slugDelClip, key, clip});
+  reproducirClip(slugDelClip, true, clip);
   requestAnimationFrame(()=>clipFeature.scrollIntoView({behavior:'smooth',block:'center'}));
 });
 
