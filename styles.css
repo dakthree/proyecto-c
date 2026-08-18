@@ -60,3 +60,19 @@ main > .tab-panel:not(.active){display:none !important}
 .clip-card{font:inherit;text-align:left;width:100%;border:0;color:inherit;padding:0}
 .clip-card:focus{outline:2px solid #8f3029;outline-offset:2px}
 .clip-screen .clip-iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#000}
+
+/* Silhouette placeholders */
+.player-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#f4f2ec;padding:8px;z-index:1}
+.player-photo .player-status{z-index:3}
+.character-card .char-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#f4f2ec;padding:8px;z-index:1}
+.character-card .char-photo .silhouette-label{z-index:3;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.modal-player-photo{height:220px;margin:8px 0 18px;background:#f4f2ec;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.modal-player-photo img{width:100%;height:100%;object-fit:contain;display:block}
+
+/* Clip selection + player */
+.clip-card.selected{outline:2px solid #9e3b32;outline-offset:-2px;box-shadow:0 0 0 1px rgba(158,59,50,.45),0 8px 18px rgba(0,0,0,.2)}
+.clip-card.selected .clip-thumb:after{content:"▶  SELECCIONADO";font:11px 'Special Elite';letter-spacing:1px;background:rgba(140,49,42,.22)}
+.clip-screen{isolation:isolate}
+.clip-screen .clip-iframe{z-index:2}
+.clip-screen .scanline{z-index:3}
+.character-card .char-photo:before{display:none}

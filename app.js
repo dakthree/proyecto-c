@@ -230,13 +230,13 @@ function playerInitials(name){return name.split(' ').slice(0,2).map(x=>x[0]).joi
 const playerGrid=document.getElementById('playerGrid');
 document.getElementById('homeSurvivors').textContent=String(players.length).padStart(2,'0');
 document.querySelector('.section-count').firstChild.textContent=String(players.length).padStart(2,'0');
-playerGrid.innerHTML=players.map(p=>`<article class="player-card" data-player="${p.id}" role="button" tabindex="0"><div class="player-photo"><div class="player-initial">${playerInitials(p.name)}</div><span class="player-status registered">REGISTRADO</span></div><div class="player-info"><small>${p.twitch?'TWITCH':p.youtube?'YOUTUBE':'SIN CANAL'}</small><h3>${p.name}</h3><p>PERSONAJE POR ASIGNAR</p><div class="player-tags"><span class="tag">PARTICIPANTE</span>${p.twitch?'<span class="tag social twitch">TWITCH</span>':''}${p.youtube?'<span class="tag social youtube">YOUTUBE</span>':''}</div></div></article>`).join('');
-function openPlayer(id){const p=players.find(x=>x.id===id);if(!p)return;const links=[p.twitch?`<a class="modal-link twitch" href="${p.twitch}" target="_blank" rel="noopener noreferrer">TWITCH</a>`:'',p.youtube?`<a class="modal-link youtube" href="${p.youtube}" target="_blank" rel="noopener noreferrer">YOUTUBE</a>`:''].join('');document.getElementById('modalContent').innerHTML=`<div class="modal-sub">ARCHIVO DEL PARTICIPANTE</div><h3>${p.name}</h3><div class="modal-sub">PERSONAJE POR ASIGNAR · PARTICIPANTE</div><p>${p.bio}</p><div class="modal-facts"><div class="modal-fact"><small>ESTADO</small><strong>REGISTRADO</strong></div><div class="modal-fact"><small>CANALES</small><strong>${p.twitch||p.youtube?'DISPONIBLES':'NO REGISTRADOS'}</strong></div><div class="modal-fact"><small>PRÓXIMO ARCHIVO</small><strong>NO REGISTRADO</strong></div><div class="modal-fact"><small>RELACIONES</small><strong>████████</strong></div></div>${links?`<div class="modal-links">${links}</div>`:''}`;document.getElementById('playerModal').classList.add('open');document.getElementById('playerModal').setAttribute('aria-hidden','false')}
+playerGrid.innerHTML=players.map(p=>`<article class="player-card" data-player="${p.id}" role="button" tabindex="0"><div class="player-photo"><img src="/assets/silueta.png" alt="Silueta de ${String(p.name).replace(/"/g,'&quot;')}" loading="lazy"><span class="player-status registered">REGISTRADO</span></div><div class="player-info"><small>${p.twitch?'TWITCH':p.youtube?'YOUTUBE':'SIN CANAL'}</small><h3>${p.name}</h3><p>PERSONAJE POR ASIGNAR</p><div class="player-tags"><span class="tag">PARTICIPANTE</span>${p.twitch?'<span class="tag social twitch">TWITCH</span>':''}${p.youtube?'<span class="tag social youtube">YOUTUBE</span>':''}</div></div></article>`).join('');
+function openPlayer(id){const p=players.find(x=>x.id===id);if(!p)return;const links=[p.twitch?`<a class="modal-link twitch" href="${p.twitch}" target="_blank" rel="noopener noreferrer">TWITCH</a>`:'',p.youtube?`<a class="modal-link youtube" href="${p.youtube}" target="_blank" rel="noopener noreferrer">YOUTUBE</a>`:''].join('');document.getElementById('modalContent').innerHTML=`<div class="modal-sub">ARCHIVO DEL PARTICIPANTE</div><div class="modal-player-photo"><img src="/assets/silueta.png" alt="Silueta de ${String(p.name).replace(/"/g,'&quot;')}"></div><h3>${p.name}</h3><div class="modal-sub">PERSONAJE POR ASIGNAR · PARTICIPANTE</div><p>${p.bio}</p><div class="modal-facts"><div class="modal-fact"><small>ESTADO</small><strong>REGISTRADO</strong></div><div class="modal-fact"><small>CANALES</small><strong>${p.twitch||p.youtube?'DISPONIBLES':'NO REGISTRADOS'}</strong></div><div class="modal-fact"><small>PRÓXIMO ARCHIVO</small><strong>NO REGISTRADO</strong></div><div class="modal-fact"><small>RELACIONES</small><strong>████████</strong></div></div>${links?`<div class="modal-links">${links}</div>`:''}`;document.getElementById('playerModal').classList.add('open');document.getElementById('playerModal').setAttribute('aria-hidden','false')}
 playerGrid.addEventListener('click',e=>{const card=e.target.closest('.player-card');if(card)openPlayer(card.dataset.player)});
 playerGrid.addEventListener('keydown',e=>{if(e.key==='Enter'){const card=e.target.closest('.player-card');if(card)openPlayer(card.dataset.player)}});
 
 const timelineEl=document.getElementById('timeline');timelineEl.innerHTML=timeline.map(t=>`<article class="lore-item"><small>${t.date}</small><h3>${t.title}</h3></article>`).join('');
-const charGrid=document.getElementById('characterGrid');charGrid.innerHTML=characters.map(c=>`<article class="character-card"><div class="char-photo"><span class="silhouette-label">IDENTIDAD OCULTA</span></div><h3>${c.name}</h3><small>TRABAJO: ${c.role}</small><p>${c.desc}</p><span class="char-status">${c.status}</span></article>`).join('');
+const charGrid=document.getElementById('characterGrid');charGrid.innerHTML=characters.map(c=>`<article class="character-card"><div class="char-photo"><img src="/assets/silueta.png" alt="Silueta de personaje desconocido" loading="lazy"><span class="silhouette-label">IDENTIDAD OCULTA</span></div><h3>${c.name}</h3><small>TRABAJO: ${c.role}</small><p>${c.desc}</p><span class="char-status">${c.status}</span></article>`).join('');
 
 const filter=document.getElementById('playerFilter');
 const clipGrid=document.getElementById('clipGrid');
@@ -247,9 +247,15 @@ let selectedClipKey=null;
 let selectedClip=null;
 
 function twitchClipSrc(c){
-  const parent=location.hostname;
+  const parent=location.hostname.replace(/^www\./i,'');
   if(!parent || !c?.id) return '';
-  return `https://clips.twitch.tv/embed?clip=${encodeURIComponent(c.id)}&parent=${encodeURIComponent(parent)}&autoplay=true&muted=true&preload=auto&referrer=${encodeURIComponent(location.href)}`;
+  const base=c.embedUrl || `https://clips.twitch.tv/embed?clip=${encodeURIComponent(c.id)}`;
+  const u=new URL(base);
+  u.searchParams.set('parent', parent);
+  u.searchParams.set('autoplay','true');
+  u.searchParams.set('muted','true');
+  u.searchParams.set('preload','auto');
+  return u.toString();
 }
 function youtubeClipSrc(c){
   if(!c?.videoId) return '';
@@ -277,14 +283,26 @@ function renderClipFeature(c){
 
   const src=getClipSrc(c);
   if(!src){
-    clipScreen.innerHTML='<div class="live-placeholder">ABRIR CLIP PARA REPRODUCIR</div><div class="scanline"></div>';
+    clipScreen.innerHTML=`<div class="live-placeholder">NO SE PUEDE INSERTAR ESTE CLIP.<br><a href="${c.url||'#'}" target="_blank" rel="noopener noreferrer">ABRIR EN ${c.platform||'TWITCH'} ↗</a></div><div class="scanline"></div>`;
     return;
   }
 
-  // Replace the iframe only when the user selected a different clip.
-  // A cache-busting parameter prevents browsers from reusing the previous Twitch embed.
-  const bust=`${src}${src.includes('?')?'&':'?'}pc=${Date.now()}`;
-  clipScreen.innerHTML=`<iframe class="clip-iframe" src="${bust}" title="${String(c.title||'Clip').replace(/"/g,'&quot;')}" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="scanline"></div>`;
+  // Twitch clips are non-interactive iframe embeds. Use the exact embed_url
+  // returned by Twitch and append the required parent/autoplay/muted parameters.
+  const iframe=document.createElement('iframe');
+  iframe.className='clip-iframe';
+  iframe.title=c.title||'Clip de Proyecto C';
+  iframe.src=src;
+  iframe.allow='autoplay; fullscreen; encrypted-media; picture-in-picture';
+  iframe.allowFullscreen=true;
+  iframe.loading='eager';
+  iframe.referrerPolicy='strict-origin-when-cross-origin';
+
+  clipScreen.innerHTML='';
+  clipScreen.appendChild(iframe);
+  const scan=document.createElement('div');
+  scan.className='scanline';
+  clipScreen.appendChild(scan);
 }
 
 function renderClips(){
@@ -293,7 +311,7 @@ function renderClips(){
   clipGrid.innerHTML=list.map((c,idx)=>{
     const thumb=c.thumbnail ? ` style="background-image:url('${String(c.thumbnail).replace(/'/g,'%27')}')"` : '';
     const key=clipKey(c).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
-    return `<button type="button" class="clip-card" data-clip-key="${key}"><div class="clip-thumb"${thumb}></div><div class="clip-card-body"><small>${c.player||'DESCONOCIDO'} · ${c.platform}</small><strong>${c.title||'Clip'}</strong><span>${c.duration||'—'} · ${c.createdAt?new Date(c.createdAt).toLocaleString('es-ES'):''}</span></div></button>`;
+    return `<button type="button" class="clip-card" data-clip-key="${key}" aria-label="Reproducir ${String(c.title||'clip').replace(/"/g,'&quot;')}"><div class="clip-thumb"${thumb}></div><div class="clip-card-body"><small>${c.player||'DESCONOCIDO'} · ${c.platform}</small><strong>${c.title||'Clip'}</strong><span>${c.duration||'—'} · ${c.createdAt?new Date(c.createdAt).toLocaleString('es-ES'):''}</span></div></button>`;
   }).join('') || '<div class="clip-empty">NO HAY CLIPS PARA ESTE FILTRO.</div>';
 }
 
@@ -305,27 +323,30 @@ function setClipFilters(){
 }
 
 function selectClip(c){
-  if(!c) { selectedClipKey=null; renderClipFeature(null); return; }
-  const key=clipKey(c);
-  if(key===selectedClipKey) return;
-  selectedClipKey=key;
+  if(!c){
+    selectedClipKey=null;
+    renderClipFeature(null);
+    return;
+  }
+  selectedClipKey=clipKey(c);
   renderClipFeature(c);
 }
 
 filter.addEventListener('change',()=>{
   renderClips();
   const list=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
-  selectedClipKey=null;
   selectClip(list[0]||null);
+  const key=list[0]?clipKey(list[0]):null;
+  clipGrid.querySelectorAll('.clip-card').forEach(card=>card.classList.toggle('selected',card.dataset.clipKey===key));
 });
 
 document.getElementById('randomClip').addEventListener('click',()=>{
   const list=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
   if(!list.length) return;
   const choice=list[Math.floor(Math.random()*list.length)];
-  selectedClipKey=null;
   selectClip(choice);
-  clipFeature.scrollIntoView({behavior:'smooth',block:'center'});
+  clipGrid.querySelectorAll('.clip-card').forEach(card=>card.classList.toggle('selected',card.dataset.clipKey===clipKey(choice)));
+  requestAnimationFrame(()=>clipFeature.scrollIntoView({behavior:'smooth',block:'center'}));
 });
 
 clipGrid.addEventListener('click',e=>{
@@ -335,9 +356,9 @@ clipGrid.addEventListener('click',e=>{
   const key=card.dataset.clipKey;
   const clip=clips.find(c=>clipKey(c)===key);
   if(!clip) return;
-  selectedClipKey=null;
   selectClip(clip);
-  clipFeature.scrollIntoView({behavior:'smooth',block:'center'});
+  clipGrid.querySelectorAll('.clip-card').forEach(x=>x.classList.toggle('selected',x===card));
+  requestAnimationFrame(()=>clipFeature.scrollIntoView({behavior:'smooth',block:'center'}));
 });
 
 async function loadClips(){
@@ -359,6 +380,8 @@ async function loadClips(){
       selectedClipKey=null;
       selectClip(current[0]||null);
     }
+    const selectedKey=selectedClipKey;
+    clipGrid.querySelectorAll('.clip-card').forEach(card=>card.classList.toggle('selected',card.dataset.clipKey===selectedKey));
   }catch(err){
     console.error('No se pudieron cargar los clips',err);
     clips=[];
