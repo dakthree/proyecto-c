@@ -62,6 +62,12 @@ const players = [
 
 const API_ENDPOINT = '/api/live';
 let onlineSources = [];
+let selectedLiveKey = null;
+
+function liveSourceKey(source){
+  if(!source) return null;
+  return [source.platform, source.channel || '', source.videoId || '', source.url || ''].join('|');
+}
 
 function twitchEmbedUrl(source){
   if (!/^https?:$/.test(location.protocol) || !location.hostname) return null;
@@ -69,13 +75,16 @@ function twitchEmbedUrl(source){
   return `https://player.twitch.tv/?channel=${encodeURIComponent(source.channel)}&parent=${encodeURIComponent(parent)}&muted=true`;
 }
 
-function renderLiveSource(source){
+function renderLiveSource(source, force=false){
   const screen=document.getElementById('liveScreen');
   const name=document.getElementById('liveChannelName');
   const link=document.getElementById('liveOpenLink');
   if(!screen||!name||!link) return;
 
+  const key=liveSourceKey(source);
+
   if(!source){
+    selectedLiveKey=null;
     screen.innerHTML=`<div class="live-placeholder"><strong>NO HAY PARTICIPANTES EN DIRECTO</strong><small>La lista se actualiza automáticamente.</small></div>`;
     name.textContent='NINGUNA SEÑAL ACTIVA';
     link.href='#';
@@ -87,9 +96,17 @@ function renderLiveSource(source){
   link.href=source.url;
   link.style.pointerEvents='auto';
 
+  // Do not rebuild the iframe while the same channel remains online.
+  // Recreating it on every status poll restarts the stream/player.
+  if(!force && key === selectedLiveKey){
+    return;
+  }
+
+  selectedLiveKey=key;
+
   let embed = null;
   if(source.platform === 'TWITCH') embed = twitchEmbedUrl(source);
-  if(source.platform === 'YOUTUBE') embed = `https://www.youtube.com/embed/${encodeURIComponent(source.videoId)}?autoplay=0&rel=0`;
+  if(source.platform === 'YOUTUBE') embed = `https://www.youtube.com/embed/${encodeURIComponent(source.videoId)}?autoplay=1&mute=1&rel=0`;
 
   if(embed){
     screen.innerHTML=`<iframe src="${embed}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Directo de ${source.player}"></iframe>`;
@@ -102,6 +119,7 @@ function updateLiveSelector(sources){
   const selector=document.getElementById('liveSelector');
   const count=document.getElementById('liveOnlineCount');
   if(!selector||!count) return;
+  const previousKey=selectedLiveKey;
   selector.innerHTML='';
   if(!sources.length){
     selector.disabled=true;
@@ -110,16 +128,22 @@ function updateLiveSelector(sources){
     renderLiveSource(null);
     return;
   }
+
   selector.disabled=false;
   count.textContent=`${sources.length} ONLINE`;
+
+  let selectedIndex=sources.findIndex(source=>liveSourceKey(source)===previousKey);
+  if(selectedIndex < 0) selectedIndex=0;
+
   sources.forEach((source, index)=>{
     const opt=document.createElement('option');
     opt.value=String(index);
     opt.textContent=`${source.player} — ${source.platform}`;
     selector.appendChild(opt);
   });
-  selector.value='0';
-  renderLiveSource(sources[0]);
+
+  selector.value=String(selectedIndex);
+  renderLiveSource(sources[selectedIndex]);
 }
 
 async function refreshLiveChannels(){
@@ -148,7 +172,7 @@ async function refreshLiveChannels(){
 
 document.getElementById('liveSelector')?.addEventListener('change', (event)=>{
   const source=onlineSources[Number(event.target.value)];
-  renderLiveSource(source);
+  renderLiveSource(source, true);
 });
 
 refreshLiveChannels();
