@@ -55,4 +55,4 @@ La pestaña Mapa usa un iframe del mapa interactivo oficial de Project Zomboid: 
 
 
 ### Clips del evento
-`/api/clips` filtra los clips de Twitch a los participantes del evento, Project Zomboid (game_id 31339) y `CLIP_START_DATE` (para esta prueba, 18/08/2026 12:00 en España peninsular; luego volver a cambiarlo al inicio real del evento). YouTube Data API no expone la función Clips como recurso consultable; se usan vídeos publicados desde esa fecha en los canales participantes que coincidan con `Project Zomboid`.
+`/api/clips` filtra los clips de Twitch a los participantes del evento, Project Zomboid (game_id 31339) y `CLIP_START_DATE` (por defecto 21/08/2026 18:00 en España peninsular). YouTube Data API no expone la función Clips como recurso consultable; se usan vídeos publicados desde esa fecha en los canales participantes que coincidan con `Project Zomboid`.

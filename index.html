@@ -100,10 +100,7 @@
     <!-- LORE -->
     <section id="lore" class="tab-panel page-section paper-section">
       <div class="section-heading dark"><div><div class="folder-label">03 / LORE</div><h2>CALENDARIO</h2><p>Fechas y actos confirmados de Proyecto C.</p></div><div class="red-tag">CALENDARIO 2026</div></div>
-      <div class="lore-layout">
-        <div class="timeline" id="timeline"></div>
-        <aside class="classified"><div class="classified-stamp">CLASIFICADO</div><h3>ARCHIVO C-000</h3><p>La información anterior al incidente ha sido fragmentada. Algunos registros presentan inconsistencias.</p><div class="class-lines"><span>ORIGEN</span><b>████████</b><span>RESPONSABLE</span><b>████████</b><span>OBJETIVO</span><b>████████</b></div><div class="hand-note">“No confíes en la versión oficial.”</div></aside>
-      </div>
+      <div class="timeline lore-calendar" id="timeline"></div>
     </section>
 
     <!-- PERSONAJES -->
@@ -132,8 +129,8 @@
 
     <!-- CLIPS -->
     <section id="clips" class="tab-panel page-section clips-section">
-      <div class="section-heading"><div><div class="folder-label">06 / CLIPS</div><h2>REGISTRO DE TRANSMISIONES</h2><p>Clips de los participantes del evento, filtrados a Proyecto Zomboid y publicados desde el inicio del evento.</p></div></div>
-      <div class="clip-toolbar"><label>JUGADOR <select id="playerFilter"><option value="all">TODOS</option></select></label><div class="clip-source-note">SOLO PROYECTO ZOMBOID · DESDE 21 AGO 2026 18:00</div><button class="btn btn-red" id="randomClip">MOMENTO ALEATORIO</button></div>
+      <div class="section-heading"><div><div class="folder-label">06 / CLIPS</div><h2>REGISTRO DE TRANSMISIONES</h2><p>Clips de los participantes del evento, filtrados a Project Zomboid y publicados desde la fecha de prueba configurada.</p></div></div>
+      <div class="clip-toolbar"><label>JUGADOR <select id="playerFilter"><option value="all">TODOS</option></select></label><div class="clip-source-note">SOLO PROJECT ZOMBOID · DESDE 18 AGO 2026 12:00</div><button class="btn btn-red" id="randomClip">MOMENTO ALEATORIO</button></div>
       <div class="clip-feature" id="clipFeature"><div class="clip-screen"><div class="play-icon">▶</div><div class="scanline"></div><div class="clip-caption"><span id="featurePlayer">PLAYER</span><strong id="featureTitle">Registro seleccionado</strong></div></div><div class="clip-info"><div class="clip-type">ARCHIVO DE TRANSMISIÓN</div><h3 id="featureHeading">Selección de clip</h3><p id="featureDescription">Aquí aparecerá la información del clip seleccionado.</p><div class="clip-meta"><span id="featureDuration">00:00</span><span id="featurePlatform">TWITCH / YOUTUBE</span></div></div></div>
       <div class="clip-grid" id="clipGrid"></div>
     </section>

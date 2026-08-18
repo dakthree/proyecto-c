@@ -10,7 +10,8 @@ let twitchToken = null;
 let twitchTokenExpiresAt = 0;
 const youtubeHandleCache = new Map();
 const CLIP_START_DATE = process.env.CLIP_START_DATE || '2026-08-18T10:00:00Z';
-const TWITCH_PZ_GAME_ID = process.env.TWITCH_PZ_GAME_ID || '31339';
+const TWITCH_PZ_GAME_ID = process.env.TWITCH_PZ_GAME_ID || null;
+let twitchPzGameIdCache = null;
 let clipCache = {expiresAt:0, data:[]};
 
 async function twitchAppToken() {
@@ -133,6 +134,18 @@ async function youtubeLive() {
   return results.filter(Boolean);
 }
 
+
+async function twitchProjectZomboidGameId(token){
+  if(twitchPzGameIdCache)return twitchPzGameIdCache;
+  const params=new URLSearchParams({query:'Project Zomboid'});
+  const res=await fetch(`https://api.twitch.tv/helix/search/categories?${params}`,{headers:{'Client-Id':process.env.TWITCH_CLIENT_ID,'Authorization':`Bearer ${token}`}});
+  if(!res.ok)throw new Error(`Twitch categories HTTP ${res.status}`);
+  const data=await res.json();
+  const exact=(data.data||[]).find(x=>x.name?.toLowerCase()==='project zomboid');
+  twitchPzGameIdCache=exact?.id || TWITCH_PZ_GAME_ID || '31339';
+  return twitchPzGameIdCache;
+}
+
 async function twitchUsersByLogin(logins){
   const unique=[...new Set(logins.filter(Boolean).map(x=>x.toLowerCase()))];
   if(!unique.length)return[];
@@ -154,8 +167,9 @@ async function twitchClips(){
   const ids=new Map(); users.forEach(u=>{const c=tp.find(x=>x.twitch.toLowerCase()===u.login.toLowerCase());if(c)ids.set(u.id,c.player);});
   if(!ids.size)return[];
   const token=await twitchAppToken(),headers={'Client-Id':process.env.TWITCH_CLIENT_ID,'Authorization':`Bearer ${token}`},out=[];
+  const pzGameId=await twitchProjectZomboidGameId(token);
   for(const [start,end] of weekWindows(CLIP_START_DATE,new Date())){
-    const params=new URLSearchParams({game_id:TWITCH_PZ_GAME_ID,started_at:start.toISOString(),ended_at:end.toISOString(),first:'100'}); let after=null;
+    const params=new URLSearchParams({game_id:pzGameId,started_at:start.toISOString(),ended_at:end.toISOString(),first:'100'}); let after=null;
     do{
       if(after)params.set('after',after);else params.delete('after');
       const res=await fetch(`https://api.twitch.tv/helix/clips?${params}`,{headers});
@@ -163,6 +177,8 @@ async function twitchClips(){
       const data=await res.json();
       for(const clip of (data.data||[])){
         const player=ids.get(clip.broadcaster_id); if(!player)continue;
+        if(clip.game_id && String(clip.game_id)!==String(pzGameId)) continue;
+        if(clip.created_at && new Date(clip.created_at) < new Date(CLIP_START_DATE)) continue;
         out.push({id:clip.id,player,platform:'TWITCH',title:clip.title||'Clip',description:`Clip de ${player} durante Project Zomboid.`,duration:`${Math.round(Number(clip.duration||0))}s`,createdAt:clip.created_at,thumbnail:clip.thumbnail_url,url:clip.url,embedUrl:clip.embed_url,views:clip.view_count||0});
       }
       after=data.pagination?.cursor||null;
@@ -192,7 +208,7 @@ app.get('/api/clips',async(_req,res)=>{
   try{
     const [t,y]=await Promise.allSettled([twitchClips(),youtubeClips()]);
     const clips=[...(t.status==='fulfilled'?t.value:[]),...(y.status==='fulfilled'?y.value:[])].sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
-    clipCache={expiresAt:Date.now()+300000,data:clips};
+    clipCache={expiresAt:Date.now()+30000,data:clips};
     res.json({clips,checkedAt:new Date().toISOString(),startDate:CLIP_START_DATE,errors:[t,y].filter(x=>x.status==='rejected').map(x=>x.reason?.message).filter(Boolean)});
   }catch(e){res.status(500).json({clips:[],error:e.message,startDate:CLIP_START_DATE})}
 });

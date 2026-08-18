@@ -50,3 +50,10 @@
 
 main > .tab-panel:not(.active){display:none !important}
 .character-card .char-photo{background:linear-gradient(180deg,#292b25,#10110f);position:relative;overflow:hidden}.character-card .char-photo:before{content:"";position:absolute;width:66px;height:100px;left:50%;top:38px;transform:translateX(-50%);background:#050605;border-radius:50% 50% 42% 42%/35% 35% 58% 58%;box-shadow:0 70px 0 24px #050605}.character-card .char-photo .silhouette-label{position:absolute;bottom:28px;left:0;right:0;text-align:center;font:10px 'Special Elite';letter-spacing:2px;color:#8f8878}.clip-source-note{font:10px 'Special Elite';letter-spacing:1px;color:#8a8477;align-self:center;text-align:center}.clip-screen iframe{width:100%;height:100%;border:0;display:block}.clip-thumb{background-size:cover;background-position:center}.clip-empty{grid-column:1/-1;border:1px dashed rgba(224,214,192,.2);padding:36px;text-align:center;color:#8e8778;font:12px 'Special Elite';letter-spacing:1px}
+
+/* Proyecto C v8: lore as calendar only */
+.lore-calendar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:980px}
+.lore-calendar .lore-item{margin:0;padding:22px 24px;border:1px solid rgba(0,0,0,.14);background:rgba(255,255,255,.5);box-shadow:0 3px 12px rgba(0,0,0,.05)}
+.lore-calendar .lore-item small{display:block;letter-spacing:.16em;font-weight:700;font-size:.78rem;opacity:.72;margin-bottom:8px}
+.lore-calendar .lore-item h3{margin:0;font-size:1.2rem;letter-spacing:.08em}
+@media(max-width:700px){.lore-calendar{grid-template-columns:1fr}}

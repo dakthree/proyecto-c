@@ -179,21 +179,27 @@ refreshLiveChannels();
 setInterval(refreshLiveChannels, 60_000);
 
 const timeline = [
-  {date:'DÍA 0',title:'LA CAÍDA',text:'Las comunicaciones civiles se interrumpen. Los primeros informes hablan de ataques violentos y personas con fiebre.'},
-  {date:'DÍA 3',title:'CUARENTENA',text:'Se cierran las carreteras de acceso. Los vehículos militares aparecen en los puntos de control.'},
-  {date:'DÍA 9',title:'SILENCIO',text:'Las radios dejan de responder. Los supervivientes empiezan a moverse entre edificios abandonados.'},
-  {date:'DÍA 17',title:'LA INSTALACIÓN',text:'Un grupo encuentra referencias a una instalación marcada con el símbolo C-17.',locked:true},
-  {date:'DÍA 28',title:'PRIMER CONTACTO',text:'[ ARCHIVO PENDIENTE DE DESCUBRIMIENTO ]',locked:true}
+  {date:'20 AGOSTO 2026',title:'REUNIÓN'},
+  {date:'21 AGOSTO 2026',title:'PRÓLOGO'},
+  {date:'28 AGOSTO 2026',title:'ACTO I'},
+  {date:'29 AGOSTO 2026',title:'ACTO I'},
+  {date:'30 AGOSTO 2026',title:'ACTO I'},
+  {date:'3 SEPTIEMBRE 2026',title:'DÍA LIBRE'},
+  {date:'4 SEPTIEMBRE 2026',title:'ACTO II'},
+  {date:'5 SEPTIEMBRE 2026',title:'ACTO II'},
+  {date:'6 SEPTIEMBRE 2026',title:'ACTO II'},
+  {date:'10 SEPTIEMBRE 2026',title:'DÍA LIBRE'},
+  {date:'11 SEPTIEMBRE 2026',title:'ACTO III'},
+  {date:'12 SEPTIEMBRE 2026',title:'ACTO III'},
+  {date:'13 SEPTIEMBRE 2026',title:'ACTO III'}
 ];
 
-const characters = [
-  {name:'DR. MARTA VEGA',role:'INVESTIGADORA',status:'PARADERO DESCONOCIDO',desc:'Aparece mencionada en varios documentos previos al incidente. Su firma coincide con los registros de la instalación.'},
-  {name:'COMANDANTE SALAS',role:'MANDO MILITAR',status:'DESAPARECIDO',desc:'Último responsable conocido de la cadena de evacuación. Existe una grabación parcial de su última transmisión.'},
-  {name:'MATEO',role:'SOBREVIVIENTE',status:'ACTIVO',desc:'Un hombre que conoce las carreteras secundarias y parece saber más de lo que cuenta.'},
-  {name:'LA MUJER DE LA RADIO',role:'IDENTIDAD DESCONOCIDA',status:'NO CONFIRMADO',desc:'Una voz aparece de madrugada en una frecuencia que no debería seguir operativa.'},
-  {name:'PACIENTE 17',role:'SUJETO',status:'████████',desc:'Su nombre ha sido eliminado de los documentos recuperados.'},
-  {name:'EL CARTERO',role:'INFORMANTE',status:'DESCONOCIDO',desc:'Varias notas llevan el mismo sello y una frase escrita a mano: “NO CONFÍES EN ELLOS”.'}
-];
+const characters = Array.from({length:6}, () => ({
+  name:'DESCONOCIDO',
+  role:'DESCONOCIDO',
+  status:'DESCONOCIDO',
+  desc:'DESCONOCIDA'
+}));
 
 let clips = [];
 let clipDataLoaded = false;
@@ -314,7 +320,7 @@ async function loadClips(){
   }
 }
 loadClips();
-setInterval(loadClips,5*60*1000);
+setInterval(loadClips,60*1000);
 
 document.getElementById('modalClose').addEventListener('click',()=>document.getElementById('playerModal').classList.remove('open'));document.getElementById('playerModal').addEventListener('click',e=>{if(e.target.id==='playerModal')e.currentTarget.classList.remove('open')});
 window.addEventListener('scroll',()=>document.querySelector('.topbar').classList.toggle('scrolled',scrollY>40));
