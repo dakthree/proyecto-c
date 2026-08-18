@@ -178,23 +178,28 @@ async function twitchClips(){
     'Authorization':`Bearer ${token}`
   };
   const pzGameId=await twitchProjectZomboidGameId(token);
+  const clipStart=new Date(CLIP_START_DATE);
+  const now=new Date();
   const out=[];
   const seen=new Set();
 
-  // Query each participant separately. Get Clips returns lists ordered by view
-  // count, so querying the global game list can hide newer clips behind the
-  // first 100 results. Per-broadcaster queries ensure every participant gets
-  // their own complete paginated result set.
-  for(const [broadcasterId, player] of playerByBroadcasterId){
-    try{
-      for(const [start,end] of weekWindows(CLIP_START_DATE,new Date())){
+  // IMPORTANT: Twitch's started_at / ended_at range filters clips by the
+  // broadcast capture time, not by clip.created_at. A clip created after our
+  // cutoff can therefore belong to a stream that started before the cutoff.
+  // For each 7-day creation window, search broadcasts that started up to
+  // 7 days earlier, then apply the real created_at cutoff locally.
+  for(const [creationStart,creationEnd] of weekWindows(CLIP_START_DATE,now)){
+    const searchStart=new Date(creationStart.getTime()-7*86400000);
+    for(const [broadcasterId, player] of playerByBroadcasterId){
+      try{
         let after=null;
+        let safetyPages=0;
         do{
           const params=new URLSearchParams({
             broadcaster_id:broadcasterId,
             game_id:pzGameId,
-            started_at:start.toISOString(),
-            ended_at:end.toISOString(),
+            started_at:searchStart.toISOString(),
+            ended_at:creationEnd.toISOString(),
             first:'100'
           });
           if(after)params.set('after',after);
@@ -206,8 +211,9 @@ async function twitchClips(){
           for(const clip of (data.data||[])){
             if(seen.has(clip.id))continue;
             if(String(clip.broadcaster_id)!==String(broadcasterId))continue;
-            if(clip.game_id && String(clip.game_id)!==String(pzGameId))continue;
-            if(clip.created_at && new Date(clip.created_at) < new Date(CLIP_START_DATE))continue;
+            if(String(clip.game_id)!==String(pzGameId))continue;
+            const created=clip.created_at?new Date(clip.created_at):null;
+            if(!created || created < clipStart || created > now)continue;
             seen.add(clip.id);
             out.push({
               id:clip.id,
@@ -224,14 +230,15 @@ async function twitchClips(){
             });
           }
           after=data.pagination?.cursor||null;
-        }while(after);
+          safetyPages++;
+        }while(after && safetyPages<10); // Twitch caps the total paged result set at ~1000.
+      }catch(e){
+        console.error(`Twitch clips ${player}:`,e.message);
       }
-    }catch(e){
-      console.error(`Twitch clips ${player}:`,e.message);
     }
   }
 
-  return out;
+  return out.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
 }
 async function youtubeClips(){
   if(!process.env.YOUTUBE_API_KEY)return[]; const out=[];
