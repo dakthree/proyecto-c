@@ -241,73 +241,109 @@ const charGrid=document.getElementById('characterGrid');charGrid.innerHTML=chara
 const filter=document.getElementById('playerFilter');
 const clipGrid=document.getElementById('clipGrid');
 const clipFeature=document.getElementById('clipFeature');
-function clipKey(c){return `${c.platform}|${c.id||c.videoId||c.url||''}`}
-let selectedClipKey = null;
+const clipScreen=clipFeature.querySelector('.clip-screen');
+function clipKey(c){ return `${c.platform}|${c.id||c.videoId||c.url||''}`; }
+let selectedClipKey=null;
+let selectedClip=null;
+
+function twitchClipSrc(c){
+  const parent=location.hostname;
+  if(!parent || !c?.id) return '';
+  return `https://clips.twitch.tv/embed?clip=${encodeURIComponent(c.id)}&parent=${encodeURIComponent(parent)}&autoplay=true&muted=true&preload=auto&referrer=${encodeURIComponent(location.href)}`;
+}
+function youtubeClipSrc(c){
+  if(!c?.videoId) return '';
+  return `https://www.youtube.com/embed/${encodeURIComponent(c.videoId)}?autoplay=1&mute=1&rel=0&playsinline=1`;
+}
+function getClipSrc(c){
+  if(c?.platform==='TWITCH') return twitchClipSrc(c);
+  if(c?.platform==='YOUTUBE') return youtubeClipSrc(c);
+  return '';
+}
+
 function renderClipFeature(c){
-  const screen=clipFeature.querySelector('.clip-screen');
+  selectedClip=c||null;
+  document.getElementById('featurePlayer').textContent=c?.player||'—';
+  document.getElementById('featureTitle').textContent=c?.title||'Registro seleccionado';
+  document.getElementById('featureHeading').textContent=c?.title||'Selección de clip';
+  document.getElementById('featureDescription').textContent=c?.description||'Aquí aparecerá la información del clip seleccionado.';
+  document.getElementById('featureDuration').textContent=c?.duration||'—';
+  document.getElementById('featurePlatform').textContent=c?.platform||'—';
+
   if(!c){
-    screen.innerHTML='<div class="live-placeholder">NO HAY CLIPS DISPONIBLES TODAVÍA</div>';
-    document.getElementById('featurePlayer').textContent='—';
-    document.getElementById('featureTitle').textContent='Sin registros';
-    document.getElementById('featureHeading').textContent='No hay clips todavía';
-    document.getElementById('featureDescription').textContent='Los clips aparecerán cuando comience el evento y se publiquen en los canales participantes.';
-    document.getElementById('featureDuration').textContent='—';
-    document.getElementById('featurePlatform').textContent='—';
+    clipScreen.innerHTML='<div class="live-placeholder">NO HAY CLIPS DISPONIBLES TODAVÍA</div>';
     return;
   }
-  document.getElementById('featurePlayer').textContent=c.player||'DESCONOCIDO';
-  document.getElementById('featureTitle').textContent=c.title||'Clip';
-  document.getElementById('featureHeading').textContent=c.title||'Clip';
-  document.getElementById('featureDescription').textContent=c.description||'Momento recuperado de una transmisión del evento.';
-  document.getElementById('featureDuration').textContent=c.duration||'—';
-  document.getElementById('featurePlatform').textContent=c.platform||'—';
-  let src='';
-  if(c.platform==='TWITCH'){
-    const parent=location.hostname;
-    if(parent) src=`https://clips.twitch.tv/embed?clip=${encodeURIComponent(c.id)}&parent=${encodeURIComponent(parent)}&autoplay=true&muted=true&preload=auto`;
-  }else if(c.platform==='YOUTUBE' && c.videoId){
-    src=`https://www.youtube.com/embed/${encodeURIComponent(c.videoId)}?autoplay=1&mute=1&rel=0`;
+
+  const src=getClipSrc(c);
+  if(!src){
+    clipScreen.innerHTML='<div class="live-placeholder">ABRIR CLIP PARA REPRODUCIR</div><div class="scanline"></div>';
+    return;
   }
-  if(src){
-    screen.innerHTML=`<iframe src="${src}" title="${(c.title||'Clip').replace(/"/g,'&quot;')}" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe><div class="scanline"></div>`;
-  }else{
-    screen.innerHTML='<div class="live-placeholder">ABRIR CLIP PARA REPRODUCIR</div>';
-  }
+
+  // Replace the iframe only when the user selected a different clip.
+  // A cache-busting parameter prevents browsers from reusing the previous Twitch embed.
+  const bust=`${src}${src.includes('?')?'&':'?'}pc=${Date.now()}`;
+  clipScreen.innerHTML=`<iframe class="clip-iframe" src="${bust}" title="${String(c.title||'Clip').replace(/"/g,'&quot;')}" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="scanline"></div>`;
 }
+
 function renderClips(){
   const v=filter.value;
   const list=v==='all'?clips:clips.filter(c=>c.player===v);
-  clipGrid.innerHTML=list.map(c=>{
-    const thumb=c.thumbnail ? ` style="background-image:url('${c.thumbnail.replace(/'/g,'%27')}')"` : '';
-    return `<article class="clip-card" data-clip-key="${clipKey(c)}"><div class="clip-thumb"${thumb}></div><div class="clip-card-body"><small>${c.player||'DESCONOCIDO'} · ${c.platform}</small><strong>${c.title||'Clip'}</strong><span>${c.duration||'—'} · ${c.createdAt?new Date(c.createdAt).toLocaleDateString('es-ES'):''}</span></div></article>`;
+  clipGrid.innerHTML=list.map((c,idx)=>{
+    const thumb=c.thumbnail ? ` style="background-image:url('${String(c.thumbnail).replace(/'/g,'%27')}')"` : '';
+    const key=clipKey(c).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+    return `<button type="button" class="clip-card" data-clip-key="${key}"><div class="clip-thumb"${thumb}></div><div class="clip-card-body"><small>${c.player||'DESCONOCIDO'} · ${c.platform}</small><strong>${c.title||'Clip'}</strong><span>${c.duration||'—'} · ${c.createdAt?new Date(c.createdAt).toLocaleString('es-ES'):''}</span></div></button>`;
   }).join('') || '<div class="clip-empty">NO HAY CLIPS PARA ESTE FILTRO.</div>';
 }
+
 function setClipFilters(){
   const current=filter.value;
   const names=[...new Set(clips.map(c=>c.player).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
-  filter.innerHTML='<option value="all">TODOS</option>'+names.map(n=>`<option value="${n.replace(/"/g,'&quot;')}">${n}</option>`).join('');
-  if(names.includes(current)) filter.value=current; else filter.value='all';
+  filter.innerHTML='<option value="all">TODOS</option>'+names.map(n=>`<option value="${String(n).replace(/"/g,'&quot;')}">${n}</option>`).join('');
+  filter.value=names.includes(current)?current:'all';
 }
-function selectClip(c){ selectedClipKey=c?clipKey(c):null; renderClipFeature(c||null); }
+
+function selectClip(c){
+  if(!c) { selectedClipKey=null; renderClipFeature(null); return; }
+  const key=clipKey(c);
+  if(key===selectedClipKey) return;
+  selectedClipKey=key;
+  renderClipFeature(c);
+}
+
 filter.addEventListener('change',()=>{
   renderClips();
   const list=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
+  selectedClipKey=null;
   selectClip(list[0]||null);
 });
+
 document.getElementById('randomClip').addEventListener('click',()=>{
   const list=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
-  if(list.length){ selectClip(list[Math.floor(Math.random()*list.length)]); clipFeature.scrollIntoView({behavior:'smooth',block:'center'}); }
+  if(!list.length) return;
+  const choice=list[Math.floor(Math.random()*list.length)];
+  selectedClipKey=null;
+  selectClip(choice);
+  clipFeature.scrollIntoView({behavior:'smooth',block:'center'});
 });
+
 clipGrid.addEventListener('click',e=>{
   const card=e.target.closest('.clip-card');
-  if(!card)return;
-  const clip=clips.find(c=>clipKey(c)===card.dataset.clipKey);
-  if(clip){ selectClip(clip); clipFeature.scrollIntoView({behavior:'smooth',block:'center'}); }
+  if(!card) return;
+  e.preventDefault();
+  const key=card.dataset.clipKey;
+  const clip=clips.find(c=>clipKey(c)===key);
+  if(!clip) return;
+  selectedClipKey=null;
+  selectClip(clip);
+  clipFeature.scrollIntoView({behavior:'smooth',block:'center'});
 });
+
 async function loadClips(){
   try{
     const res=await fetch('/api/clips',{cache:'no-store'});
-    if(!res.ok)throw new Error(`HTTP ${res.status}`);
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload=await res.json();
     const previousKey=selectedClipKey;
     clips=Array.isArray(payload.clips)?payload.clips:[];
@@ -317,16 +353,18 @@ async function loadClips(){
     const current=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
     const stillSelected=current.find(c=>clipKey(c)===previousKey);
     if(stillSelected){
-      // Keep the current iframe alive when the 60s refresh finds no change.
-      // Re-rendering it would restart the clip.
-      const currentKey=selectedClipKey;
-      if(currentKey!==clipKey(stillSelected)) selectClip(stillSelected);
+      // Keep the current player untouched during refresh.
+      selectedClip=stillSelected;
     }else{
+      selectedClipKey=null;
       selectClip(current[0]||null);
     }
   }catch(err){
     console.error('No se pudieron cargar los clips',err);
-    clips=[]; renderClips(); selectClip(null);
+    clips=[];
+    selectedClipKey=null;
+    renderClips();
+    renderClipFeature(null);
   }
 }
 loadClips();
