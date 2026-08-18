@@ -249,12 +249,13 @@ let selectedClip=null;
 function twitchClipSrc(c){
   const parent=location.hostname.replace(/^www\./i,'');
   if(!parent || !c?.id) return '';
-  const base=c.embedUrl || `https://clips.twitch.tv/embed?clip=${encodeURIComponent(c.id)}`;
-  const u=new URL(base);
+  const u=new URL('https://clips.twitch.tv/embed');
+  u.searchParams.set('clip', c.id);
   u.searchParams.set('parent', parent);
-  u.searchParams.set('autoplay','true');
-  u.searchParams.set('muted','true');
-  u.searchParams.set('preload','auto');
+  u.searchParams.set('autoplay', 'true');
+  u.searchParams.set('muted', 'true');
+  // Cache-buster ensures Twitch/browser cannot reuse the previously selected clip.
+  u.searchParams.set('_pc', String(Date.now()));
   return u.toString();
 }
 function youtubeClipSrc(c){
@@ -283,13 +284,14 @@ function renderClipFeature(c){
 
   const src=getClipSrc(c);
   if(!src){
-    clipScreen.innerHTML=`<div class="live-placeholder">NO SE PUEDE INSERTAR ESTE CLIP.<br><a href="${c.url||'#'}" target="_blank" rel="noopener noreferrer">ABRIR EN ${c.platform||'TWITCH'} ↗</a></div><div class="scanline"></div>`;
+    clipScreen.innerHTML=`<div class="live-placeholder">NO SE PUEDE INSERTAR ESTE CLIP.<br><a href="${c.url||'#'}" target="_blank" rel="noopener noreferrer">ABRIR EN ${c.platform||'TWITCH'} ↗</a></div>`;
     return;
   }
 
-  // Twitch clips are non-interactive iframe embeds. Use the exact embed_url
-  // returned by Twitch and append the required parent/autoplay/muted parameters.
+  // Replace the iframe completely on every selection. Twitch Clips are
+  // non-interactive embeds, so changing the URL is the reliable way to switch clips.
   const iframe=document.createElement('iframe');
+  iframe.id='clipEmbedFrame';
   iframe.className='clip-iframe';
   iframe.title=c.title||'Clip de Proyecto C';
   iframe.src=src;
@@ -298,8 +300,7 @@ function renderClipFeature(c){
   iframe.loading='eager';
   iframe.referrerPolicy='strict-origin-when-cross-origin';
 
-  clipScreen.innerHTML='';
-  clipScreen.appendChild(iframe);
+  clipScreen.replaceChildren(iframe);
   const scan=document.createElement('div');
   scan.className='scanline';
   clipScreen.appendChild(scan);
