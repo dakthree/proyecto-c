@@ -9,6 +9,7 @@ const candidates = require(path.join(ROOT, 'live-channels.json'));
 let twitchToken = null;
 let twitchTokenExpiresAt = 0;
 const youtubeHandleCache = new Map();
+const twitchLoginCache = new Map();
 const CLIP_START_DATE = process.env.CLIP_START_DATE || '2026-08-11T10:00:00Z';
 const TWITCH_PZ_GAME_ID = process.env.TWITCH_PZ_GAME_ID || null;
 let twitchPzGameIdCache = null;
@@ -37,32 +38,84 @@ async function twitchAppToken() {
   return twitchToken;
 }
 
+
+function normalizeChannelName(value){
+  return String(value||'')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .toLowerCase().replace(/[^a-z0-9]/g,'');
+}
+
+async function twitchResolveLogin(candidate, token){
+  if(candidate.twitch) return candidate.twitch.toLowerCase();
+  const key=normalizeChannelName(candidate.player);
+  if(!key) return null;
+  if(twitchLoginCache.has(key)) return twitchLoginCache.get(key);
+
+  // Best-effort discovery only when the supplied database has no Twitch URL.
+  // We accept only a strong exact match between login/display name and participant name.
+  const params=new URLSearchParams({query:candidate.player, first:'20'});
+  const res=await fetch(`https://api.twitch.tv/helix/search/channels?${params}`,{
+    headers:{'Client-Id':process.env.TWITCH_CLIENT_ID,'Authorization':`Bearer ${token}`}
+  });
+  if(!res.ok){
+    console.warn(`Twitch search ${candidate.player}: HTTP ${res.status}`);
+    twitchLoginCache.set(key,null);
+    return null;
+  }
+  const data=await res.json();
+  const exact=(data.data||[]).find(ch=>{
+    const login=normalizeChannelName(ch.broadcaster_login);
+    const display=normalizeChannelName(ch.display_name);
+    return login===key || display===key;
+  });
+  const login=exact?.broadcaster_login?.toLowerCase() || null;
+  twitchLoginCache.set(key,login);
+  return login;
+}
+
 async function twitchLive() {
-  const logins = candidates.map(x => x.twitch).filter(Boolean);
-  if (!logins.length) return [];
-  const token = await twitchAppToken();
-  const params = new URLSearchParams();
-  logins.forEach(login => params.append('user_login', login));
-  const res = await fetch(`https://api.twitch.tv/helix/streams?${params.toString()}`, {
-    headers: {
-      'Client-Id': process.env.TWITCH_CLIENT_ID,
-      'Authorization': `Bearer ${token}`
+  const token=await twitchAppToken();
+  const resolved=[];
+  for(const candidate of candidates){
+    try{
+      const login=await twitchResolveLogin(candidate, token);
+      if(login) resolved.push({candidate,login});
+    }catch(e){
+      console.warn(`Twitch resolve ${candidate.player}: ${e.message}`);
     }
-  });
-  if (!res.ok) throw new Error(`Twitch streams HTTP ${res.status}`);
-  const data = await res.json();
-  return (data.data || []).map(stream => {
-    const candidate = candidates.find(x => x.twitch?.toLowerCase() === stream.user_login.toLowerCase());
-    return {
-      player: candidate?.player || stream.user_name,
-      platform: 'TWITCH',
-      channel: stream.user_login,
-      url: `https://www.twitch.tv/${stream.user_login}`,
-      viewerCount: stream.viewer_count,
-      title: stream.title,
-      startedAt: stream.started_at
-    };
-  });
+  }
+  if(!resolved.length) return [];
+
+  const byLogin=new Map(resolved.map(x=>[x.login,x.candidate]));
+  const logins=[...byLogin.keys()];
+  const out=[];
+  // Twitch accepts up to 100 user_login parameters; chunk defensively.
+  for(let i=0;i<logins.length;i+=100){
+    const chunk=logins.slice(i,i+100);
+    const params=new URLSearchParams();
+    chunk.forEach(login=>params.append('user_login',login));
+    const res=await fetch(`https://api.twitch.tv/helix/streams?${params.toString()}`,{
+      headers:{
+        'Client-Id':process.env.TWITCH_CLIENT_ID,
+        'Authorization':`Bearer ${token}`
+      }
+    });
+    if(!res.ok) throw new Error(`Twitch streams HTTP ${res.status}`);
+    const data=await res.json();
+    for(const stream of (data.data||[])){
+      const candidate=byLogin.get(stream.user_login.toLowerCase());
+      out.push({
+        player:candidate?.player || stream.user_name,
+        platform:'TWITCH',
+        channel:stream.user_login,
+        url:`https://www.twitch.tv/${stream.user_login}`,
+        viewerCount:stream.viewer_count,
+        title:stream.title,
+        startedAt:stream.started_at
+      });
+    }
+  }
+  return out;
 }
 
 function parseYoutube(url) {

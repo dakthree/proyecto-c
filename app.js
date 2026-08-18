@@ -12,11 +12,11 @@ const players = [
   {id:'ferrox',name:'Ferrox',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'luisgg',name:'LuisGG',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:'https://www.youtube.com/@luisgamingg',bio:'Perfil pendiente de información del personaje.'},
   {id:'lordzacas',name:'lordzacas',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/lordzacas',youtube:'https://www.youtube.com/@lordzacas3015',bio:'Perfil pendiente de información del personaje.'},
-  {id:'soulreaperdk',name:'SoulReaperDK',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/soulreaperdk_',youtube:'https://www.youtube.com/channel/UCwvqn9OZhmkLBjHOw0us5ZA',bio:'Perfil pendiente de información del personaje.'},
-  {id:'zigurath',name:'zigurath',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/zigurathz',youtube:'https://www.youtube.com/channel/UC36C8AulCMw5QAUV5wrfQpg',bio:'Perfil pendiente de información del personaje.'},
+  {id:'soulreaperdk',name:'SoulReaperDK',image:'/assets/players/soulreaperdk.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/soulreaperdk_',youtube:'https://www.youtube.com/channel/UCwvqn9OZhmkLBjHOw0us5ZA',bio:'Perfil pendiente de información del personaje.'},
+  {id:'zigurath',name:'zigurath',image:'/assets/players/zigurath.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/zigurathz',youtube:'https://www.youtube.com/channel/UC36C8AulCMw5QAUV5wrfQpg',bio:'Perfil pendiente de información del personaje.'},
   {id:'arce',name:'ArCe',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/arcedelah',youtube:'https://www.youtube.com/@arcedelah',bio:'Perfil pendiente de información del personaje.'},
   {id:'cere',name:'Cere',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/cere____',youtube:'https://www.youtube.com/channel/UCE1ISk9jQb7ykFQXy56NbaA',bio:'Perfil pendiente de información del personaje.'},
-  {id:'storvi',name:'Storvi',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/storviii',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'storvi',name:'Storvi',image:'/assets/players/storvi.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/storviii',youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'rubaso',name:'Rubaso',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'yonkimiyagui',name:'yonkimiyagui',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/miyagui85',youtube:'https://www.youtube.com/channel/UCA-epNDDfdH1JzJOJf0pnCA',bio:'Perfil pendiente de información del personaje.'},
   {id:'miguel',name:'Miguel',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
@@ -28,12 +28,12 @@ const players = [
   {id:'magikos',name:'Magikos',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/m4gikos',youtube:'https://www.youtube.com/@M4gikos',bio:'Perfil pendiente de información del personaje.'},
   {id:'miniarre',name:'Miniarre',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'titohc',name:'Titohc',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'shikafu6',name:'Shikafu6',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'shikafu6',name:'Shikafu6',image:'/assets/players/shikafu6.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'hax',name:'Hax',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'zelune',name:'Zelune',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'feto',name:'Feto',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'andreshouse',name:'Andreshouse',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'rastafrikki',name:'RastaFrikki',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'rastafrikki',name:'RastaFrikki',image:'/assets/players/rastafrikki.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'tyzenh',name:'TyzenH',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'anselhoenheim',name:'AnselHoenheim',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/anselhoenheim',youtube:'https://www.youtube.com/@AnselHoenheim',bio:'Perfil pendiente de información del personaje.'},
   {id:'garlic-jr42',name:'Garlic_Jr42',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
@@ -230,8 +230,8 @@ function playerInitials(name){return name.split(' ').slice(0,2).map(x=>x[0]).joi
 const playerGrid=document.getElementById('playerGrid');
 document.getElementById('homeSurvivors').textContent=String(players.length).padStart(2,'0');
 document.querySelector('.section-count').firstChild.textContent=String(players.length).padStart(2,'0');
-playerGrid.innerHTML=players.map(p=>`<article class="player-card" data-player="${p.id}" role="button" tabindex="0"><div class="player-photo"><img src="/assets/silueta.png" alt="Silueta de ${String(p.name).replace(/"/g,'&quot;')}" loading="lazy"><span class="player-status registered">REGISTRADO</span></div><div class="player-info"><small>${p.twitch?'TWITCH':p.youtube?'YOUTUBE':'SIN CANAL'}</small><h3>${p.name}</h3><p>PERSONAJE POR ASIGNAR</p><div class="player-tags"><span class="tag">PARTICIPANTE</span>${p.twitch?'<span class="tag social twitch">TWITCH</span>':''}${p.youtube?'<span class="tag social youtube">YOUTUBE</span>':''}</div></div></article>`).join('');
-function openPlayer(id){const p=players.find(x=>x.id===id);if(!p)return;const links=[p.twitch?`<a class="modal-link twitch" href="${p.twitch}" target="_blank" rel="noopener noreferrer">TWITCH</a>`:'',p.youtube?`<a class="modal-link youtube" href="${p.youtube}" target="_blank" rel="noopener noreferrer">YOUTUBE</a>`:''].join('');document.getElementById('modalContent').innerHTML=`<div class="modal-sub">ARCHIVO DEL PARTICIPANTE</div><div class="modal-player-photo"><img src="/assets/silueta.png" alt="Silueta de ${String(p.name).replace(/"/g,'&quot;')}"></div><h3>${p.name}</h3><div class="modal-sub">PERSONAJE POR ASIGNAR · PARTICIPANTE</div><p>${p.bio}</p><div class="modal-facts"><div class="modal-fact"><small>ESTADO</small><strong>REGISTRADO</strong></div><div class="modal-fact"><small>CANALES</small><strong>${p.twitch||p.youtube?'DISPONIBLES':'NO REGISTRADOS'}</strong></div><div class="modal-fact"><small>PRÓXIMO ARCHIVO</small><strong>NO REGISTRADO</strong></div><div class="modal-fact"><small>RELACIONES</small><strong>████████</strong></div></div>${links?`<div class="modal-links">${links}</div>`:''}`;document.getElementById('playerModal').classList.add('open');document.getElementById('playerModal').setAttribute('aria-hidden','false')}
+playerGrid.innerHTML=players.map(p=>`<article class="player-card" data-player="${p.id}" role="button" tabindex="0"><div class="player-photo"><img src="${p.image||'/assets/silueta.png'}" alt="Imagen de ${String(p.name).replace(/"/g,'&quot;')}" loading="lazy"><span class="player-status registered">REGISTRADO</span></div><div class="player-info"><small>${p.twitch?'TWITCH':p.youtube?'YOUTUBE':'SIN CANAL'}</small><h3>${p.name}</h3><p>PERSONAJE POR ASIGNAR</p><div class="player-tags"><span class="tag">PARTICIPANTE</span>${p.twitch?'<span class="tag social twitch">TWITCH</span>':''}${p.youtube?'<span class="tag social youtube">YOUTUBE</span>':''}</div></div></article>`).join('');
+function openPlayer(id){const p=players.find(x=>x.id===id);if(!p)return;const links=[p.twitch?`<a class="modal-link twitch" href="${p.twitch}" target="_blank" rel="noopener noreferrer">TWITCH</a>`:'',p.youtube?`<a class="modal-link youtube" href="${p.youtube}" target="_blank" rel="noopener noreferrer">YOUTUBE</a>`:''].join('');document.getElementById('modalContent').innerHTML=`<div class="modal-sub">ARCHIVO DEL PARTICIPANTE</div><div class="modal-player-photo"><img src="${p.image||'/assets/silueta.png'}" alt="Imagen de ${String(p.name).replace(/"/g,'&quot;')}"></div><h3>${p.name}</h3><div class="modal-sub">PERSONAJE POR ASIGNAR · PARTICIPANTE</div><p>${p.bio}</p><div class="modal-facts"><div class="modal-fact"><small>ESTADO</small><strong>REGISTRADO</strong></div><div class="modal-fact"><small>CANALES</small><strong>${p.twitch||p.youtube?'DISPONIBLES':'NO REGISTRADOS'}</strong></div><div class="modal-fact"><small>PRÓXIMO ARCHIVO</small><strong>NO REGISTRADO</strong></div><div class="modal-fact"><small>RELACIONES</small><strong>████████</strong></div></div>${links?`<div class="modal-links">${links}</div>`:''}`;document.getElementById('playerModal').classList.add('open');document.getElementById('playerModal').setAttribute('aria-hidden','false')}
 playerGrid.addEventListener('click',e=>{const card=e.target.closest('.player-card');if(card)openPlayer(card.dataset.player)});
 playerGrid.addEventListener('keydown',e=>{if(e.key==='Enter'){const card=e.target.closest('.player-card');if(card)openPlayer(card.dataset.player)}});
 
@@ -240,36 +240,37 @@ const charGrid=document.getElementById('characterGrid');charGrid.innerHTML=chara
 
 const filter=document.getElementById('playerFilter');
 const clipGrid=document.getElementById('clipGrid');
+
 const clipFeature=document.getElementById('clipFeature');
-const clipScreen=clipFeature.querySelector('.clip-screen');
+let clipScreen=document.getElementById('clipScreen');
 function clipKey(c){ return `${c.platform}|${c.id||c.videoId||c.url||''}`; }
 let selectedClipKey=null;
 let selectedClip=null;
 
 function twitchClipSrc(c){
   const parent=location.hostname.replace(/^www\./i,'');
-  if(!parent || !c) return '';
-  const base=c.embedUrl || (c.id ? `https://clips.twitch.tv/embed?clip=${encodeURIComponent(c.id)}` : '');
-  if(!base) return '';
-  const u=new URL(base);
-  // Twitch requires the embedding domain. Always rebuild the URL from the
-  // embed_url returned by the API and force a fresh navigation with a unique
-  // query parameter so a prior clip cannot be reused by the browser.
-  u.searchParams.set('parent', parent);
-  u.searchParams.set('autoplay', 'true');
-  u.searchParams.set('muted', 'true');
-  u.searchParams.set('preload', 'auto');
-  u.searchParams.set('_pc', `${Date.now()}-${Math.random().toString(36).slice(2)}`);
-  return u.toString();
+  if(!parent || !c?.id) return '';
+  // Twitch's documented non-interactive Clips embed format.
+  const q=new URLSearchParams({
+    clip:String(c.id),
+    parent,
+    autoplay:'true',
+    muted:'true',
+    preload:'metadata'
+  });
+  return `https://clips.twitch.tv/embed?${q.toString()}`;
 }
 function youtubeClipSrc(c){
   if(!c?.videoId) return '';
   return `https://www.youtube.com/embed/${encodeURIComponent(c.videoId)}?autoplay=1&mute=1&rel=0&playsinline=1`;
 }
-function getClipSrc(c){
-  if(c?.platform==='TWITCH') return twitchClipSrc(c);
-  if(c?.platform==='YOUTUBE') return youtubeClipSrc(c);
-  return '';
+
+function replaceClipScreen(){
+  const current=document.getElementById('clipScreen');
+  const fresh=current.cloneNode(false);
+  current.replaceWith(fresh);
+  clipScreen=fresh;
+  return fresh;
 }
 
 function renderClipFeature(c){
@@ -281,71 +282,37 @@ function renderClipFeature(c){
   document.getElementById('featureDuration').textContent=c?.duration||'—';
   document.getElementById('featurePlatform').textContent=c?.platform||'—';
 
-  // Clear the player container completely before every selection.
-  clipScreen.replaceChildren();
+  const screen=replaceClipScreen();
   if(!c){
-    clipScreen.innerHTML='<div class="live-placeholder">NO HAY CLIPS DISPONIBLES TODAVÍA</div>';
+    screen.innerHTML='<div class="live-placeholder">NO HAY CLIPS DISPONIBLES TODAVÍA</div>';
     return;
   }
 
-  if(c.platform==='TWITCH'){
-    const src=twitchClipSrc(c);
-    if(!src){
-      clipScreen.innerHTML=`<div class="live-placeholder">NO SE PUEDE INSERTAR ESTE CLIP.<br><a href="${c.url||'#'}" target="_blank" rel="noopener noreferrer">ABRIR EN TWITCH ↗</a></div>`;
-      return;
-    }
+  let src='';
+  if(c.platform==='TWITCH') src=twitchClipSrc(c);
+  else if(c.platform==='YOUTUBE') src=youtubeClipSrc(c);
 
-    const mount=document.createElement('div');
-    mount.className='clip-iframe-mount';
-    mount.setAttribute('data-clip-id', c.id || '');
-    clipScreen.appendChild(mount);
-
-    // Important: Twitch Clips are supported as non-interactive iframes, not
-    // via the Twitch JS player API. We deliberately create a brand-new iframe
-    // node and navigate it only after the old node has been removed.
-    const iframe=document.createElement('iframe');
-    iframe.id='clipEmbedFrame';
-    iframe.className='clip-iframe';
-    iframe.title=c.title||'Clip de Proyecto C';
-    iframe.allow='autoplay; fullscreen; encrypted-media; picture-in-picture';
-    iframe.allowFullscreen=true;
-    iframe.loading='eager';
-    iframe.referrerPolicy='strict-origin-when-cross-origin';
-    iframe.dataset.clipId=c.id || '';
-
-    mount.appendChild(iframe);
-    // Two-stage navigation prevents Chromium from reusing a prior iframe
-    // browsing context when several Twitch clip embeds are clicked quickly.
-    requestAnimationFrame(()=>{
-      iframe.src='about:blank';
-      setTimeout(()=>{
-        if(mount.isConnected && selectedClip && selectedClip.id===c.id){
-          iframe.src=src;
-        }
-      }, 40);
-    });
-  }else if(c.platform==='YOUTUBE'){
-    const src=youtubeClipSrc(c);
-    if(!src){
-      clipScreen.innerHTML=`<div class="live-placeholder">NO SE PUEDE INSERTAR ESTE VÍDEO.<br><a href="${c.url||'#'}" target="_blank" rel="noopener noreferrer">ABRIR EN YOUTUBE ↗</a></div>`;
-      return;
-    }
-    const iframe=document.createElement('iframe');
-    iframe.id='clipEmbedFrame';
-    iframe.className='clip-iframe';
-    iframe.title=c.title||'Vídeo de Proyecto C';
-    iframe.src=src+'&_pc='+Date.now();
-    iframe.allow='autoplay; fullscreen; encrypted-media; picture-in-picture';
-    iframe.allowFullscreen=true;
-    iframe.loading='eager';
-    iframe.referrerPolicy='strict-origin-when-cross-origin';
-    clipScreen.appendChild(iframe);
+  if(!src){
+    screen.innerHTML=`<div class="live-placeholder">NO SE PUEDE INSERTAR ESTE CLIP.<br><a href="${c.url||'#'}" target="_blank" rel="noopener noreferrer">ABRIR EN ${c.platform==='TWITCH'?'TWITCH':'YOUTUBE'} ↗</a></div>`;
+    return;
   }
+
+  const iframe=document.createElement('iframe');
+  iframe.className='clip-iframe';
+  iframe.title=c.title||'Clip de Proyecto C';
+  iframe.src=src;
+  iframe.allow='autoplay; fullscreen; encrypted-media; picture-in-picture';
+  iframe.allowFullscreen=true;
+  iframe.loading='eager';
+  iframe.referrerPolicy='strict-origin-when-cross-origin';
+  iframe.dataset.clipId=c.id||c.videoId||'';
+  screen.appendChild(iframe);
 
   const scan=document.createElement('div');
   scan.className='scanline';
-  clipScreen.appendChild(scan);
+  screen.appendChild(scan);
 }
+
 function renderClips(){
   const v=filter.value;
   const list=v==='all'?clips:clips.filter(c=>c.player===v);
@@ -373,6 +340,7 @@ function selectClip(c){
   renderClipFeature(c);
 }
 
+
 filter.addEventListener('change',()=>{
   renderClips();
   const list=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
@@ -384,7 +352,9 @@ filter.addEventListener('change',()=>{
 document.getElementById('randomClip').addEventListener('click',()=>{
   const list=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
   if(!list.length) return;
-  const choice=list[Math.floor(Math.random()*list.length)];
+  const base = selectedClipKey ? list.filter(c=>clipKey(c)!==selectedClipKey) : list;
+  const pool=base.length?base:list;
+  const choice=pool[Math.floor(Math.random()*pool.length)];
   selectClip(choice);
   clipGrid.querySelectorAll('.clip-card').forEach(card=>card.classList.toggle('selected',card.dataset.clipKey===clipKey(choice)));
   requestAnimationFrame(()=>clipFeature.scrollIntoView({behavior:'smooth',block:'center'}));
