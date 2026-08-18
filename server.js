@@ -9,7 +9,7 @@ const candidates = require(path.join(ROOT, 'live-channels.json'));
 let twitchToken = null;
 let twitchTokenExpiresAt = 0;
 const youtubeHandleCache = new Map();
-const CLIP_START_DATE = process.env.CLIP_START_DATE || '2026-08-18T10:00:00Z';
+const CLIP_START_DATE = process.env.CLIP_START_DATE || '2026-08-11T10:00:00Z';
 const TWITCH_PZ_GAME_ID = process.env.TWITCH_PZ_GAME_ID || null;
 let twitchPzGameIdCache = null;
 let clipCache = {expiresAt:0, data:[]};
@@ -177,7 +177,6 @@ async function twitchClips(){
     'Client-Id':process.env.TWITCH_CLIENT_ID,
     'Authorization':`Bearer ${token}`
   };
-  const pzGameId=await twitchProjectZomboidGameId(token);
   const clipStart=new Date(CLIP_START_DATE);
   const now=new Date();
   const out=[];
@@ -197,7 +196,6 @@ async function twitchClips(){
         do{
           const params=new URLSearchParams({
             broadcaster_id:broadcasterId,
-            game_id:pzGameId,
             started_at:searchStart.toISOString(),
             ended_at:creationEnd.toISOString(),
             first:'100'
@@ -211,7 +209,6 @@ async function twitchClips(){
           for(const clip of (data.data||[])){
             if(seen.has(clip.id))continue;
             if(String(clip.broadcaster_id)!==String(broadcasterId))continue;
-            if(String(clip.game_id)!==String(pzGameId))continue;
             const created=clip.created_at?new Date(clip.created_at):null;
             if(!created || created < clipStart || created > now)continue;
             seen.add(clip.id);
@@ -220,7 +217,7 @@ async function twitchClips(){
               player,
               platform:'TWITCH',
               title:clip.title||'Clip',
-              description:`Clip de ${player} durante Project Zomboid.`,
+              description:`Clip de ${player}, publicado durante el periodo de prueba.`,
               duration:`${Math.round(Number(clip.duration||0))}s`,
               createdAt:clip.created_at,
               thumbnail:clip.thumbnail_url,
@@ -246,12 +243,12 @@ async function youtubeClips(){
     try{
       const id=await youtubeChannelId(parseYoutube(c.youtube)); if(!id)continue;
       const url=new URL('https://www.googleapis.com/youtube/v3/search');
-      url.searchParams.set('part','snippet'); url.searchParams.set('channelId',id); url.searchParams.set('type','video'); url.searchParams.set('q','Project Zomboid');
-      url.searchParams.set('publishedAfter',CLIP_START_DATE); url.searchParams.set('order','date'); url.searchParams.set('videoCategoryId','20'); url.searchParams.set('maxResults','25'); url.searchParams.set('key',process.env.YOUTUBE_API_KEY);
+      url.searchParams.set('part','snippet'); url.searchParams.set('channelId',id); url.searchParams.set('type','video');
+      url.searchParams.set('publishedAfter',CLIP_START_DATE); url.searchParams.set('order','date'); url.searchParams.set('maxResults','25'); url.searchParams.set('key',process.env.YOUTUBE_API_KEY);
       const res=await fetch(url); if(!res.ok)throw new Error(`YouTube search HTTP ${res.status}`); const data=await res.json();
       for(const item of data.items||[]){
         const videoId=item.id?.videoId; if(!videoId)continue;
-        out.push({id:videoId,videoId,player:c.player,platform:'YOUTUBE',title:item.snippet?.title||'Project Zomboid',description:'Contenido del canal del participante publicado desde el inicio del evento y asociado a Project Zomboid.',duration:'VIDEO',createdAt:item.snippet?.publishedAt||null,thumbnail:item.snippet?.thumbnails?.high?.url||item.snippet?.thumbnails?.medium?.url||null,url:`https://www.youtube.com/watch?v=${videoId}`});
+        out.push({id:videoId,videoId,player:c.player,platform:'YOUTUBE',title:item.snippet?.title||'Project Zomboid',description:'Contenido del canal del participante publicado durante el periodo de prueba.',duration:'VIDEO',createdAt:item.snippet?.publishedAt||null,thumbnail:item.snippet?.thumbnails?.high?.url||item.snippet?.thumbnails?.medium?.url||null,url:`https://www.youtube.com/watch?v=${videoId}`});
       }
     }catch(e){console.error(`YouTube ${c.player}:`,e.message)}
   }
