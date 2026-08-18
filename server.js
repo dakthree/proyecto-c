@@ -163,27 +163,74 @@ function weekWindows(startIso,endDate){
 async function twitchClips(){
   if(!process.env.TWITCH_CLIENT_ID||!process.env.TWITCH_CLIENT_SECRET)return[];
   const tp=candidates.filter(x=>x.twitch); if(!tp.length)return[];
+
   const users=await twitchUsersByLogin(tp.map(x=>x.twitch));
-  const ids=new Map(); users.forEach(u=>{const c=tp.find(x=>x.twitch.toLowerCase()===u.login.toLowerCase());if(c)ids.set(u.id,c.player);});
-  if(!ids.size)return[];
-  const token=await twitchAppToken(),headers={'Client-Id':process.env.TWITCH_CLIENT_ID,'Authorization':`Bearer ${token}`},out=[];
+  const playerByBroadcasterId=new Map();
+  users.forEach(u=>{
+    const c=tp.find(x=>x.twitch.toLowerCase()===u.login.toLowerCase());
+    if(c) playerByBroadcasterId.set(String(u.id), c.player);
+  });
+  if(!playerByBroadcasterId.size)return[];
+
+  const token=await twitchAppToken();
+  const headers={
+    'Client-Id':process.env.TWITCH_CLIENT_ID,
+    'Authorization':`Bearer ${token}`
+  };
   const pzGameId=await twitchProjectZomboidGameId(token);
-  for(const [start,end] of weekWindows(CLIP_START_DATE,new Date())){
-    const params=new URLSearchParams({game_id:pzGameId,started_at:start.toISOString(),ended_at:end.toISOString(),first:'100'}); let after=null;
-    do{
-      if(after)params.set('after',after);else params.delete('after');
-      const res=await fetch(`https://api.twitch.tv/helix/clips?${params}`,{headers});
-      if(!res.ok)throw new Error(`Twitch clips HTTP ${res.status}`);
-      const data=await res.json();
-      for(const clip of (data.data||[])){
-        const player=ids.get(clip.broadcaster_id); if(!player)continue;
-        if(clip.game_id && String(clip.game_id)!==String(pzGameId)) continue;
-        if(clip.created_at && new Date(clip.created_at) < new Date(CLIP_START_DATE)) continue;
-        out.push({id:clip.id,player,platform:'TWITCH',title:clip.title||'Clip',description:`Clip de ${player} durante Project Zomboid.`,duration:`${Math.round(Number(clip.duration||0))}s`,createdAt:clip.created_at,thumbnail:clip.thumbnail_url,url:clip.url,embedUrl:clip.embed_url,views:clip.view_count||0});
+  const out=[];
+  const seen=new Set();
+
+  // Query each participant separately. Get Clips returns lists ordered by view
+  // count, so querying the global game list can hide newer clips behind the
+  // first 100 results. Per-broadcaster queries ensure every participant gets
+  // their own complete paginated result set.
+  for(const [broadcasterId, player] of playerByBroadcasterId){
+    try{
+      for(const [start,end] of weekWindows(CLIP_START_DATE,new Date())){
+        let after=null;
+        do{
+          const params=new URLSearchParams({
+            broadcaster_id:broadcasterId,
+            game_id:pzGameId,
+            started_at:start.toISOString(),
+            ended_at:end.toISOString(),
+            first:'100'
+          });
+          if(after)params.set('after',after);
+
+          const res=await fetch(`https://api.twitch.tv/helix/clips?${params.toString()}`,{headers});
+          if(!res.ok)throw new Error(`Twitch clips HTTP ${res.status}`);
+          const data=await res.json();
+
+          for(const clip of (data.data||[])){
+            if(seen.has(clip.id))continue;
+            if(String(clip.broadcaster_id)!==String(broadcasterId))continue;
+            if(clip.game_id && String(clip.game_id)!==String(pzGameId))continue;
+            if(clip.created_at && new Date(clip.created_at) < new Date(CLIP_START_DATE))continue;
+            seen.add(clip.id);
+            out.push({
+              id:clip.id,
+              player,
+              platform:'TWITCH',
+              title:clip.title||'Clip',
+              description:`Clip de ${player} durante Project Zomboid.`,
+              duration:`${Math.round(Number(clip.duration||0))}s`,
+              createdAt:clip.created_at,
+              thumbnail:clip.thumbnail_url,
+              url:clip.url,
+              embedUrl:clip.embed_url,
+              views:clip.view_count||0
+            });
+          }
+          after=data.pagination?.cursor||null;
+        }while(after);
       }
-      after=data.pagination?.cursor||null;
-    }while(after&&out.length<1000);
+    }catch(e){
+      console.error(`Twitch clips ${player}:`,e.message);
+    }
   }
+
   return out;
 }
 async function youtubeClips(){

@@ -109,7 +109,7 @@ function renderLiveSource(source, force=false){
   if(source.platform === 'YOUTUBE') embed = `https://www.youtube.com/embed/${encodeURIComponent(source.videoId)}?autoplay=1&mute=1&rel=0`;
 
   if(embed){
-    screen.innerHTML=`<iframe src="${embed}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Directo de ${source.player}"></iframe>`;
+    screen.innerHTML=`<iframe src="${embed}" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen title="Directo de ${source.player}"></iframe>`;
   } else {
     screen.innerHTML=`<div class="live-local-warning"><strong>ABRE EL DIRECTO</strong><a href="${source.url}" target="_blank" rel="noopener noreferrer">VER EN ${source.platform} ↗</a></div>`;
   }
@@ -242,6 +242,7 @@ const filter=document.getElementById('playerFilter');
 const clipGrid=document.getElementById('clipGrid');
 const clipFeature=document.getElementById('clipFeature');
 function clipKey(c){return `${c.platform}|${c.id||c.videoId||c.url||''}`}
+let selectedClipKey = null;
 function renderClipFeature(c){
   const screen=clipFeature.querySelector('.clip-screen');
   if(!c){
@@ -263,12 +264,12 @@ function renderClipFeature(c){
   let src='';
   if(c.platform==='TWITCH'){
     const parent=location.hostname;
-    if(parent) src=`https://clips.twitch.tv/embed?clip=${encodeURIComponent(c.id)}&parent=${encodeURIComponent(parent)}&autoplay=true&muted=true`;
+    if(parent) src=`https://clips.twitch.tv/embed?clip=${encodeURIComponent(c.id)}&parent=${encodeURIComponent(parent)}&autoplay=true&muted=true&preload=auto`;
   }else if(c.platform==='YOUTUBE' && c.videoId){
     src=`https://www.youtube.com/embed/${encodeURIComponent(c.videoId)}?autoplay=1&mute=1&rel=0`;
   }
   if(src){
-    screen.innerHTML=`<iframe src="${src}" title="${(c.title||'Clip').replace(/"/g,'&quot;')}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe><div class="scanline"></div>`;
+    screen.innerHTML=`<iframe src="${src}" title="${(c.title||'Clip').replace(/"/g,'&quot;')}" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe><div class="scanline"></div>`;
   }else{
     screen.innerHTML='<div class="live-placeholder">ABRIR CLIP PARA REPRODUCIR</div>';
   }
@@ -287,7 +288,7 @@ function setClipFilters(){
   filter.innerHTML='<option value="all">TODOS</option>'+names.map(n=>`<option value="${n.replace(/"/g,'&quot;')}">${n}</option>`).join('');
   if(names.includes(current)) filter.value=current; else filter.value='all';
 }
-function selectClip(c){renderClipFeature(c||null);}
+function selectClip(c){ selectedClipKey=c?clipKey(c):null; renderClipFeature(c||null); }
 filter.addEventListener('change',()=>{
   renderClips();
   const list=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
@@ -295,25 +296,34 @@ filter.addEventListener('change',()=>{
 });
 document.getElementById('randomClip').addEventListener('click',()=>{
   const list=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
-  if(list.length) selectClip(list[Math.floor(Math.random()*list.length)]);
+  if(list.length){ selectClip(list[Math.floor(Math.random()*list.length)]); clipFeature.scrollIntoView({behavior:'smooth',block:'center'}); }
 });
 clipGrid.addEventListener('click',e=>{
   const card=e.target.closest('.clip-card');
   if(!card)return;
   const clip=clips.find(c=>clipKey(c)===card.dataset.clipKey);
-  if(clip)selectClip(clip);
+  if(clip){ selectClip(clip); clipFeature.scrollIntoView({behavior:'smooth',block:'center'}); }
 });
 async function loadClips(){
   try{
     const res=await fetch('/api/clips',{cache:'no-store'});
     if(!res.ok)throw new Error(`HTTP ${res.status}`);
     const payload=await res.json();
+    const previousKey=selectedClipKey;
     clips=Array.isArray(payload.clips)?payload.clips:[];
     clipDataLoaded=true;
     setClipFilters();
     renderClips();
     const current=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
-    selectClip(current[0]||null);
+    const stillSelected=current.find(c=>clipKey(c)===previousKey);
+    if(stillSelected){
+      // Keep the current iframe alive when the 60s refresh finds no change.
+      // Re-rendering it would restart the clip.
+      const currentKey=selectedClipKey;
+      if(currentKey!==clipKey(stillSelected)) selectClip(stillSelected);
+    }else{
+      selectClip(current[0]||null);
+    }
   }catch(err){
     console.error('No se pudieron cargar los clips',err);
     clips=[]; renderClips(); selectClip(null);
