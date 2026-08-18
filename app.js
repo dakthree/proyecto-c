@@ -242,85 +242,120 @@ const filter=document.getElementById('playerFilter');
 const clipGrid=document.getElementById('clipGrid');
 
 const clipFeature=document.getElementById('clipFeature');
-let clipScreen=document.getElementById('clipScreen');
-function clipKey(c){ return `${c.platform}|${c.id||c.videoId||c.url||''}`; }
+const clipContainerId='contenedor-iframe-clip';
+const clipContainer=()=>document.getElementById(clipContainerId);
 let selectedClipKey=null;
 let selectedClip=null;
+let clipActualSlug=null;
+
+function clipKey(c){ return `${c.platform}|${c.id||c.videoId||c.url||''}`; }
 
 function twitchClipSrc(c){
   const parent=location.hostname.replace(/^www\./i,'');
   if(!parent || !c?.id) return '';
-  // Twitch's documented non-interactive Clips embed format.
-  const q=new URLSearchParams({
+  const params=new URLSearchParams({
     clip:String(c.id),
     parent,
     autoplay:'true',
-    muted:'true',
-    preload:'metadata'
+    muted:'true'
   });
-  return `https://clips.twitch.tv/embed?${q.toString()}`;
+  return `https://clips.twitch.tv/embed?${params.toString()}`;
 }
 function youtubeClipSrc(c){
   if(!c?.videoId) return '';
   return `https://www.youtube.com/embed/${encodeURIComponent(c.videoId)}?autoplay=1&mute=1&rel=0&playsinline=1`;
 }
 
-function replaceClipScreen(){
-  const current=document.getElementById('clipScreen');
-  const fresh=current.cloneNode(false);
-  current.replaceWith(fresh);
-  clipScreen=fresh;
-  return fresh;
-}
-
-function renderClipFeature(c){
-  selectedClip=c||null;
+function renderClipText(c){
   document.getElementById('featurePlayer').textContent=c?.player||'—';
   document.getElementById('featureTitle').textContent=c?.title||'Registro seleccionado';
   document.getElementById('featureHeading').textContent=c?.title||'Selección de clip';
   document.getElementById('featureDescription').textContent=c?.description||'Aquí aparecerá la información del clip seleccionado.';
   document.getElementById('featureDuration').textContent=c?.duration||'—';
   document.getElementById('featurePlatform').textContent=c?.platform||'—';
+}
 
-  const screen=replaceClipScreen();
-  if(!c){
-    screen.innerHTML='<div class="live-placeholder">NO HAY CLIPS DISPONIBLES TODAVÍA</div>';
+// Cambia el reproductor destruyendo y recreando completamente el iframe.
+// El refresh automático nunca pisa una selección manual existente.
+function reproducirClip(slug, esClickManual=false, clipObj=null){
+  if(!slug) return;
+
+  console.log('--- INICIANDO CAMBIO DE CLIP ---');
+  console.log('Slug recibido en la función:', slug);
+  console.log('¿Fue click manual del usuario?:', esClickManual);
+
+  if(!esClickManual && clipActualSlug !== null){
+    console.log('Refresh automático bloqueado: el usuario ya está viendo el clip', clipActualSlug);
     return;
   }
 
-  let src='';
-  if(c.platform==='TWITCH') src=twitchClipSrc(c);
-  else if(c.platform==='YOUTUBE') src=youtubeClipSrc(c);
+  const c=clipObj || clips.find(x=>String(x.id||x.videoId||'')===String(slug));
+  if(!c) return;
+  selectedClip=c;
+  selectedClipKey=clipKey(c);
+  clipActualSlug=String(slug);
+  renderClipText(c);
 
-  if(!src){
-    screen.innerHTML=`<div class="live-placeholder">NO SE PUEDE INSERTAR ESTE CLIP.<br><a href="${c.url||'#'}" target="_blank" rel="noopener noreferrer">ABRIR EN ${c.platform==='TWITCH'?'TWITCH':'YOUTUBE'} ↗</a></div>`;
+  const contenedorReproductor=clipContainer();
+  if(!contenedorReproductor){
+    console.error('No existe #contenedor-iframe-clip');
     return;
   }
 
-  const iframe=document.createElement('iframe');
-  iframe.className='clip-iframe';
-  iframe.title=c.title||'Clip de Proyecto C';
-  iframe.src=src;
-  iframe.allow='autoplay; fullscreen; encrypted-media; picture-in-picture';
-  iframe.allowFullscreen=true;
-  iframe.loading='eager';
-  iframe.referrerPolicy='strict-origin-when-cross-origin';
-  iframe.dataset.clipId=c.id||c.videoId||'';
-  screen.appendChild(iframe);
+  let urlFinal='';
+  if(c.platform==='TWITCH') urlFinal=twitchClipSrc(c);
+  else if(c.platform==='YOUTUBE') urlFinal=youtubeClipSrc(c);
 
-  const scan=document.createElement('div');
-  scan.className='scanline';
-  screen.appendChild(scan);
+  if(!urlFinal){
+    contenedorReproductor.innerHTML=`<div class="live-placeholder">NO SE PUEDE INSERTAR ESTE CLIP.<br><a href="${c.url||'#'}" target="_blank" rel="noopener noreferrer">ABRIR EN ${c.platform==='TWITCH'?'TWITCH':'YOUTUBE'} ↗</a></div>`;
+  }else{
+    console.log('URL final del iframe:', urlFinal);
+    // Destrucción total del iframe anterior.
+    contenedorReproductor.innerHTML='';
+    setTimeout(()=>{
+      // Si mientras esperábamos el usuario eligió otro clip, no insertamos el anterior.
+      if(String(clipActualSlug)!==String(slug)) return;
+      contenedorReproductor.innerHTML='';
+      const iframe=document.createElement('iframe');
+      iframe.className='clip-iframe';
+      iframe.src=urlFinal;
+      iframe.title=c.title||`Clip de ${c.player||'Proyecto C'}`;
+      iframe.frameBorder='0';
+      iframe.scrolling='no';
+      iframe.allowFullscreen=true;
+      iframe.allow='autoplay; fullscreen; encrypted-media; picture-in-picture';
+      iframe.loading='eager';
+      iframe.referrerPolicy='strict-origin-when-cross-origin';
+      iframe.dataset.clipId=String(slug);
+      contenedorReproductor.appendChild(iframe);
+      const scan=document.createElement('div');
+      scan.className='scanline';
+      contenedorReproductor.appendChild(scan);
+      console.log('Iframe recreado e insertado en el DOM para slug:', slug);
+    },50);
+  }
+
+  document.querySelectorAll('.tarjeta-clip, .clip-card').forEach(tarjeta=>{
+    const key=tarjeta.dataset.clipKey;
+    tarjeta.classList.toggle('clip-seleccionado',key===selectedClipKey);
+    tarjeta.classList.toggle('selected',key===selectedClipKey);
+  });
 }
 
 function renderClips(){
   const v=filter.value;
   const list=v==='all'?clips:clips.filter(c=>c.player===v);
-  clipGrid.innerHTML=list.map((c,idx)=>{
+  clipGrid.innerHTML=list.map(c=>{
     const thumb=c.thumbnail ? ` style="background-image:url('${String(c.thumbnail).replace(/'/g,'%27')}')"` : '';
     const key=clipKey(c).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
     return `<button type="button" class="clip-card" data-clip-key="${key}" aria-label="Reproducir ${String(c.title||'clip').replace(/"/g,'&quot;')}"><div class="clip-thumb"${thumb}></div><div class="clip-card-body"><small>${c.player||'DESCONOCIDO'} · ${c.platform}</small><strong>${c.title||'Clip'}</strong><span>${c.duration||'—'} · ${c.createdAt?new Date(c.createdAt).toLocaleString('es-ES'):''}</span></div></button>`;
   }).join('') || '<div class="clip-empty">NO HAY CLIPS PARA ESTE FILTRO.</div>';
+
+  document.querySelectorAll('.clip-card').forEach(card=>{
+    const key=card.dataset.clipKey;
+    card.classList.toggle('selected',key===selectedClipKey);
+    card.classList.toggle('clip-seleccionado',key===selectedClipKey);
+  });
 }
 
 function setClipFilters(){
@@ -330,33 +365,33 @@ function setClipFilters(){
   filter.value=names.includes(current)?current:'all';
 }
 
-function selectClip(c){
+function selectClip(c, esClickManual=false){
   if(!c){
     selectedClipKey=null;
-    renderClipFeature(null);
+    selectedClip=null;
+    clipActualSlug=null;
+    renderClipText(null);
+    const cont=clipContainer();
+    if(cont) cont.innerHTML='<div class="live-placeholder">NO HAY CLIPS DISPONIBLES TODAVÍA</div>';
     return;
   }
-  selectedClipKey=clipKey(c);
-  renderClipFeature(c);
+  const slug=String(c.id||c.videoId||'');
+  if(!slug) return;
+  reproducirClip(slug, esClickManual, c);
 }
-
 
 filter.addEventListener('change',()=>{
   renderClips();
   const list=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
-  selectClip(list[0]||null);
-  const key=list[0]?clipKey(list[0]):null;
-  clipGrid.querySelectorAll('.clip-card').forEach(card=>card.classList.toggle('selected',card.dataset.clipKey===key));
+  selectClip(list[0]||null, true);
 });
 
 document.getElementById('randomClip').addEventListener('click',()=>{
   const list=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
   if(!list.length) return;
-  const base = selectedClipKey ? list.filter(c=>clipKey(c)!==selectedClipKey) : list;
-  const pool=base.length?base:list;
+  const pool=list.length>1 && selectedClipKey ? list.filter(c=>clipKey(c)!==selectedClipKey) : list;
   const choice=pool[Math.floor(Math.random()*pool.length)];
-  selectClip(choice);
-  clipGrid.querySelectorAll('.clip-card').forEach(card=>card.classList.toggle('selected',card.dataset.clipKey===clipKey(choice)));
+  selectClip(choice,true);
   requestAnimationFrame(()=>clipFeature.scrollIntoView({behavior:'smooth',block:'center'}));
 });
 
@@ -367,8 +402,8 @@ clipGrid.addEventListener('click',e=>{
   const key=card.dataset.clipKey;
   const clip=clips.find(c=>clipKey(c)===key);
   if(!clip) return;
-  selectClip(clip);
-  clipGrid.querySelectorAll('.clip-card').forEach(x=>x.classList.toggle('selected',x===card));
+  console.log('Click en clip:',key,clip);
+  selectClip(clip,true);
   requestAnimationFrame(()=>clipFeature.scrollIntoView({behavior:'smooth',block:'center'}));
 });
 
@@ -378,21 +413,36 @@ async function loadClips(){
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload=await res.json();
     const previousKey=selectedClipKey;
+    const previousSlug=clipActualSlug;
     clips=Array.isArray(payload.clips)?payload.clips:[];
     clipDataLoaded=true;
     setClipFilters();
     renderClips();
     const current=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
     const stillSelected=current.find(c=>clipKey(c)===previousKey);
-    if(stillSelected){
-      // Keep the current player untouched during refresh.
+    if(stillSelected && previousSlug){
+      // Preserve the selected clip and, crucially, do not rebuild the iframe.
       selectedClip=stillSelected;
+      selectedClipKey=clipKey(stillSelected);
+      document.querySelectorAll('.clip-card').forEach(card=>card.classList.toggle('selected',card.dataset.clipKey===selectedClipKey));
+    }else if(!clipActualSlug && current[0]){
+      // Initial load only: autoplay the first clip.
+      selectClip(current[0], false);
+    }else if(stillSelected){
+      selectedClip=stillSelected;
+      selectedClipKey=clipKey(stillSelected);
+    }else if(current[0]){
+      // If the previously selected clip disappeared, allow the refresh to choose a new one.
+      clipActualSlug=null;
+      selectedClipKey=null;
+      selectClip(current[0], false);
     }else{
       selectedClipKey=null;
-      selectClip(current[0]||null);
+      selectedClip=null;
+      clipActualSlug=null;
+      const cont=clipContainer();
+      if(cont) cont.innerHTML='<div class="live-placeholder">NO HAY CLIPS DISPONIBLES TODAVÍA</div>';
     }
-    const selectedKey=selectedClipKey;
-    clipGrid.querySelectorAll('.clip-card').forEach(card=>card.classList.toggle('selected',card.dataset.clipKey===selectedKey));
   }catch(err){
     console.error('No se pudieron cargar los clips',err);
     clips=[];
