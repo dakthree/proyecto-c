@@ -72,7 +72,7 @@ function liveSourceKey(source){
 function twitchEmbedUrl(source){
   if (!/^https?:$/.test(location.protocol) || !location.hostname) return null;
   const parent = location.hostname.replace(/^www\./i, '');
-  return `https://player.twitch.tv/?channel=${encodeURIComponent(source.channel)}&parent=${encodeURIComponent(parent)}&muted=true`;
+  return `https://player.twitch.tv/?channel=${encodeURIComponent(source.channel)}&parent=${encodeURIComponent(parent)}&autoplay=true`;
 }
 
 function renderLiveSource(source, force=false){
@@ -106,7 +106,7 @@ function renderLiveSource(source, force=false){
 
   let embed = null;
   if(source.platform === 'TWITCH') embed = twitchEmbedUrl(source);
-  if(source.platform === 'YOUTUBE') embed = `https://www.youtube.com/embed/${encodeURIComponent(source.videoId)}?autoplay=1&mute=1&rel=0`;
+  if(source.platform === 'YOUTUBE') embed = `https://www.youtube.com/embed/${encodeURIComponent(source.videoId)}?autoplay=1&rel=0`;
 
   if(embed){
     screen.innerHTML=`<iframe src="${embed}" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen title="Directo de ${source.player}"></iframe>`;
@@ -257,13 +257,12 @@ function twitchClipSrc(c){
     clip:String(c.id),
     parent,
     autoplay:'true',
-    muted:'true'
   });
   return `https://clips.twitch.tv/embed?${params.toString()}`;
 }
 function youtubeClipSrc(c){
   if(!c?.videoId) return '';
-  return `https://www.youtube.com/embed/${encodeURIComponent(c.videoId)}?autoplay=1&mute=1&rel=0&playsinline=1`;
+  return `https://www.youtube.com/embed/${encodeURIComponent(c.videoId)}?autoplay=1&rel=0&playsinline=1`;
 }
 
 function renderClipText(c){

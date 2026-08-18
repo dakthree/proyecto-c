@@ -11,3 +11,6 @@ The Twitch clip player is recreated as a fresh iframe on every selection, using 
 
 ### Descubrimiento de Twitch
 Para participantes que no tengan una URL de Twitch registrada, el backend intenta encontrar un canal cuyo login o nombre visible coincida exactamente con el nombre del participante. Si no hay coincidencia fuerte, no se muestra como directo. Para cuentas con nombres distintos, añade el enlace de Twitch en `live-channels.json`.
+
+
+Updated Twitch logins: Shikafu6, RastaFrikki, Miniyo2, Nemma, ElPonja92 (plus existing AnselHoenheim). The home live panel checks only explicit Twitch logins.

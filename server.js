@@ -43,10 +43,12 @@ async function twitchLive() {
   const token = await twitchAppToken();
   // IMPORTANT: only use the Twitch usernames explicitly mapped in live-channels.json.
   // Do not use Twitch search because approximate matches can select the wrong channel.
+  // HOME LIVE: only the Twitch login explicitly stored for each participant is used.
+  // YouTube URLs are deliberately ignored for this Twitch player list.
   const mapped = candidates
     .map(candidate => ({
       candidate,
-      login: candidate.twitch ? candidate.twitch.split('/').filter(Boolean).pop().toLowerCase() : null
+      login: candidate.twitch ? String(candidate.twitch).split('/').filter(Boolean).pop().toLowerCase() : null
     }))
     .filter(x => x.login);
 
