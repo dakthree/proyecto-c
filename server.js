@@ -9,6 +9,9 @@ const candidates = require(path.join(ROOT, 'live-channels.json'));
 let twitchToken = null;
 let twitchTokenExpiresAt = 0;
 const youtubeHandleCache = new Map();
+const CLIP_START_DATE = process.env.CLIP_START_DATE || '2026-08-18T10:00:00Z';
+const TWITCH_PZ_GAME_ID = process.env.TWITCH_PZ_GAME_ID || '31339';
+let clipCache = {expiresAt:0, data:[]};
 
 async function twitchAppToken() {
   if (!process.env.TWITCH_CLIENT_ID || !process.env.TWITCH_CLIENT_SECRET) {
@@ -129,6 +132,70 @@ async function youtubeLive() {
   }));
   return results.filter(Boolean);
 }
+
+async function twitchUsersByLogin(logins){
+  const unique=[...new Set(logins.filter(Boolean).map(x=>x.toLowerCase()))];
+  if(!unique.length)return[];
+  const token=await twitchAppToken();
+  const params=new URLSearchParams(); unique.forEach(login=>params.append('login',login));
+  const res=await fetch(`https://api.twitch.tv/helix/users?${params}`,{headers:{'Client-Id':process.env.TWITCH_CLIENT_ID,'Authorization':`Bearer ${token}`}});
+  if(!res.ok)throw new Error(`Twitch users HTTP ${res.status}`);
+  return (await res.json()).data||[];
+}
+function weekWindows(startIso,endDate){
+  const start=new Date(startIso),end=new Date(endDate),windows=[]; let cursor=new Date(start);
+  while(cursor<end){const next=new Date(Math.min(cursor.getTime()+7*86400000,end.getTime()));windows.push([new Date(cursor),new Date(next)]);cursor=next;}
+  return windows;
+}
+async function twitchClips(){
+  if(!process.env.TWITCH_CLIENT_ID||!process.env.TWITCH_CLIENT_SECRET)return[];
+  const tp=candidates.filter(x=>x.twitch); if(!tp.length)return[];
+  const users=await twitchUsersByLogin(tp.map(x=>x.twitch));
+  const ids=new Map(); users.forEach(u=>{const c=tp.find(x=>x.twitch.toLowerCase()===u.login.toLowerCase());if(c)ids.set(u.id,c.player);});
+  if(!ids.size)return[];
+  const token=await twitchAppToken(),headers={'Client-Id':process.env.TWITCH_CLIENT_ID,'Authorization':`Bearer ${token}`},out=[];
+  for(const [start,end] of weekWindows(CLIP_START_DATE,new Date())){
+    const params=new URLSearchParams({game_id:TWITCH_PZ_GAME_ID,started_at:start.toISOString(),ended_at:end.toISOString(),first:'100'}); let after=null;
+    do{
+      if(after)params.set('after',after);else params.delete('after');
+      const res=await fetch(`https://api.twitch.tv/helix/clips?${params}`,{headers});
+      if(!res.ok)throw new Error(`Twitch clips HTTP ${res.status}`);
+      const data=await res.json();
+      for(const clip of (data.data||[])){
+        const player=ids.get(clip.broadcaster_id); if(!player)continue;
+        out.push({id:clip.id,player,platform:'TWITCH',title:clip.title||'Clip',description:`Clip de ${player} durante Project Zomboid.`,duration:`${Math.round(Number(clip.duration||0))}s`,createdAt:clip.created_at,thumbnail:clip.thumbnail_url,url:clip.url,embedUrl:clip.embed_url,views:clip.view_count||0});
+      }
+      after=data.pagination?.cursor||null;
+    }while(after&&out.length<1000);
+  }
+  return out;
+}
+async function youtubeClips(){
+  if(!process.env.YOUTUBE_API_KEY)return[]; const out=[];
+  for(const c of candidates.filter(x=>x.youtube)){
+    try{
+      const id=await youtubeChannelId(parseYoutube(c.youtube)); if(!id)continue;
+      const url=new URL('https://www.googleapis.com/youtube/v3/search');
+      url.searchParams.set('part','snippet'); url.searchParams.set('channelId',id); url.searchParams.set('type','video'); url.searchParams.set('q','Project Zomboid');
+      url.searchParams.set('publishedAfter',CLIP_START_DATE); url.searchParams.set('order','date'); url.searchParams.set('videoCategoryId','20'); url.searchParams.set('maxResults','25'); url.searchParams.set('key',process.env.YOUTUBE_API_KEY);
+      const res=await fetch(url); if(!res.ok)throw new Error(`YouTube search HTTP ${res.status}`); const data=await res.json();
+      for(const item of data.items||[]){
+        const videoId=item.id?.videoId; if(!videoId)continue;
+        out.push({id:videoId,videoId,player:c.player,platform:'YOUTUBE',title:item.snippet?.title||'Project Zomboid',description:'Contenido del canal del participante publicado desde el inicio del evento y asociado a Project Zomboid.',duration:'VIDEO',createdAt:item.snippet?.publishedAt||null,thumbnail:item.snippet?.thumbnails?.high?.url||item.snippet?.thumbnails?.medium?.url||null,url:`https://www.youtube.com/watch?v=${videoId}`});
+      }
+    }catch(e){console.error(`YouTube ${c.player}:`,e.message)}
+  }
+  return out;
+}
+app.get('/api/clips',async(_req,res)=>{
+  if(Date.now()<clipCache.expiresAt)return res.json({clips:clipCache.data,checkedAt:new Date().toISOString(),startDate:CLIP_START_DATE});
+  try{
+    const [t,y]=await Promise.allSettled([twitchClips(),youtubeClips()]);
+    const clips=[...(t.status==='fulfilled'?t.value:[]),...(y.status==='fulfilled'?y.value:[])].sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+    clipCache={expiresAt:Date.now()+300000,data:clips};
+    res.json({clips,checkedAt:new Date().toISOString(),startDate:CLIP_START_DATE,errors:[t,y].filter(x=>x.status==='rejected').map(x=>x.reason?.message).filter(Boolean)});
+  }catch(e){res.status(500).json({clips:[],error:e.message,startDate:CLIP_START_DATE})}
+});
 
 app.get('/api/live', async (_req, res) => {
   try {

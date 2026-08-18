@@ -195,14 +195,8 @@ const characters = [
   {name:'EL CARTERO',role:'INFORMANTE',status:'DESCONOCIDO',desc:'Varias notas llevan el mismo sello y una frase escrita a mano: “NO CONFÍES EN ELLOS”.'}
 ];
 
-const clips = [
-  {player:'JARVANSO',title:'La puerta que no debía abrir',duration:'03:18',platform:'TWITCH',desc:'Descubrimiento de una habitación cerrada dentro del refugio.'},
-  {player:'PLAYER 02',title:'La primera horda',duration:'01:42',platform:'TWITCH',desc:'Una retirada improvisada cuando la calle deja de ser segura.'},
-  {player:'PLAYER 03',title:'La transmisión perdida',duration:'02:57',platform:'YOUTUBE',desc:'La última señal registrada antes de desaparecer.'},
-  {player:'PLAYER 04',title:'No estábamos solos',duration:'04:11',platform:'TWITCH',desc:'Un encuentro que cambia las reglas del refugio.'},
-  {player:'PLAYER 05',title:'Frecuencia militar',duration:'02:08',platform:'TWITCH',desc:'Una radio devuelve una señal con coordenadas incompletas.'},
-  {player:'PLAYER 07',title:'Hospital',duration:'05:23',platform:'TWITCH',desc:'El grupo entra en una localización marcada como zona caliente.'}
-];
+let clips = [];
+let clipDataLoaded = false;
 
 const navLinks = [...document.querySelectorAll('[data-tab]')];
 function openTab(id){
@@ -235,14 +229,92 @@ function openPlayer(id){const p=players.find(x=>x.id===id);if(!p)return;const li
 playerGrid.addEventListener('click',e=>{const card=e.target.closest('.player-card');if(card)openPlayer(card.dataset.player)});
 playerGrid.addEventListener('keydown',e=>{if(e.key==='Enter'){const card=e.target.closest('.player-card');if(card)openPlayer(card.dataset.player)}});
 
-const timelineEl=document.getElementById('timeline');timelineEl.innerHTML=timeline.map(t=>`<article class="lore-item"><small>${t.date}</small><h3>${t.title}</h3><p>${t.text}</p>${t.locked?'<span class="locked">ARCHIVO BLOQUEADO</span>':''}</article>`).join('');
-const charGrid=document.getElementById('characterGrid');charGrid.innerHTML=characters.map(c=>`<article class="character-card"><div class="char-photo">${playerInitials(c.name)}</div><h3>${c.name}</h3><small>${c.role}</small><p>${c.desc}</p><span class="char-status">${c.status}</span></article>`).join('');
+const timelineEl=document.getElementById('timeline');timelineEl.innerHTML=timeline.map(t=>`<article class="lore-item"><small>${t.date}</small><h3>${t.title}</h3></article>`).join('');
+const charGrid=document.getElementById('characterGrid');charGrid.innerHTML=characters.map(c=>`<article class="character-card"><div class="char-photo"><span class="silhouette-label">IDENTIDAD OCULTA</span></div><h3>${c.name}</h3><small>TRABAJO: ${c.role}</small><p>${c.desc}</p><span class="char-status">${c.status}</span></article>`).join('');
 
-const filter=document.getElementById('playerFilter');[...new Set(players.map(p=>p.name))].forEach(n=>filter.insertAdjacentHTML('beforeend',`<option value="${n}">${n}</option>`));
+const filter=document.getElementById('playerFilter');
 const clipGrid=document.getElementById('clipGrid');
-function renderClips(){const v=filter.value;const list=v==='all'?clips:clips.filter(c=>c.player===v);clipGrid.innerHTML=list.map((c,i)=>`<article class="clip-card" data-index="${i}" data-player="${c.player}"><div class="clip-thumb"></div><div class="clip-card-body"><small>${c.player}</small><strong>${c.title}</strong><span>${c.duration} · ${c.platform}</span></div></article>`).join('')}
-function selectClip(c){document.getElementById('featurePlayer').textContent=c.player;document.getElementById('featureTitle').textContent=c.title;document.getElementById('featureHeading').textContent=c.title;document.getElementById('featureDescription').textContent=c.desc;document.getElementById('featureDuration').textContent=c.duration;document.getElementById('featurePlatform').textContent=c.platform}
-filter.addEventListener('change',renderClips);document.getElementById('randomClip').addEventListener('click',()=>{const list=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);selectClip(list[Math.floor(Math.random()*list.length)])});clipGrid.addEventListener('click',e=>{const card=e.target.closest('.clip-card');if(card){const list=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);selectClip(list[Number(card.dataset.index)])}});renderClips();selectClip(clips[0]);
+const clipFeature=document.getElementById('clipFeature');
+function clipKey(c){return `${c.platform}|${c.id||c.videoId||c.url||''}`}
+function renderClipFeature(c){
+  const screen=clipFeature.querySelector('.clip-screen');
+  if(!c){
+    screen.innerHTML='<div class="live-placeholder">NO HAY CLIPS DISPONIBLES TODAVÍA</div>';
+    document.getElementById('featurePlayer').textContent='—';
+    document.getElementById('featureTitle').textContent='Sin registros';
+    document.getElementById('featureHeading').textContent='No hay clips todavía';
+    document.getElementById('featureDescription').textContent='Los clips aparecerán cuando comience el evento y se publiquen en los canales participantes.';
+    document.getElementById('featureDuration').textContent='—';
+    document.getElementById('featurePlatform').textContent='—';
+    return;
+  }
+  document.getElementById('featurePlayer').textContent=c.player||'DESCONOCIDO';
+  document.getElementById('featureTitle').textContent=c.title||'Clip';
+  document.getElementById('featureHeading').textContent=c.title||'Clip';
+  document.getElementById('featureDescription').textContent=c.description||'Momento recuperado de una transmisión del evento.';
+  document.getElementById('featureDuration').textContent=c.duration||'—';
+  document.getElementById('featurePlatform').textContent=c.platform||'—';
+  let src='';
+  if(c.platform==='TWITCH'){
+    const parent=location.hostname;
+    if(parent) src=`https://clips.twitch.tv/embed?clip=${encodeURIComponent(c.id)}&parent=${encodeURIComponent(parent)}&autoplay=true&muted=true`;
+  }else if(c.platform==='YOUTUBE' && c.videoId){
+    src=`https://www.youtube.com/embed/${encodeURIComponent(c.videoId)}?autoplay=1&mute=1&rel=0`;
+  }
+  if(src){
+    screen.innerHTML=`<iframe src="${src}" title="${(c.title||'Clip').replace(/"/g,'&quot;')}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe><div class="scanline"></div>`;
+  }else{
+    screen.innerHTML='<div class="live-placeholder">ABRIR CLIP PARA REPRODUCIR</div>';
+  }
+}
+function renderClips(){
+  const v=filter.value;
+  const list=v==='all'?clips:clips.filter(c=>c.player===v);
+  clipGrid.innerHTML=list.map(c=>{
+    const thumb=c.thumbnail ? ` style="background-image:url('${c.thumbnail.replace(/'/g,'%27')}')"` : '';
+    return `<article class="clip-card" data-clip-key="${clipKey(c)}"><div class="clip-thumb"${thumb}></div><div class="clip-card-body"><small>${c.player||'DESCONOCIDO'} · ${c.platform}</small><strong>${c.title||'Clip'}</strong><span>${c.duration||'—'} · ${c.createdAt?new Date(c.createdAt).toLocaleDateString('es-ES'):''}</span></div></article>`;
+  }).join('') || '<div class="clip-empty">NO HAY CLIPS PARA ESTE FILTRO.</div>';
+}
+function setClipFilters(){
+  const current=filter.value;
+  const names=[...new Set(clips.map(c=>c.player).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+  filter.innerHTML='<option value="all">TODOS</option>'+names.map(n=>`<option value="${n.replace(/"/g,'&quot;')}">${n}</option>`).join('');
+  if(names.includes(current)) filter.value=current; else filter.value='all';
+}
+function selectClip(c){renderClipFeature(c||null);}
+filter.addEventListener('change',()=>{
+  renderClips();
+  const list=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
+  selectClip(list[0]||null);
+});
+document.getElementById('randomClip').addEventListener('click',()=>{
+  const list=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
+  if(list.length) selectClip(list[Math.floor(Math.random()*list.length)]);
+});
+clipGrid.addEventListener('click',e=>{
+  const card=e.target.closest('.clip-card');
+  if(!card)return;
+  const clip=clips.find(c=>clipKey(c)===card.dataset.clipKey);
+  if(clip)selectClip(clip);
+});
+async function loadClips(){
+  try{
+    const res=await fetch('/api/clips',{cache:'no-store'});
+    if(!res.ok)throw new Error(`HTTP ${res.status}`);
+    const payload=await res.json();
+    clips=Array.isArray(payload.clips)?payload.clips:[];
+    clipDataLoaded=true;
+    setClipFilters();
+    renderClips();
+    const current=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
+    selectClip(current[0]||null);
+  }catch(err){
+    console.error('No se pudieron cargar los clips',err);
+    clips=[]; renderClips(); selectClip(null);
+  }
+}
+loadClips();
+setInterval(loadClips,5*60*1000);
 
 document.getElementById('modalClose').addEventListener('click',()=>document.getElementById('playerModal').classList.remove('open'));document.getElementById('playerModal').addEventListener('click',e=>{if(e.target.id==='playerModal')e.currentTarget.classList.remove('open')});
 window.addEventListener('scroll',()=>document.querySelector('.topbar').classList.toggle('scrolled',scrollY>40));

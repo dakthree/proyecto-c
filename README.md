@@ -52,3 +52,7 @@ Las APIs consultadas requieren autenticación: Twitch requiere un app access tok
 
 ## Mapa
 La pestaña Mapa usa un iframe del mapa interactivo oficial de Project Zomboid: https://map.projectzomboid.com/. Si el sitio remoto no permite ser embebido por políticas del navegador, el botón inferior abre el mapa completo en una pestaña nueva.
+
+
+### Clips del evento
+`/api/clips` filtra los clips de Twitch a los participantes del evento, Project Zomboid (game_id 31339) y `CLIP_START_DATE` (para esta prueba, 18/08/2026 12:00 en España peninsular; luego volver a cambiarlo al inicio real del evento). YouTube Data API no expone la función Clips como recurso consultable; se usan vídeos publicados desde esa fecha en los canales participantes que coincidan con `Project Zomboid`.
