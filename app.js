@@ -202,6 +202,7 @@ const characters = Array.from({length:6}, () => ({
 }));
 
 let clips = [];
+let clipPlayers = [];
 let clipDataLoaded = false;
 
 const navLinks = [...document.querySelectorAll('[data-tab]')];
@@ -238,7 +239,8 @@ playerGrid.addEventListener('keydown',e=>{if(e.key==='Enter'){const card=e.targe
 const timelineEl=document.getElementById('timeline');timelineEl.innerHTML=timeline.map(t=>`<article class="lore-item"><small>${t.date}</small><h3>${t.title}</h3></article>`).join('');
 const charGrid=document.getElementById('characterGrid');charGrid.innerHTML=characters.map(c=>`<article class="character-card"><div class="char-photo"><img src="/assets/silueta.png" alt="Silueta de personaje desconocido" loading="lazy"><span class="silhouette-label">IDENTIDAD OCULTA</span></div><h3>${c.name}</h3><small>TRABAJO: ${c.role}</small><p>${c.desc}</p><span class="char-status">${c.status}</span></article>`).join('');
 
-const filter=document.getElementById('playerFilter');
+const inputJugador=document.getElementById('input-jugador');
+const datalistJugadores=document.getElementById('lista-jugadores');
 const clipGrid=document.getElementById('clipGrid');
 
 const clipFeature=document.getElementById('clipFeature');
@@ -251,7 +253,7 @@ let clipActualSlug=null;
 function clipKey(c){ return `${c.platform}|${c.id||c.videoId||c.url||''}`; }
 
 function twitchClipSrc(c){
-  const parent=location.hostname.replace(/^www\./i,'');
+  const parent=location.hostname.replace(/^www\\./i,'');
   if(!parent || !c?.id) return '';
   const params=new URLSearchParams({
     clip:String(c.id),
@@ -274,11 +276,8 @@ function renderClipText(c){
   document.getElementById('featurePlatform').textContent=c?.platform||'—';
 }
 
-// Cambia el reproductor destruyendo y recreando completamente el iframe.
-// El refresh automático nunca pisa una selección manual existente.
 function reproducirClip(slug, esClickManual=false, clipObj=null){
   if(!slug) return;
-
   console.log('--- INICIANDO CAMBIO DE CLIP ---');
   console.log('Slug recibido en la función:', slug);
   console.log('¿Fue click manual del usuario?:', esClickManual);
@@ -309,10 +308,8 @@ function reproducirClip(slug, esClickManual=false, clipObj=null){
     contenedorReproductor.innerHTML=`<div class="live-placeholder">NO SE PUEDE INSERTAR ESTE CLIP.<br><a href="${c.url||'#'}" target="_blank" rel="noopener noreferrer">ABRIR EN ${c.platform==='TWITCH'?'TWITCH':'YOUTUBE'} ↗</a></div>`;
   }else{
     console.log('URL final del iframe:', urlFinal);
-    // Destrucción total del iframe anterior.
     contenedorReproductor.innerHTML='';
     setTimeout(()=>{
-      // Si mientras esperábamos el usuario eligió otro clip, no insertamos el anterior.
       if(String(clipActualSlug)!==String(slug)) return;
       contenedorReproductor.innerHTML='';
       const iframe=document.createElement('iframe');
@@ -342,8 +339,8 @@ function reproducirClip(slug, esClickManual=false, clipObj=null){
 }
 
 function renderClips(){
-  const v=filter.value;
-  const list=v==='all'?clips:clips.filter(c=>c.player===v);
+  const v=getClipFilterValue();
+  const list=filterClipsByValue(v);
   clipGrid.innerHTML=list.map(c=>{
     const thumb=c.thumbnail ? ` style="background-image:url('${String(c.thumbnail).replace(/'/g,'%27')}')"` : '';
     const key=clipKey(c).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
@@ -358,11 +355,45 @@ function renderClips(){
   });
 }
 
+function normalizarTexto(value){
+  return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+}
+
+function cargarListaJugadores(){
+  if(!datalistJugadores) return;
+  const names=[...new Set(players.map(p=>p.name).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+  datalistJugadores.innerHTML='';
+  const allOption=document.createElement('option');
+  allOption.value='TODOS';
+  datalistJugadores.appendChild(allOption);
+  names.forEach(name=>{
+    const option=document.createElement('option');
+    option.value=name;
+    datalistJugadores.appendChild(option);
+  });
+}
+
+function getClipFilterValue(){
+  const value=normalizarTexto(inputJugador?.value);
+  return value==='' || value==='todos' ? '' : String(inputJugador.value).trim();
+}
+
+function filterClipsByValue(value){
+  if(!value) return clips;
+  const query=normalizarTexto(value);
+  return clips.filter(c=>normalizarTexto(c.player).includes(query));
+}
+
+function resetClipFilter(){
+  if(inputJugador) inputJugador.value='';
+}
+
 function setClipFilters(){
-  const current=filter.value;
-  const names=[...new Set(clips.map(c=>c.player).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
-  filter.innerHTML='<option value="all">TODOS</option>'+names.map(n=>`<option value="${String(n).replace(/"/g,'&quot;')}">${n}</option>`).join('');
-  filter.value=names.includes(current)?current:'all';
+  // El filtro usa SIEMPRE el array maestro de participantes, independientemente
+  // de si tienen clips, están live o aparecen en la respuesta actual de la API.
+  cargarListaJugadores();
+  const current=String(inputJugador?.value||'');
+  if(current && !players.some(p=>p.name===current) && normalizarTexto(current)!=='todos') resetClipFilter();
 }
 
 function selectClip(c, esClickManual=false){
@@ -380,14 +411,37 @@ function selectClip(c, esClickManual=false){
   reproducirClip(slug, esClickManual, c);
 }
 
-filter.addEventListener('change',()=>{
+inputJugador?.addEventListener('input',()=>{
   renderClips();
-  const list=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
-  selectClip(list[0]||null, true);
+  const list=filterClipsByValue(getClipFilterValue());
+  // Al buscar/escribir no se cambia el reproductor automáticamente si el usuario
+  // ya seleccionó un clip; solo se actualiza la lista.
+  if(!list.length){
+    return;
+  }
 });
 
+inputJugador?.addEventListener('focus',()=>{
+  if(String(inputJugador.value).trim().toUpperCase()==='TODOS') inputJugador.value='';
+});
+
+inputJugador?.addEventListener('change',()=>{
+  const typed=String(inputJugador.value||'').trim();
+  if(normalizarTexto(typed)==='todos' || typed===''){
+    resetClipFilter();
+  }else{
+    const exact=players.find(p=>normalizarTexto(p.name)===normalizarTexto(typed));
+    if(exact) inputJugador.value=exact.name;
+  }
+  renderClips();
+  const list=filterClipsByValue(getClipFilterValue());
+  if(list.length && !selectedClipKey) selectClip(list[0],true);
+});
+
+cargarListaJugadores();
+
 document.getElementById('randomClip').addEventListener('click',()=>{
-  const list=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
+  const list=filterClipsByValue(getClipFilterValue());
   if(!list.length) return;
   const pool=list.length>1 && selectedClipKey ? list.filter(c=>clipKey(c)!==selectedClipKey) : list;
   const choice=pool[Math.floor(Math.random()*pool.length)];
@@ -399,8 +453,6 @@ clipGrid.addEventListener('click',e=>{
   const tarjeta=e.target.closest('.tarjeta-clip, .clip-card');
   if(!tarjeta) return;
   e.preventDefault();
-
-  // El slug real del clip está guardado en data-slug.
   const slugDelClip=tarjeta.dataset.slug;
   const key=tarjeta.dataset.clipKey;
   const clip=clips.find(c=>clipKey(c)===key || String(c.id||c.videoId||'')===String(slugDelClip));
@@ -408,7 +460,6 @@ clipGrid.addEventListener('click',e=>{
     console.warn('No se pudo resolver el clip seleccionado:', {slugDelClip, key});
     return;
   }
-
   console.log('Click manual en clip:', {slugDelClip, key, clip});
   reproducirClip(slugDelClip, true, clip);
   requestAnimationFrame(()=>clipFeature.scrollIntoView({behavior:'smooth',block:'center'}));
@@ -422,10 +473,11 @@ async function loadClips(){
     const previousKey=selectedClipKey;
     const previousSlug=clipActualSlug;
     clips=Array.isArray(payload.clips)?payload.clips:[];
+    clipPlayers=Array.isArray(payload.twitchPlayers)?payload.twitchPlayers:[];
     clipDataLoaded=true;
     setClipFilters();
     renderClips();
-    const current=filter.value==='all'?clips:clips.filter(c=>c.player===filter.value);
+    const current=filterClipsByValue(getClipFilterValue());
     const stillSelected=current.find(c=>clipKey(c)===previousKey);
     if(stillSelected && previousSlug){
       // Preserve the selected clip and, crucially, do not rebuild the iframe.

@@ -130,7 +130,22 @@
     <!-- CLIPS -->
     <section id="clips" class="tab-panel page-section clips-section">
       <div class="section-heading"><div><div class="folder-label">06 / CLIPS</div><h2>REGISTRO DE TRANSMISIONES</h2><p>Clips de los participantes del evento, publicados desde la fecha de prueba configurada. En esta prueba se acepta cualquier juego.</p></div></div>
-      <div class="clip-toolbar"><label>JUGADOR <select id="playerFilter"><option value="all">TODOS</option></select></label><div class="clip-source-note">SOLO PROJECT ZOMBOID · DESDE 18 AGO 2026 12:00</div><button type="button" class="btn btn-red" id="randomClip">MOMENTO ALEATORIO</button></div>
+      <div class="clip-toolbar">
+  <div class="contenedor-filtro-jugador">
+    <label for="input-jugador">JUGADOR</label>
+    <input
+      type="text"
+      id="input-jugador"
+      list="lista-jugadores"
+      placeholder="TODOS (Busca o selecciona...)"
+      autocomplete="off"
+      spellcheck="false"
+    >
+    <datalist id="lista-jugadores"></datalist>
+  </div>
+  <div class="clip-source-note">SOLO PROJECT ZOMBOID · DESDE 18 AGO 2026 12:00</div>
+  <button type="button" class="btn btn-red" id="randomClip">MOMENTO ALEATORIO</button>
+</div>
       <div class="clip-feature" id="clipFeature"><div class="clip-screen"><div id="contenedor-iframe-clip" class="reproductor-principal"><div class="live-placeholder">SELECCIONA UN CLIP</div></div><div class="play-icon">▶</div><div class="scanline"></div><div class="clip-caption"><span id="featurePlayer">PLAYER</span><strong id="featureTitle">Registro seleccionado</strong></div></div><div class="clip-info"><div class="clip-type">ARCHIVO DE TRANSMISIÓN</div><h3 id="featureHeading">Selección de clip</h3><p id="featureDescription">Aquí aparecerá la información del clip seleccionado.</p><div class="clip-meta"><span id="featureDuration">00:00</span><span id="featurePlatform">TWITCH / YOUTUBE</span></div></div></div>
       <div class="clip-grid" id="clipGrid"></div>
     </section>

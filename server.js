@@ -283,7 +283,7 @@ app.get('/api/clips',async(_req,res)=>{
     const [t,y]=await Promise.allSettled([twitchClips(),youtubeClips()]);
     const clips=[...(t.status==='fulfilled'?t.value:[]),...(y.status==='fulfilled'?y.value:[])].sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
     clipCache={expiresAt:Date.now()+30000,data:clips};
-    res.json({clips,checkedAt:new Date().toISOString(),startDate:CLIP_START_DATE,errors:[t,y].filter(x=>x.status==='rejected').map(x=>x.reason?.message).filter(Boolean)});
+    res.json({clips,twitchPlayers:candidates.filter(x=>x.twitch).map(x=>x.player),checkedAt:new Date().toISOString(),startDate:CLIP_START_DATE,errors:[t,y].filter(x=>x.status==='rejected').map(x=>x.reason?.message).filter(Boolean)});
   }catch(e){res.status(500).json({clips:[],error:e.message,startDate:CLIP_START_DATE})}
 });
 
