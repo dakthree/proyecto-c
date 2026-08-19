@@ -95,3 +95,168 @@ main > .tab-panel:not(.active){display:none !important}
 .jugador-option:first-child{margin-bottom:3px;border-bottom:1px solid rgba(224,214,192,.12);color:#e7ddc7}
 .jugador-dropdown-empty{padding:12px 10px;color:#777166;font:10px 'Special Elite';letter-spacing:1px}
 @media (max-width:800px){.contenedor-filtro-jugador{width:100%;align-items:stretch;flex-direction:column;gap:6px}.jugador-combobox{width:100%}}
+
+
+/* DONACIONES */
+.donate-nav{
+  border-color: #7f2b24 !important;
+  color: #f0e6d2 !important;
+}
+.donate-nav:hover,
+.donate-nav.active{
+  background: #7f2b24 !important;
+  color: #fff !important;
+}
+.donations-section{
+  background:
+    radial-gradient(circle at 82% 12%, rgba(127,43,36,.12), transparent 28%),
+    linear-gradient(rgba(20,20,17,.97), rgba(20,20,17,.99));
+}
+.donations-layout{
+  display:grid;
+  grid-template-columns:minmax(0,1.45fr) minmax(300px,.75fr);
+  gap:24px;
+  align-items:start;
+}
+.donation-card{
+  position:relative;
+  border:1px solid rgba(190,180,154,.25);
+  background:linear-gradient(145deg, rgba(37,36,31,.97), rgba(22,22,19,.97));
+  box-shadow:0 14px 38px rgba(0,0,0,.25);
+  padding:30px;
+}
+.donation-card-main:before{
+  content:"";
+  position:absolute;
+  inset:10px;
+  border:1px solid rgba(190,180,154,.08);
+  pointer-events:none;
+}
+.donation-stamp{
+  display:inline-block;
+  font-family:"Special Elite", monospace;
+  letter-spacing:.12em;
+  border:1px solid rgba(181,48,38,.65);
+  color:#d96d62;
+  padding:7px 10px;
+  font-size:11px;
+  transform:rotate(-1.5deg);
+  margin-bottom:15px;
+}
+.donation-card h3{
+  margin:0 0 15px;
+  font-family:"Archivo Black",sans-serif;
+  letter-spacing:.03em;
+  font-size:clamp(20px,2.2vw,31px);
+}
+.donation-card p{
+  color:#bdb9ae;
+  line-height:1.72;
+  margin:0 0 16px;
+}
+.donation-warning{
+  display:grid;
+  gap:8px;
+  border-left:4px solid #8d2f28;
+  background:rgba(141,47,40,.10);
+  padding:17px 18px;
+  margin:20px 0;
+}
+.donation-warning strong{
+  color:#e2d4ba;
+  font-size:12px;
+  letter-spacing:.12em;
+}
+.donation-warning span{
+  color:#bdb9ae;
+  line-height:1.6;
+}
+.donation-card-paypal{
+  text-align:center;
+  overflow:hidden;
+}
+.paypal-mark{
+  width:66px;
+  height:66px;
+  border-radius:50%;
+  margin:0 auto 14px;
+  display:grid;
+  place-items:center;
+  font:bold 42px Georgia,serif;
+  color:#fff;
+  background:linear-gradient(145deg,#0b3a83,#0d63bf);
+  box-shadow:0 7px 20px rgba(0,75,160,.28);
+}
+.paypal-kicker{
+  font-size:11px;
+  letter-spacing:.14em;
+  color:#8fb9eb;
+  margin-bottom:7px;
+}
+.donation-card-paypal h3{
+  font-size:26px;
+}
+.paypal-donate-button{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:24px 0 16px;
+  padding:16px 18px;
+  border:1px solid #d7dfed;
+  background:#fff;
+  color:#0a254c;
+  text-decoration:none;
+  font-weight:800;
+  letter-spacing:.05em;
+  box-shadow:0 10px 25px rgba(0,0,0,.25);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.paypal-donate-button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 30px rgba(0,0,0,.35);
+}
+.paypal-donate-button b{
+  font-size:22px;
+}
+.paypal-email{
+  border-top:1px solid rgba(190,180,154,.16);
+  border-bottom:1px solid rgba(190,180,154,.16);
+  padding:13px 0;
+  display:grid;
+  gap:5px;
+}
+.paypal-email small{
+  color:#77736a;
+  letter-spacing:.13em;
+}
+.paypal-email strong{
+  color:#e8e0d0;
+  font-size:14px;
+  word-break:break-word;
+}
+.donation-alternative{
+  font-size:13px;
+}
+.donation-thanks{
+  margin-top:26px;
+  padding:22px 24px;
+  border-top:1px solid rgba(190,180,154,.16);
+  border-bottom:1px solid rgba(190,180,154,.16);
+  display:grid;
+  gap:6px;
+}
+.donation-thanks span{
+  font-family:"Special Elite",monospace;
+  color:#8e8a80;
+  letter-spacing:.12em;
+  font-size:11px;
+}
+.donation-thanks strong{
+  font-family:"Special Elite",monospace;
+  color:#d8cfbf;
+  font-weight:400;
+}
+@media(max-width:900px){
+  .donations-layout{grid-template-columns:1fr;}
+}

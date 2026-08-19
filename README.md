@@ -17,3 +17,9 @@ Updated images were added for zigurath, Andreshouse, lordzacas, ElPonja92, xLğ‘
 - Added **Tenkachy** as a new participant, using `assets/players/tenkachy.webp`.
 - Removed **Garlic_Jr42** from the participant roster and live-channel list.
 - Tenkachy currently has no Twitch/YouTube URL configured because none was provided yet.
+
+
+## Latest update
+- Added DONACIONES tab with a visual PayPal donation card.
+- Renamed participant Tenkachy to Tencachi everywhere and renamed the player image accordingly.
+- BasqueWanderer remains in the roster exactly once.
