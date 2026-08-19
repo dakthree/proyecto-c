@@ -23,3 +23,8 @@ Updated images were added for zigurath, Andreshouse, lordzacas, ElPonja92, xLùë
 - Added DONACIONES tab with a visual PayPal donation card.
 - Renamed participant Tenkachy to Tencachi everywhere and renamed the player image accordingly.
 - BasqueWanderer remains in the roster exactly once.
+
+
+## Donations copy update
+- Donations wording updated to explicitly welcome support from viewers/spectators as well as participants.
+- Added non-financial ways to support the project such as watching, following and sharing.
