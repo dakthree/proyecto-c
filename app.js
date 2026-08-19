@@ -36,7 +36,7 @@ const players = [
   {id:'rastafrikki',name:'RastaFrikki',image:'/assets/players/rastafrikki.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'tyzenh',name:'TyzenH',image:'/assets/players/tyzenh.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'anselhoenheim',name:'AnselHoenheim',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/anselhoenheim',youtube:'https://www.youtube.com/@AnselHoenheim',bio:'Perfil pendiente de información del personaje.'},
-  {id:'garlic-jr42',name:'Garlic_Jr42',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'tenkachy',name:'Tenkachy',image:'/assets/players/tenkachy.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'toni18',name:'Toni18',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'josuetn',name:'JosueTn',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'miniyo2',name:'Miniyo2',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
