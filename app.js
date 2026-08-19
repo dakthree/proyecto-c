@@ -240,8 +240,12 @@ const timelineEl=document.getElementById('timeline');timelineEl.innerHTML=timeli
 const charGrid=document.getElementById('characterGrid');charGrid.innerHTML=characters.map(c=>`<article class="character-card"><div class="char-photo"><img src="/assets/silueta.png" alt="Silueta de personaje desconocido" loading="lazy"><span class="silhouette-label">IDENTIDAD OCULTA</span></div><h3>${c.name}</h3><small>TRABAJO: ${c.role}</small><p>${c.desc}</p><span class="char-status">${c.status}</span></article>`).join('');
 
 const inputJugador=document.getElementById('input-jugador');
-const datalistJugadores=document.getElementById('lista-jugadores');
+const jugadorDropdown=document.getElementById('lista-jugadores');
+const jugadorCombobox=document.getElementById('jugador-combobox');
+const jugadorArrow=document.getElementById('jugador-combobox-arrow');
 const clipGrid=document.getElementById('clipGrid');
+let jugadoresConTwitch=[];
+let jugadoresListaCargada=false;
 
 const clipFeature=document.getElementById('clipFeature');
 const clipContainerId='contenedor-iframe-clip';
@@ -359,18 +363,66 @@ function normalizarTexto(value){
   return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
 }
 
-function cargarListaJugadores(){
-  if(!datalistJugadores) return;
-  const names=[...new Set(players.map(p=>p.name).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
-  datalistJugadores.innerHTML='';
-  const allOption=document.createElement('option');
-  allOption.value='TODOS';
-  datalistJugadores.appendChild(allOption);
-  names.forEach(name=>{
-    const option=document.createElement('option');
-    option.value=name;
-    datalistJugadores.appendChild(option);
-  });
+async function cargarListaJugadores(){
+  if(!jugadorDropdown || jugadoresListaCargada) return;
+
+  const base=new Map(
+    players
+      .filter(p=>p?.twitch)
+      .map(p=>[normalizarTexto(p.name), {name:p.name, twitch:p.twitch}])
+  );
+
+  // live-channels.json is the source of truth for all explicit Twitch associations.
+  try{
+    const res=await fetch('/live-channels.json',{cache:'no-store'});
+    if(res.ok){
+      const rows=await res.json();
+      if(Array.isArray(rows)){
+        rows.filter(r=>r?.twitch).forEach(r=>{
+          const key=normalizarTexto(r.player);
+          if(!base.has(key)) base.set(key,{name:r.player,twitch:r.twitch});
+        });
+      }
+    }
+  }catch(err){
+    console.warn('No se pudo leer live-channels.json para el filtro de clips:',err);
+  }
+
+  jugadoresConTwitch=[...base.values()].sort((a,b)=>a.name.localeCompare(b.name,'es',{sensitivity:'base'}));
+  jugadoresListaCargada=true;
+  renderJugadorDropdown('');
+}
+
+function renderJugadorDropdown(query=''){
+  if(!jugadorDropdown) return;
+  const q=normalizarTexto(query);
+  const filtered=jugadoresConTwitch.filter(j=>!q || normalizarTexto(j.name).includes(q));
+
+  const items=[{name:'TODOS',value:'',all:true},...filtered];
+  jugadorDropdown.innerHTML=items.map((item,index)=>{
+    const active=getClipFilterValue()===(item.value||'') ? ' active' : '';
+    return `<button type="button" class="jugador-option${active}" role="option" data-value="${String(item.value||'').replace(/"/g,'&quot;')}" data-name="${String(item.name).replace(/"/g,'&quot;')}" aria-selected="${active?'true':'false'}">${item.name}</button>`;
+  }).join('') || '<div class="jugador-dropdown-empty">NO HAY COINCIDENCIAS</div>';
+}
+
+function abrirJugadorDropdown(showAll=false){
+  if(!jugadorDropdown) return;
+  if(showAll) renderJugadorDropdown(''); else renderJugadorDropdown(inputJugador?.value||'');
+  jugadorDropdown.classList.add('open');
+  inputJugador?.setAttribute('aria-expanded','true');
+}
+
+function cerrarJugadorDropdown(){
+  if(!jugadorDropdown) return;
+  jugadorDropdown.classList.remove('open');
+  inputJugador?.setAttribute('aria-expanded','false');
+}
+
+function seleccionarJugadorFiltro(name){
+  if(!inputJugador) return;
+  inputJugador.value=name||'';
+  cerrarJugadorDropdown();
+  renderClips();
 }
 
 function getClipFilterValue(){
@@ -386,14 +438,13 @@ function filterClipsByValue(value){
 
 function resetClipFilter(){
   if(inputJugador) inputJugador.value='';
+  renderJugadorDropdown('');
 }
 
 function setClipFilters(){
-  // El filtro usa SIEMPRE el array maestro de participantes, independientemente
-  // de si tienen clips, están live o aparecen en la respuesta actual de la API.
   cargarListaJugadores();
   const current=String(inputJugador?.value||'');
-  if(current && !players.some(p=>p.name===current) && normalizarTexto(current)!=='todos') resetClipFilter();
+  if(current && !jugadoresConTwitch.some(p=>normalizarTexto(p.name)===normalizarTexto(current)) && normalizarTexto(current)!=='todos') resetClipFilter();
 }
 
 function selectClip(c, esClickManual=false){
@@ -412,33 +463,48 @@ function selectClip(c, esClickManual=false){
 }
 
 inputJugador?.addEventListener('input',()=>{
+  abrirJugadorDropdown(false);
   renderClips();
-  const list=filterClipsByValue(getClipFilterValue());
-  // Al buscar/escribir no se cambia el reproductor automáticamente si el usuario
-  // ya seleccionó un clip; solo se actualiza la lista.
-  if(!list.length){
-    return;
-  }
 });
 
 inputJugador?.addEventListener('focus',()=>{
-  if(String(inputJugador.value).trim().toUpperCase()==='TODOS') inputJugador.value='';
+  abrirJugadorDropdown(false);
 });
 
-inputJugador?.addEventListener('change',()=>{
-  const typed=String(inputJugador.value||'').trim();
-  if(normalizarTexto(typed)==='todos' || typed===''){
-    resetClipFilter();
-  }else{
-    const exact=players.find(p=>normalizarTexto(p.name)===normalizarTexto(typed));
-    if(exact) inputJugador.value=exact.name;
+inputJugador?.addEventListener('keydown',(e)=>{
+  if(e.key==='ArrowDown'){
+    e.preventDefault();
+    abrirJugadorDropdown(false);
+  }else if(e.key==='Escape'){
+    cerrarJugadorDropdown();
+  }else if(e.key==='Enter'){
+    const first=jugadorDropdown?.querySelector('.jugador-option');
+    if(first){
+      e.preventDefault();
+      seleccionarJugadorFiltro(first.dataset.name==='TODOS'?'':first.dataset.name);
+    }
   }
-  renderClips();
-  const list=filterClipsByValue(getClipFilterValue());
-  if(list.length && !selectedClipKey) selectClip(list[0],true);
 });
 
-cargarListaJugadores();
+jugadorArrow?.addEventListener('click',(e)=>{
+  e.preventDefault();
+  e.stopPropagation();
+  // La flecha siempre muestra la lista COMPLETA, aunque haya texto seleccionado.
+  if(jugadorDropdown?.classList.contains('open')) cerrarJugadorDropdown();
+  else { inputJugador?.focus(); abrirJugadorDropdown(true); }
+});
+
+jugadorDropdown?.addEventListener('click',(e)=>{
+  const option=e.target.closest('.jugador-option');
+  if(!option) return;
+  const value=option.dataset.name==='TODOS'?'':option.dataset.name;
+  seleccionarJugadorFiltro(value);
+  renderJugadorDropdown('');
+});
+
+document.addEventListener('click',(e)=>{
+  if(jugadorCombobox && !jugadorCombobox.contains(e.target)) cerrarJugadorDropdown();
+});
 
 document.getElementById('randomClip').addEventListener('click',()=>{
   const list=filterClipsByValue(getClipFilterValue());

@@ -79,31 +79,19 @@ main > .tab-panel:not(.active){display:none !important}
 
 .clip-iframe-mount{position:absolute;inset:0;z-index:2;background:#000}.clip-screen .clip-iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#000;z-index:2}.clip-screen .scanline{z-index:3;pointer-events:none}
 
-/* Buscador de jugadores para CLIPS */
-.contenedor-filtro-jugador {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.contenedor-filtro-jugador label {
-  color: inherit;
-  font: inherit;
-  letter-spacing: .08em;
-}
-#input-jugador {
-  background-color: #1a1a1a;
-  color: #e0e0e0;
-  border: 1px solid #444;
-  padding: 8px 12px;
-  font-family: inherit;
-  font-size: 14px;
-  text-transform: uppercase;
-  width: 260px;
-  outline: none;
-}
-#input-jugador::placeholder { color: #8c8c8c; }
-#input-jugador:focus { border-color: #a30000; box-shadow: 0 0 0 1px rgba(163,0,0,.15); }
-@media (max-width: 800px) {
-  .contenedor-filtro-jugador { width: 100%; align-items: stretch; flex-direction: column; gap: 6px; }
-  #input-jugador { width: 100%; box-sizing: border-box; }
-}
+/* Filtro de jugadores para CLIPS · aspecto coherente con el selector de DIRECTOS */
+.contenedor-filtro-jugador{display:flex;align-items:center;gap:10px}
+.contenedor-filtro-jugador label{color:inherit;font:inherit;letter-spacing:.08em;white-space:nowrap}
+.jugador-combobox{position:relative;display:flex;align-items:stretch;width:260px}
+#input-jugador{width:100%;min-width:0;background:#161614;color:#ddd4bf;border:1px solid #4a4740;border-right:0;padding:10px 42px 10px 12px;font:13px 'Special Elite',monospace;letter-spacing:.5px;text-transform:uppercase;outline:none;box-shadow:none}
+#input-jugador::placeholder{color:#898173}
+#input-jugador:focus{border-color:#9d3028;box-shadow:0 0 0 1px rgba(157,48,40,.22)}
+.jugador-combobox-arrow{position:absolute;right:0;top:0;bottom:0;width:38px;border:1px solid #4a4740;background:#20211c;color:#bdb5a2;font:15px 'Archivo Black',sans-serif;cursor:pointer;line-height:1}
+.jugador-combobox-arrow:hover,.jugador-combobox:focus-within .jugador-combobox-arrow{background:#2b2c25;color:#eee4cf;border-color:#9d3028}
+.jugador-dropdown{position:absolute;left:0;top:calc(100% + 5px);width:100%;max-height:220px;overflow-y:auto;background:rgba(17,18,15,.98);border:1px solid #4a4740;box-shadow:0 12px 26px rgba(0,0,0,.42);z-index:30;display:none;padding:4px}
+.jugador-dropdown.open{display:block}
+.jugador-option{display:block;width:100%;border:0;background:transparent;color:#cec6b4;text-align:left;padding:9px 11px;font:11px 'Special Elite',monospace;letter-spacing:.6px;text-transform:uppercase;cursor:pointer}
+.jugador-option:hover,.jugador-option.active{background:rgba(157,48,40,.18);color:#f1e7d1;border-left:2px solid #9d3028;padding-left:9px}
+.jugador-option:first-child{margin-bottom:3px;border-bottom:1px solid rgba(224,214,192,.12);color:#e7ddc7}
+.jugador-dropdown-empty{padding:12px 10px;color:#777166;font:10px 'Special Elite';letter-spacing:1px}
+@media (max-width:800px){.contenedor-filtro-jugador{width:100%;align-items:stretch;flex-direction:column;gap:6px}.jugador-combobox{width:100%}}

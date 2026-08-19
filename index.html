@@ -133,15 +133,21 @@
       <div class="clip-toolbar">
   <div class="contenedor-filtro-jugador">
     <label for="input-jugador">JUGADOR</label>
-    <input
-      type="text"
-      id="input-jugador"
-      list="lista-jugadores"
-      placeholder="TODOS (Busca o selecciona...)"
-      autocomplete="off"
-      spellcheck="false"
-    >
-    <datalist id="lista-jugadores"></datalist>
+    <div class="jugador-combobox" id="jugador-combobox">
+      <input
+        type="text"
+        id="input-jugador"
+        placeholder="TODOS"
+        autocomplete="off"
+        spellcheck="false"
+        role="combobox"
+        aria-expanded="false"
+        aria-controls="lista-jugadores"
+        aria-autocomplete="list"
+      >
+      <button type="button" class="jugador-combobox-arrow" id="jugador-combobox-arrow" aria-label="Mostrar jugadores">⌄</button>
+      <div id="lista-jugadores" class="jugador-dropdown" role="listbox" aria-label="Jugadores con Twitch"></div>
+    </div>
   </div>
   <div class="clip-source-note">SOLO PROJECT ZOMBOID · DESDE 18 AGO 2026 12:00</div>
   <button type="button" class="btn btn-red" id="randomClip">MOMENTO ALEATORIO</button>

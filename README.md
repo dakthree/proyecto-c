@@ -1,16 +1,9 @@
-# Proyecto C v12 — clip player fix
+# Proyecto C v21
 
-Basado en v11. Corrige el reproductor de clips: cada tarjeta identifica su clip y al seleccionarla se carga un iframe Twitch/YouTube nuevo con cache-buster. Los refrescos periódicos de la API no reemplazan el iframe mientras el clip seleccionado siga disponible.
-
-El filtro de prueba de clips sigue siendo desde 11/08/2026 12:00 hora española y acepta cualquier juego en esta versión.
-
-
-## Clip player v15
-The Twitch clip player is recreated as a fresh iframe on every selection, using the embed_url returned by Twitch and a unique cache-busting parameter.
-
-
-### Descubrimiento de Twitch
-Para participantes que no tengan una URL de Twitch registrada, el backend intenta encontrar un canal cuyo login o nombre visible coincida exactamente con el nombre del participante. Si no hay coincidencia fuerte, no se muestra como directo. Para cuentas con nombres distintos, añade el enlace de Twitch en `live-channels.json`.
-
-
-Updated Twitch logins: Shikafu6, RastaFrikki, Miniyo2, Nemma, ElPonja92 (plus existing AnselHoenheim). The home live panel checks only explicit Twitch logins.
+Cambios principales:
+- Filtro de jugadores de CLIPS rediseñado como combobox personalizado.
+- Solo aparecen participantes que tienen Twitch asociado.
+- La flecha abre siempre la lista completa, incluso cuando ya hay un jugador seleccionado.
+- Buscador por escritura con filtro en tiempo real.
+- Lista estilizada con la misma estética oscura/roja del selector de directos de la home.
+- Altura máxima del desplegable limitada para que no ocupe media pantalla.
