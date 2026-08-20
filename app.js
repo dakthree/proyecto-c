@@ -1,66 +1,65 @@
 const EVENT_DATE = '2026-08-21T18:00:00+02:00';
 
 const players = [
-  {id:'k4la',name:'K4la',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:'https://www.youtube.com/@k4la_',bio:'Perfil pendiente de información del personaje.'},
-  {id:'asssucar',name:'Asssucar',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/asssucar',youtube:'https://www.youtube.com/@asssucar',bio:'Perfil pendiente de información del personaje.'},
-  {id:'leissar',name:'Leissar',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/leissar',youtube:'https://www.youtube.com/channel/UCU6dXXNTstf2_J9rl-BV__A',bio:'Perfil pendiente de información del personaje.'},
-  {id:'goblinpeke',name:'GoblinPeke',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/goblinpeke',youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'xl-k-vic',name:'xL𝑜K𝑜Vic',image:'/assets/players/xlokovic.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/xlokovic',youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'lagatarata',name:'LaGataRata',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/xkattty',youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'z3ttii',name:'Z3TTII',image:'/assets/players/z3ttii.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/z3ttii',youtube:'https://www.youtube.com/@Z3TTII',bio:'Perfil pendiente de información del personaje.'},
-  {id:'tamashiiv',name:'TAMASHIIV',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'ferrox',name:'Ferrox',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'luisgg',name:'LuisGG',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:'https://www.youtube.com/@luisgamingg',bio:'Perfil pendiente de información del personaje.'},
-  {id:'lordzacas',name:'lordzacas',image:'/assets/players/lordzacas.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/lordzacas',youtube:'https://www.youtube.com/@lordzacas3015',bio:'Perfil pendiente de información del personaje.'},
-  {id:'soulreaperdk',name:'SoulReaperDK',image:'/assets/players/soulreaperdk.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/soulreaperdk_',youtube:'https://www.youtube.com/channel/UCwvqn9OZhmkLBjHOw0us5ZA',bio:'Perfil pendiente de información del personaje.'},
-  {id:'zigurath',name:'zigurath',image:'/assets/players/zigurath.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/zigurathz',youtube:'https://www.youtube.com/channel/UC36C8AulCMw5QAUV5wrfQpg',bio:'Perfil pendiente de información del personaje.'},
-  {id:'arce',name:'ArCe',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/arcedelah',youtube:'https://www.youtube.com/@arcedelah',bio:'Perfil pendiente de información del personaje.'},
-  {id:'cere',name:'Cere',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/cere____',youtube:'https://www.youtube.com/channel/UCE1ISk9jQb7ykFQXy56NbaA',bio:'Perfil pendiente de información del personaje.'},
-  {id:'storvi',name:'Storvi',image:'/assets/players/storvi.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/storviii',youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'rubaso',name:'Rubaso',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'yonkimiyagui',name:'yonkimiyagui',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/miyagui85',youtube:'https://www.youtube.com/channel/UCA-epNDDfdH1JzJOJf0pnCA',bio:'Perfil pendiente de información del personaje.'},
-  {id:'miguel',name:'Miguel',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'sarah',name:'Sarah',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/sarahgk92',youtube:'https://www.youtube.com/sarahgk92',bio:'Perfil pendiente de información del personaje.'},
-  {id:'vichum',name:'vichum',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'solcius',name:'Solcius',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/Solcius',youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'zone',name:'Zone',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/zonenzonao',youtube:'https://www.youtube.com/channel/UCQcj0iVXK8zYN-JRVPyTtGQ',bio:'Perfil pendiente de información del personaje.'},
-  {id:'kira',name:'Kira',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/og_kiradr',youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'magikos',name:'Magikos',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/m4gikos',youtube:'https://www.youtube.com/@M4gikos',bio:'Perfil pendiente de información del personaje.'},
-  {id:'miniarre',name:'Miniarre',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'titohc',name:'Titohc',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'shikafu6',name:'Shikafu6',image:'/assets/players/shikafu6.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'hax',name:'Hax',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'zelune',name:'Zelune',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'feto',name:'Feto',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'andreshouse',name:'Andreshouse',image:'/assets/players/andreshouse.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'rastafrikki',name:'RastaFrikki',image:'/assets/players/rastafrikki.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'tyzenh',name:'TyzenH',image:'/assets/players/tyzenh.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'anselhoenheim',name:'AnselHoenheim',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/anselhoenheim',youtube:'https://www.youtube.com/@AnselHoenheim',bio:'Perfil pendiente de información del personaje.'},
-  {id:'tencachi',name:'Tencachi',image:'/assets/players/tencachi.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'toni18',name:'Toni18',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'josuetn',name:'JosueTn',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'miniyo2',name:'Miniyo2',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'nemma',name:'Nemma',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'emiliano-roca',name:'Emiliano Roca',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'meremiau',name:'meremiau',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'liss',name:'Liss',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'abost',name:'Abost',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'elponja92',name:'ElPonja92',image:'/assets/players/elponja92.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'romgarrr',name:'romgarrr',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'acedion87',name:'Acedion87',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'andreshouse',name:'Andreshouse',image:'/assets/players/andreshouse.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'anselhoenheim',name:'AnselHoenheim',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/anselhoenheim',youtube:'https://www.youtube.com/@AnselHoenheim',bio:'Perfil pendiente de información del personaje.'},
+  {id:'arce',name:'ArCe',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/arcedelah',youtube:'https://www.youtube.com/@arcedelah',bio:'Perfil pendiente de información del personaje.'},
+  {id:'asssucar',name:'Asssucar',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/asssucar',youtube:'https://www.youtube.com/@asssucar',bio:'Perfil pendiente de información del personaje.'},
   {id:'basquewanderer',name:'BasqueWanderer',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'pupi',name:'pupi',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'zripht',name:'Zripht',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'brunusop',name:'BrunusOP',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/brunusop',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'cere',name:'Cere',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/cere',youtube:'https://www.youtube.com/channel/UCE1ISk9jQb7ykFQXy56NbaA',bio:'Perfil pendiente de información del personaje.'},
   {id:'elpelas97',name:'elpelas97',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'terohis',name:'Terohis',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'juanen',name:'Juanen',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'temecuidas',name:'TeMeCuidaS',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'elponja92',name:'ElPonja92',image:'/assets/players/elponja92.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/elponja92',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'emiliano-roca',name:'Emiliano Roca',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/emilianorocaa',youtube:null,bio:'Perfil pendiente de información del personaje.'},
   {id:'evarath',name:'evarath',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/evarathz',youtube:null,bio:'Perfil pendiente de información del personaje.'},
-  {id:'brunusop',name:'BrunusOP',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/brunusop',youtube:null,bio:'Perfil pendiente de información del personaje.'}
-];
-
-
-const API_ENDPOINT = '/api/live';
+  {id:'ferrox',name:'Ferrox',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'fetodevaca',name:'Fetodevaca',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/fetodevaca',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'garlic-jr42',name:'Garlic_Jr42',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'goblinpeke',name:'GoblinPeke',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/goblinpeke',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'hax',name:'Hax',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'josuetn',name:'JosueTn',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'juanen',name:'Juanen',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'k4la',name:'K4la',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:'https://www.youtube.com/@k4la_',bio:'Perfil pendiente de información del personaje.'},
+  {id:'kira',name:'Kira',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/og_kiradr',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'lagatarata',name:'LaGataRata',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/xkattty',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'leissar',name:'Leissar',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/leissar',youtube:'https://www.youtube.com/channel/UCU6dXXNTstf2_J9rl-BV__A',bio:'Perfil pendiente de información del personaje.'},
+  {id:'liss',name:'Liss',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'lordzacas',name:'lordzacas',image:'/assets/players/lordzacas.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/lordzacas',youtube:'https://www.youtube.com/@lordzacas3015',bio:'Perfil pendiente de información del personaje.'},
+  {id:'luisgg',name:'LuisGG',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:'https://www.youtube.com/@luisgamingg',bio:'Perfil pendiente de información del personaje.'},
+  {id:'magikos',name:'Magikos',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/m4gikos',youtube:'https://www.youtube.com/@M4gikos',bio:'Perfil pendiente de información del personaje.'},
+  {id:'meremiau',name:'meremiau',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'miguel',name:'Miguel',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'miniarre',name:'Miniarre',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'miniyo2',name:'Miniyo2',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/miniyo2',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'nemma',name:'Nemma',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/nemmacanon',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'pupi',name:'pupi',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'rastafrikki',name:'RastaFrikki',image:'/assets/players/rastafrikki.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/rastafrikki',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'romgarrr',name:'romgarrr',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'rubaso',name:'Rubaso',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'sarah',name:'Sarah',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/sarahgk92',youtube:'https://www.youtube.com/sarahgk92',bio:'Perfil pendiente de información del personaje.'},
+  {id:'shikafu6',name:'Shikafu6',image:'/assets/players/shikafu6.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/shikafu6',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'solcius',name:'Solcius',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/Solcius',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'soulreaperdk',name:'SoulReaperDK',image:'/assets/players/soulreaperdk.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/soulreaperdk_',youtube:'https://www.youtube.com/channel/UCwvqn9OZhmkLBjHOw0us5ZA',bio:'Perfil pendiente de información del personaje.'},
+  {id:'storvi',name:'Storvi',image:'/assets/players/storvi.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/storviii',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'tamashiiv',name:'TAMASHIIV',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'temecuidas',name:'TeMeCuidaS',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'tencachi',name:'Tencachi',image:'/assets/players/tencachi.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'terohis',name:'Terohis',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'titohc',name:'Titohc',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/titohc',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'toni18',name:'Toni18',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/tonism18',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'tyzenh',name:'TyzenH',image:'/assets/players/tyzenh.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/tyzenh',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'vichum',name:'vichum',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'xl-k-vic',name:'xL𝑜K𝑜Vic',image:'/assets/players/xlokovic.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/xlokovic',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'yonkimiyagui',name:'yonkimiyagui',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/miyagui85',youtube:'https://www.youtube.com/channel/UCA-epNDDfdH1JzJOJf0pnCA',bio:'Perfil pendiente de información del personaje.'},
+  {id:'z3ttii',name:'Z3TTII',image:'/assets/players/z3ttii.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/z3ttii',youtube:'https://www.youtube.com/@Z3TTII',bio:'Perfil pendiente de información del personaje.'},
+  {id:'zelune',name:'Zelune',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/Zelune86',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'zigurath',name:'zigurath',image:'/assets/players/zigurath.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/zigurath',youtube:'https://www.youtube.com/channel/UC36C8AulCMw5QAUV5wrfQpg',bio:'Perfil pendiente de información del personaje.'},
+  {id:'zonenzonao',name:'Zonenzonao',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/zonenzonao',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'zripht',name:'Zripht',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/Zripht',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+  {id:'winwerin',name:'winwerin',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',twitch:'https://www.twitch.tv/winwerin',youtube:null,bio:'Perfil pendiente de información del personaje.'}
+];const API_ENDPOINT = '/api/live';
 let onlineSources = [];
 let selectedLiveKey = null;
 
@@ -581,3 +580,20 @@ setInterval(loadClips,60*1000);
 
 document.getElementById('modalClose').addEventListener('click',()=>document.getElementById('playerModal').classList.remove('open'));document.getElementById('playerModal').addEventListener('click',e=>{if(e.target.id==='playerModal')e.currentTarget.classList.remove('open')});
 window.addEventListener('scroll',()=>document.querySelector('.topbar').classList.toggle('scrolled',scrollY>40));
+
+
+// Mercado Negro: inner category tabs
+function initMercadoNegroTabs(){
+  document.querySelectorAll('.market-tab').forEach(button => {
+    button.addEventListener('click', () => {
+      const target = button.dataset.marketTab;
+      document.querySelectorAll('.market-tab').forEach(b => b.classList.toggle('active', b === button));
+      document.querySelectorAll('.market-panel').forEach(panel => panel.classList.toggle('active', panel.id === 'market-' + target));
+    });
+  });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initMercadoNegroTabs);
+} else {
+  initMercadoNegroTabs();
+}

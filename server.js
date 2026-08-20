@@ -278,36 +278,54 @@ async function youtubeClips(){
   return out;
 }
 app.get('/api/clips',async(_req,res)=>{
-  if(Date.now()<clipCache.expiresAt)return res.json({clips:clipCache.data,checkedAt:new Date().toISOString(),startDate:CLIP_START_DATE});
+  if(Date.now()<clipCache.expiresAt){
+    return res.json({
+      clips:clipCache.data,
+      checkedAt:new Date().toISOString(),
+      startDate:CLIP_START_DATE,
+      twitchPlayers:candidates.filter(x=>x.twitch).map(x=>x.player)
+    });
+  }
   try{
-    const [t,y]=await Promise.allSettled([twitchClips(),youtubeClips()]);
-    const clips=[...(t.status==='fulfilled'?t.value:[]),...(y.status==='fulfilled'?y.value:[])].sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
-    clipCache={expiresAt:Date.now()+30000,data:clips};
-    res.json({clips,twitchPlayers:candidates.filter(x=>x.twitch).map(x=>x.player),checkedAt:new Date().toISOString(),startDate:CLIP_START_DATE,errors:[t,y].filter(x=>x.status==='rejected').map(x=>x.reason?.message).filter(Boolean)});
-  }catch(e){res.status(500).json({clips:[],error:e.message,startDate:CLIP_START_DATE})}
+    const clips=await twitchClips();
+    const sorted=[...clips].sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+    clipCache={expiresAt:Date.now()+30000,data:sorted};
+    res.json({
+      clips:sorted,
+      twitchPlayers:candidates.filter(x=>x.twitch).map(x=>x.player),
+      checkedAt:new Date().toISOString(),
+      startDate:CLIP_START_DATE,
+      errors:[]
+    });
+  }catch(e){
+    res.status(500).json({
+      clips:[],
+      twitchPlayers:candidates.filter(x=>x.twitch).map(x=>x.player),
+      error:e.message,
+      startDate:CLIP_START_DATE
+    })
+  }
 });
 
 app.get('/api/live', async (_req, res) => {
   try {
-    const [twitch, youtube] = await Promise.allSettled([twitchLive(), youtubeLive()]);
-    const live = [
-      ...(twitch.status === 'fulfilled' ? twitch.value : []),
-      ...(youtube.status === 'fulfilled' ? youtube.value : [])
-    ];
-    const errors = [];
-    if (twitch.status === 'rejected') errors.push(`Twitch: ${twitch.reason.message}`);
-    if (youtube.status === 'rejected') errors.push(`YouTube: ${youtube.reason.message}`);
+    const live = await twitchLive();
     res.json({
       live,
       checkedAt: new Date().toISOString(),
       configured: {
-        twitch: Boolean(process.env.TWITCH_CLIENT_ID && process.env.TWITCH_CLIENT_SECRET),
-        youtube: Boolean(process.env.YOUTUBE_API_KEY)
+        twitch: Boolean(process.env.TWITCH_CLIENT_ID && process.env.TWITCH_CLIENT_SECRET)
       },
-      errors
+      errors: []
     });
   } catch (error) {
-    res.status(500).json({live: [], errors: [error.message]});
+    res.status(500).json({
+      live: [],
+      configured: {
+        twitch: Boolean(process.env.TWITCH_CLIENT_ID && process.env.TWITCH_CLIENT_SECRET)
+      },
+      errors: [error.message]
+    });
   }
 });
 

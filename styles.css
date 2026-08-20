@@ -260,3 +260,140 @@ main > .tab-panel:not(.active){display:none !important}
 @media(max-width:900px){
   .donations-layout{grid-template-columns:1fr;}
 }
+
+
+/* MERCADO NEGRO */
+.market-nav{border-color:#6f3f29 !important;color:#e2d0b4 !important}
+.market-nav:hover,.market-nav.active{background:#6f3f29 !important;color:#fff !important}
+.market-section{background:radial-gradient(circle at 78% 6%,rgba(112,66,38,.10),transparent 30%),linear-gradient(rgba(18,18,16,.98),rgba(16,16,14,.99))}
+.market-warning{display:flex;gap:15px;align-items:flex-start;padding:16px 18px;margin:0 0 22px;border:1px solid rgba(160,100,58,.35);background:rgba(102,65,38,.11)}
+.market-warning strong{color:#d39b69;letter-spacing:.11em;font-size:11px;white-space:nowrap}
+.market-warning span{color:#a7a39a;line-height:1.55;font-size:13px}
+.market-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px;border-bottom:1px solid rgba(180,170,150,.14);padding-bottom:11px}
+.market-tab{appearance:none;border:1px solid rgba(180,170,150,.22);background:#181815;color:#aca69a;padding:10px 15px;font-family:inherit;font-weight:800;letter-spacing:.08em;cursor:pointer}
+.market-tab:hover,.market-tab.active{border-color:#8a4e31;background:#5e3524;color:#fff}
+.market-panel{display:none}.market-panel.active{display:block}
+.market-subheading{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:18px}
+.market-subheading h3{margin:6px 0 7px;font-family:"Archivo Black",sans-serif;font-size:clamp(21px,2.8vw,34px)}
+.market-subheading p{max-width:870px;color:#a8a49a;line-height:1.62;margin:0}
+.market-count{flex:0 0 auto;text-align:center;font-family:"Archivo Black",sans-serif;font-size:34px;color:#d5cbb7;line-height:.9}
+.market-count small{display:block;font:10px "Special Elite",monospace;color:#7c776e;letter-spacing:.14em;margin-top:6px}
+.market-use{display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:start;padding:16px 18px;border:1px solid rgba(180,170,150,.16);background:rgba(31,30,27,.82);margin-bottom:22px}
+.market-use-icon{font-size:31px}.market-use strong{display:block;letter-spacing:.1em;font-size:12px;color:#d1c7b5;margin-bottom:6px}.market-use p{margin:0;color:#aaa69d;line-height:1.58;font-size:13px}
+.market-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.market-item-card{display:grid;grid-template-columns:180px 1fr;min-height:205px;border:1px solid rgba(180,170,150,.18);background:linear-gradient(145deg,#23221f,#171715);box-shadow:0 10px 24px rgba(0,0,0,.18)}
+.market-item-image{min-height:205px;background:#0f0f0e;border-right:1px solid rgba(180,170,150,.12)}
+.market-item-image img{width:100%;height:100%;object-fit:cover;display:block}
+.market-item-body{padding:17px 18px}.market-item-top{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.market-code{font:10px "Special Elite",monospace;color:#8e887c;letter-spacing:.12em}.market-duration{font-size:11px;color:#c88a61;letter-spacing:.06em}
+.market-item-body h3{margin:7px 0 8px;font-family:"Archivo Black",sans-serif;font-size:21px}.market-item-body p{margin:0 0 10px;color:#aaa69d;line-height:1.53;font-size:13px}
+.market-crash{padding-top:10px;border-top:1px solid rgba(180,170,150,.10);display:grid;gap:4px}.market-crash strong{color:#b8574b;font-size:10px;letter-spacing:.12em}.market-crash span{color:#a6a095;font-size:12px;line-height:1.48}
+.future-market{min-height:280px;display:grid;place-content:center;justify-items:center;text-align:center;border:1px dashed rgba(180,170,150,.18);background:radial-gradient(circle at center,rgba(118,74,42,.08),transparent 55%),#171715;padding:40px}
+.future-market span{font:11px "Special Elite",monospace;letter-spacing:.14em;color:#777169}.future-market strong{margin:10px 0;font-family:"Archivo Black",sans-serif;font-size:29px;color:#c3b9a5}.future-market p{max-width:560px;color:#9d988d;line-height:1.6}
+@media(max-width:1050px){.market-grid{grid-template-columns:1fr}}@media(max-width:760px){.market-warning{display:block}.market-warning strong{display:block;margin-bottom:7px}.market-subheading{align-items:flex-start}.market-count{display:none}.market-item-card{grid-template-columns:1fr}.market-item-image{min-height:170px;border-right:0;border-bottom:1px solid rgba(180,170,150,.12)}}
+
+
+.market-product-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.market-simple-card{
+  display:grid;
+  grid-template-columns:54px 1fr;
+  gap:14px;
+  align-items:center;
+  padding:18px;
+  border:1px solid rgba(180,170,150,.15);
+  background:linear-gradient(145deg,#21201d,#171715);
+}
+.market-simple-icon{
+  width:54px;
+  height:54px;
+  display:grid;
+  place-items:center;
+  background:#11110f;
+  border:1px solid rgba(190,180,160,.15);
+  color:#b98a60;
+  font-size:24px;
+}
+.market-simple-card h4{
+  margin:0 0 5px;
+  font-family:"Archivo Black",sans-serif;
+  font-size:17px;
+}
+.market-simple-card p{
+  margin:0;
+  color:#9e9a91;
+  line-height:1.5;
+  font-size:12px;
+}
+.vehicle-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+.vehicle-card{
+  min-height:190px;
+  padding:22px;
+  border:1px solid rgba(180,170,150,.15);
+  background:
+    linear-gradient(135deg,rgba(97,72,46,.12),transparent 60%),
+    #191917;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.vehicle-level{
+  font:10px "Special Elite",monospace;
+  letter-spacing:.14em;
+  color:#9f835d;
+  margin-bottom:9px;
+}
+.vehicle-card h4{
+  margin:0 0 8px;
+  font-family:"Archivo Black",sans-serif;
+  font-size:24px;
+}
+.vehicle-card p{
+  margin:0;
+  color:#9f9a90;
+  line-height:1.55;
+  font-size:13px;
+}
+@media(max-width:900px){
+  .market-product-list{grid-template-columns:1fr}
+  .vehicle-grid{grid-template-columns:1fr}
+}
+
+/* Empty Mercado Negro sections */
+.market-empty{
+  min-height:280px;
+  display:grid;
+  place-content:center;
+  justify-items:center;
+  text-align:center;
+  border:1px dashed rgba(180,170,150,.18);
+  background:radial-gradient(circle at center,rgba(118,74,42,.07),transparent 55%),#171715;
+  padding:40px;
+}
+.market-empty span{
+  font:11px "Special Elite",monospace;
+  letter-spacing:.14em;
+  color:#777169;
+}
+.market-empty strong{
+  margin:10px 0;
+  font-family:"Archivo Black",sans-serif;
+  font-size:29px;
+  color:#c3b9a5;
+}
+.market-empty p{
+  max-width:560px;
+  color:#9d988d;
+  line-height:1.6;
+  margin:0;
+}
+
+/* Temporarily hidden from the public site */
+#mercado-negro{display:none !important;}

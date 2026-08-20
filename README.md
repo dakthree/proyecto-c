@@ -28,3 +28,24 @@ Updated images were added for zigurath, Andreshouse, lordzacas, ElPonja92, xLùë
 ## Donations copy update
 - Donations wording updated to explicitly welcome support from viewers/spectators as well as participants.
 - Added non-financial ways to support the project such as watching, following and sharing.
+
+
+## Mercado Negro
+Added as a full top-level tab immediately before DONACIONES, with Farmacia, Rasgos, Armas, Coches and Objetos sections.
+
+## Market Negro content update
+Replaced provisional stim art with cropped artwork supplied by the project, one image per stim.
+Expanded Rasgos with the supplied trait catalog and wiki links, and added the requested Weapons, Vehicles and Objects catalog entries.
+
+
+## Latest Mercado Negro update
+- Replaced Meldonin, AHF1-M, ETG-c and Obdolbos artwork with the individually supplied images.
+- Left the RASGOS section empty for future content.
+
+
+## Latest roster update
+- Rebuilt the participant roster from the supplied screenshots, excluding all red-background entries.
+- Total active roster: 58 unique participants.
+- Explicit Twitch associations: 34.
+- HOME LIVE and CLIPS now use Twitch participants only; YouTube is ignored for these two sections.
+- The public Mercado Negro navigation tab is hidden; one future '?' label is shown as 'MN'.
