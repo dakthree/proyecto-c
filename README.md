@@ -110,3 +110,6 @@ Expanded Rasgos with the supplied trait catalog and wiki links, and added the re
 - The completed `20 AGOSTO 2026 — REUNIÓN` lore event is crossed out diagonally in red and shown in a different color.
 
 - Completed lore styling is applied during JS timeline rendering to the REUNIÓN entry.
+
+- Enlarged Solcius' death mark into a full red X across the photo.
+- Extended the completed REUNIÓN strike across the full timeline item from edge to edge.
