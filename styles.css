@@ -397,3 +397,65 @@ main > .tab-panel:not(.active){display:none !important}
 
 /* Temporarily hidden from the public site */
 #mercado-negro{display:none !important;}
+
+/* PARTICIPANT DETAILS */
+.player-profession{
+  margin:6px 0 8px !important;
+  font-size:12px;
+  color:#c6beaf;
+  line-height:1.35;
+}
+.player-profession b{
+  color:#817b71;
+  font-size:10px;
+  letter-spacing:.10em;
+}
+.player-traits{
+  display:grid;
+  gap:5px;
+  margin-top:8px;
+}
+.player-trait{
+  display:flex;
+  gap:7px;
+  align-items:flex-start;
+  font-size:11px;
+  line-height:1.3;
+}
+.player-trait b{
+  flex:0 0 17px;
+  text-align:center;
+  font-size:13px;
+}
+.player-trait.positive b{color:#91aa63}
+.player-trait.negative b{color:#c87369}
+.player-trait span{color:#9f9a90}
+.modal-profile-facts{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+  margin:15px 0;
+}
+.modal-profile-facts>div{
+  border:1px solid rgba(180,170,150,.13);
+  background:#1b1b18;
+  padding:11px 12px;
+}
+.modal-profile-facts small{
+  display:block;
+  color:#777168;
+  font-size:10px;
+  letter-spacing:.12em;
+  margin-bottom:5px;
+}
+.modal-profile-facts strong{
+  display:block;
+  color:#d1c8b8;
+  font-size:13px;
+  line-height:1.45;
+}
+.trait-positive-text{color:#98aa72 !important}
+.trait-negative-text{color:#c9786c !important}
+@media(max-width:700px){
+  .player-traits{font-size:10px}
+}

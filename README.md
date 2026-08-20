@@ -54,3 +54,9 @@ Expanded Rasgos with the supplied trait catalog and wiki links, and added the re
 ## Latest fix
 - Added the newly supplied participant photos to their matching profiles.
 - Fixed Twitch clip discovery by ensuring every `started_at`/`ended_at` query stays within Twitch's maximum one-week range while still capturing clips created after the cutoff.
+
+
+## Participant assignment data
+- Profession, positive traits and negative traits were populated from the uploaded PROJECT CHLOE FINAL ASSIGNMENT REPORT.
+- DATE fields from the report are intentionally not displayed.
+- Current web roster entries without a matching report entry remain `PENDIENTE` rather than being invented.
