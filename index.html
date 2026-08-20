@@ -86,7 +86,7 @@
       </div>
       <div class="home-strip">
         <div><small>ESTADO DEL EVENTO</small><strong>PREPARACIÓN</strong></div>
-        <div><small>PARTICIPANTES REGISTRADOS</small><strong id="homeSurvivors">56</strong></div>
+        <div><small>PARTICIPANTES REGISTRADOS</small><strong id="homeSurvivors">60</strong></div>
         <div><small>ARCHIVOS RECUPERADOS</small><strong id="homeFiles">07</strong></div>
         <div><small>SEÑAL</small><strong class="signal">██████░░</strong></div>
       </div>
@@ -94,7 +94,7 @@
 
     <!-- PARTICIPANTES -->
     <section id="participantes" class="tab-panel page-section">
-      <div class="section-heading"><div><div class="folder-label">02 / PARTICIPANTES</div><h2>LOS SUPERVIVIENTES</h2><p>Cada jugador tiene una historia. Algunas todavía no han empezado.</p></div><div class="section-count">56<br><span>REGISTRADOS</span></div></div>
+      <div class="section-heading"><div><div class="folder-label">02 / PARTICIPANTES</div><h2>LOS SUPERVIVIENTES</h2><p>Cada jugador tiene una historia. Algunas todavía no han empezado.</p></div><div class="section-count">60<br><span>REGISTRADOS</span></div></div>
       <div class="player-grid" id="playerGrid"></div>
     </section>
 
@@ -112,18 +112,17 @@
 
     <!-- MAPA -->
     <section id="mapa" class="tab-panel page-section map-section">
-      <div class="section-heading"><div><div class="folder-label">05 / MAPA</div><h2>DONDE OCURRIÓ TODO</h2><p>Localizaciones descubiertas durante la historia.</p></div><div class="map-legend"><span><i class="pin-red"></i>IMPORTANTE</span><span><i class="pin-olive"></i>DESCUBIERTO</span></div></div>
-      <div class="map-shell official-map-shell">
-        <iframe
-          class="official-map-frame"
-          src="https://pzmap.org/"
-          title="Mapa interactivo de Project Zomboid"
-          loading="lazy"
-          allowfullscreen
-          referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        <div class="official-map-bar">
-          <span>MAPA INTERACTIVO · PROJECT ZOMBOID</span>
-          <a href="https://pzmap.org/" target="_blank" rel="noopener noreferrer">ABRIR MAPA COMPLETO ↗</a>
+      <div class="section-heading"><div><div class="folder-label">05 / MAPA</div><h2>DONDE OCURRIÓ TODO</h2><p>Mapa interactivo de Project Zomboid para consultar las localizaciones del evento.</p></div><div class="map-legend"><span><i class="pin-red"></i>IMPORTANTE</span><span><i class="pin-olive"></i>DESCUBIERTO</span></div></div>
+      <div class="pzmap-panel">
+        <div class="pzmap-visual">
+          <div class="pzmap-gridlines"></div>
+          <div class="pzmap-title">PROJECT ZOMBOID</div>
+          <div class="pzmap-sub">MAPA INTERACTIVO // BUILD 42</div>
+          <div class="pzmap-coords">KNOX COUNTY // PZMAP.ORG</div>
+        </div>
+        <div class="pzmap-info">
+          <div><strong>MAPA INTERACTIVO</strong><span>PZmap.org no permite que su interfaz se embeba dentro de otra web, por lo que el mapa completo se abre en una pestaña nueva.</span></div>
+          <a class="pzmap-open" href="https://pzmap.org/" target="_blank" rel="noopener noreferrer">ABRIR MAPA INTERACTIVO ↗</a>
         </div>
       </div>
     </section>
