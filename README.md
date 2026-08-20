@@ -103,3 +103,10 @@ Expanded Rasgos with the supplied trait catalog and wiki links, and added the re
 ## v40
 - Map section now embeds `https://projectzomboidmap.com/es/` directly via iframe, with an external-tab fallback.
 - Random clip button is restyled to match the dark Project C aesthetic.
+
+
+## v41
+- Solcius moved to the first participant position and marked deceased with a red cross and `FALLECIDO` state.
+- The completed `20 AGOSTO 2026 — REUNIÓN` lore event is crossed out diagonally in red and shown in a different color.
+
+- Completed lore styling is applied during JS timeline rendering to the REUNIÓN entry.
