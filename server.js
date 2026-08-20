@@ -17,7 +17,7 @@ let clipCache = {expiresAt:0, data:[]};
 
 async function twitchAppToken() {
   if (!process.env.TWITCH_CLIENT_ID || !process.env.TWITCH_CLIENT_SECRET) {
-    throw new Error('Faltan TWITCH_CLIENT_ID / TWITCH_CLIENT_SECRET');
+    throw new Error('Faltan TWITCH_CLIENT_ID / TWITCH_CLIENT_SECRET en el entorno del servidor.');
   }
   if (twitchToken && Date.now() < twitchTokenExpiresAt - 60_000) return twitchToken;
 
@@ -185,14 +185,17 @@ function weekWindows(startIso,endDate){
 }
 async function twitchClips(){
   if(!process.env.TWITCH_CLIENT_ID||!process.env.TWITCH_CLIENT_SECRET)return[];
-  const tp=candidates.filter(x=>x.twitch); if(!tp.length)return[];
+  const tp=candidates.filter(x=>x.twitch);
+  if(!tp.length)return[];
 
-  const users=await twitchUsersByLogin(tp.map(x=>x.twitch));
+  const users=await twitchUsersByLogin(tp.map(x=>String(x.twitch).split('/').filter(Boolean).pop()));
+  const byLogin=new Map(users.map(u=>[String(u.login).toLowerCase(),u]));
   const playerByBroadcasterId=new Map();
-  users.forEach(u=>{
-    const c=tp.find(x=>x.twitch.toLowerCase()===u.login.toLowerCase());
-    if(c) playerByBroadcasterId.set(String(u.id), c.player);
-  });
+  for(const c of tp){
+    const login=String(c.twitch).split('/').filter(Boolean).pop().toLowerCase();
+    const u=byLogin.get(login);
+    if(u) playerByBroadcasterId.set(String(u.id),c.player);
+  }
   if(!playerByBroadcasterId.size)return[];
 
   const token=await twitchAppToken();
@@ -205,55 +208,61 @@ async function twitchClips(){
   const out=[];
   const seen=new Set();
 
-  // IMPORTANT: Twitch's started_at / ended_at range filters clips by the
-  // broadcast capture time, not by clip.created_at. A clip created after our
-  // cutoff can therefore belong to a stream that started before the cutoff.
-  // For each 7-day creation window, search broadcasts that started up to
-  // 7 days earlier, then apply the real created_at cutoff locally.
+  // Get Clips uses started_at/ended_at windows of at most one week.
+  // For each creation week, search the preceding 7 days and the creation week itself,
+  // then apply clip.created_at as the actual creation-date filter.
   for(const [creationStart,creationEnd] of weekWindows(CLIP_START_DATE,now)){
-    const searchStart=new Date(creationStart.getTime()-7*86400000);
-    for(const [broadcasterId, player] of playerByBroadcasterId){
-      try{
-        let after=null;
-        let safetyPages=0;
-        do{
-          const params=new URLSearchParams({
-            broadcaster_id:broadcasterId,
-            started_at:searchStart.toISOString(),
-            ended_at:creationEnd.toISOString(),
-            first:'100'
-          });
-          if(after)params.set('after',after);
+    const ranges=[
+      [new Date(creationStart), new Date(creationEnd)],
+      [new Date(creationStart.getTime()-7*86400000), new Date(creationStart)]
+    ];
 
-          const res=await fetch(`https://api.twitch.tv/helix/clips?${params.toString()}`,{headers});
-          if(!res.ok)throw new Error(`Twitch clips HTTP ${res.status}`);
-          const data=await res.json();
-
-          for(const clip of (data.data||[])){
-            if(seen.has(clip.id))continue;
-            if(String(clip.broadcaster_id)!==String(broadcasterId))continue;
-            const created=clip.created_at?new Date(clip.created_at):null;
-            if(!created || created < clipStart || created > now)continue;
-            seen.add(clip.id);
-            out.push({
-              id:clip.id,
-              player,
-              platform:'TWITCH',
-              title:clip.title||'Clip',
-              description:`Clip de ${player}, publicado durante el periodo de prueba.`,
-              duration:`${Math.round(Number(clip.duration||0))}s`,
-              createdAt:clip.created_at,
-              thumbnail:clip.thumbnail_url,
-              url:clip.url,
-              embedUrl:clip.embed_url,
-              views:clip.view_count||0
+    for(const [broadcasterId,player] of playerByBroadcasterId){
+      for(const [searchStart,searchEnd] of ranges){
+        try{
+          let after=null;
+          let pages=0;
+          do{
+            const params=new URLSearchParams({
+              broadcaster_id:broadcasterId,
+              started_at:searchStart.toISOString(),
+              ended_at:searchEnd.toISOString(),
+              first:'100'
             });
-          }
-          after=data.pagination?.cursor||null;
-          safetyPages++;
-        }while(after && safetyPages<10); // Twitch caps the total paged result set at ~1000.
-      }catch(e){
-        console.error(`Twitch clips ${player}:`,e.message);
+            if(after) params.set('after',after);
+
+            const res=await fetch(`https://api.twitch.tv/helix/clips?${params.toString()}`,{headers});
+            if(!res.ok) throw new Error(`Twitch clips HTTP ${res.status}`);
+            const data=await res.json();
+
+            for(const clip of (data.data||[])){
+              if(seen.has(clip.id)) continue;
+              const created=clip.created_at?new Date(clip.created_at):null;
+              if(!created || created<clipStart || created>now) continue;
+              if(String(clip.broadcaster_id)!==String(broadcasterId)) continue;
+
+              seen.add(clip.id);
+              out.push({
+                id:clip.id,
+                player,
+                platform:'TWITCH',
+                title:clip.title||'Clip',
+                description:`Clip de ${player}.`,
+                duration:`${Math.round(Number(clip.duration||0))}s`,
+                createdAt:clip.created_at,
+                thumbnail:clip.thumbnail_url,
+                url:clip.url,
+                embedUrl:clip.embed_url,
+                views:clip.view_count||0
+              });
+            }
+
+            after=data.pagination?.cursor||null;
+            pages++;
+          }while(after && pages<10);
+        }catch(e){
+          console.error(`Twitch clips ${player}:`,e.message);
+        }
       }
     }
   }
@@ -306,6 +315,12 @@ app.get('/api/clips',async(_req,res)=>{
     })
   }
 });
+
+app.get('/api/health', (_req,res)=>res.json({
+  ok:true,
+  twitchConfigured:Boolean(process.env.TWITCH_CLIENT_ID&&process.env.TWITCH_CLIENT_SECRET),
+  youtubeConfigured:Boolean(process.env.YOUTUBE_API_KEY)
+}));
 
 app.get('/api/live', async (_req, res) => {
   try {

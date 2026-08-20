@@ -60,3 +60,12 @@ Expanded Rasgos with the supplied trait catalog and wiki links, and added the re
 - Profession, positive traits and negative traits were populated from the uploaded PROJECT CHLOE FINAL ASSIGNMENT REPORT.
 - DATE fields from the report are intentionally not displayed.
 - Current web roster entries without a matching report entry remain `PENDIENTE` rather than being invented.
+
+
+## v34 maintenance fixes
+- Garlic_Jr42 removed; Feto, Bertok and Fichi added; Solcius retained.
+- Current participant roster: 60.
+- HOME live uses only explicit Twitch URLs from `live-channels.json`.
+- CLIPS uses the same Twitch-only list and valid <=7-day API windows.
+- Interactive map updated to `https://pzmap.org/`.
+- Participant images include an automatic fallback to `assets/silueta.png` if an image fails to load.
