@@ -93,3 +93,13 @@ Expanded Rasgos with the supplied trait catalog and wiki links, and added the re
 - Removed the duplicate Feto participant; Fetodevaca is the only player for that person.
 - Replaced the blocked pzmap iframe with a themed external-link panel to pzmap.org.
 - Renamed the Clips random button to `CLIP ALEATORIO` and restyled it to match the site.
+
+
+## v39
+- Removed the stale Feto participant entry. Fetodevaca remains the only entry for that player.
+- MAP alternatives researched separately; no public map iframe is forced because current services block or are not designed for cross-origin embedding.
+
+
+## v40
+- Map section now embeds `https://projectzomboidmap.com/es/` directly via iframe, with an external-tab fallback.
+- Random clip button is restyled to match the dark Project C aesthetic.
