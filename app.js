@@ -236,7 +236,40 @@ function openPlayer(id){const p=players.find(x=>x.id===id);if(!p)return;const li
 playerGrid.addEventListener('click',e=>{const card=e.target.closest('.player-card');if(card)openPlayer(card.dataset.player)});
 playerGrid.addEventListener('keydown',e=>{if(e.key==='Enter'){const card=e.target.closest('.player-card');if(card)openPlayer(card.dataset.player)}});
 
-const timelineEl=document.getElementById('timeline');timelineEl.innerHTML=timeline.map(t=>`<article class="lore-item ${t.title==='REUNIÓN'?'lore-completed':''}"><small>${t.date}</small><h3>${t.title}</h3></article>`).join('');
+const timelineEl=document.getElementById('timeline');
+const loreDetailTitle=document.getElementById('loreDetailTitle');
+const loreDetailText=document.getElementById('loreDetailText');
+const loreMedia=document.getElementById('loreMedia');
+
+const loreEntries=timeline.map((t,i)=>({
+  ...t,
+  id:`lore-${i}`,
+  youtube:t.title==='PRÓLOGO'?'https://www.youtube.com/watch?v=cH18-brGf7k':null,
+  text:t.title==='PRÓLOGO'
+    ?'Archivo audiovisual correspondiente al PRÓLOGO. El contenido se mostrará aquí mientras se desbloquea el resto del expediente.'
+    :'Archivo reservado. El lore de este acontecimiento se añadirá aquí cuando sea revelado durante el evento.'
+}));
+
+function openLoreEntry(entry,element){
+  document.querySelectorAll('.lore-item').forEach(item=>item.classList.remove('active'));
+  if(element) element.classList.add('active');
+  loreDetailTitle.textContent=`${entry.title} // ${entry.date}`;
+  loreDetailText.textContent=entry.text;
+  loreMedia.classList.remove('hidden');
+  if(entry.youtube){
+    const id=new URL(entry.youtube).searchParams.get('v');
+    loreMedia.innerHTML=`<div class="lore-video-wrap"><iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" title="Proyecto C - ${entry.title}" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`;
+  }else{
+    loreMedia.innerHTML=`<div class="classified-placeholder"><span>EXPEDIENTE BLOQUEADO</span><strong>LORE PENDIENTE</strong><p>Este espacio está preparado para el texto, documentos y descubrimientos que se vayan conociendo durante el evento.</p></div>`;
+  }
+}
+timelineEl.innerHTML=loreEntries.map(entry=>`<article class="lore-item ${entry.title==='REUNIÓN'?'lore-completed':''}" data-lore-id="${entry.id}" role="button" tabindex="0"><small>${entry.date}</small><h3>${entry.title}</h3></article>`).join('');
+timelineEl.querySelectorAll('.lore-item').forEach((item,index)=>{
+  const entry=loreEntries[index];
+  item.addEventListener('click',()=>openLoreEntry(entry,item));
+  item.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openLoreEntry(entry,item)}});
+});
+openLoreEntry(loreEntries.find(e=>e.title==='PRÓLOGO')||loreEntries[0],timelineEl.querySelector('.lore-item:not(.lore-completed)')||timelineEl.firstElementChild);
 const charGrid=document.getElementById('characterGrid');charGrid.innerHTML=characters.map(c=>`<article class="character-card"><div class="char-photo"><img src="/assets/silueta.png" alt="Silueta de personaje desconocido" loading="lazy" onerror="this.onerror=null;this.src='/assets/silueta.png';"><span class="silhouette-label">IDENTIDAD OCULTA</span></div><h3>${c.name}</h3><small>TRABAJO: ${c.role}</small><p>${c.desc}</p><span class="char-status">${c.status}</span></article>`).join('');
 
 const inputJugador=document.getElementById('input-jugador');

@@ -113,3 +113,19 @@ Expanded Rasgos with the supplied trait catalog and wiki links, and added the re
 
 - Enlarged Solcius' death mark into a full red X across the photo.
 - Extended the completed REUNIÓN strike across the full timeline item from edge to edge.
+
+
+## v43
+- Updated meremiau profile with the supplied `meremiau.jpg` image.
+- Meremiau assignment: Reparador; positivos Mañoso, Mecánico aficionado; negativos Asmático, Fumador.
+
+
+## v44
+- Added the supplied `zripht.jpg` image to the Zripht participant profile.
+
+
+## v45
+- Lore calendar entries are now clickable.
+- Added a large classified-document detail panel on the right.
+- Added the supplied YouTube video to PRÓLOGO with an embedded player.
+- Other entries show a ready-to-fill classified lore placeholder.
