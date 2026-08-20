@@ -514,3 +514,138 @@ main > .tab-panel:not(.active){display:none !important}
     grid-template-columns:1fr;
   }
 }
+
+/* MAPA EXTERNO */
+.pzmap-panel{
+  max-width:1250px;
+  margin:0 auto;
+  border:1px solid rgba(224,214,192,.16);
+  background:#171815;
+  box-shadow:0 14px 40px rgba(0,0,0,.35);
+}
+.pzmap-art{
+  position:relative;
+  min-height:520px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 32% 48%,rgba(102,126,77,.25),transparent 22%),
+    radial-gradient(circle at 70% 35%,rgba(70,87,60,.18),transparent 28%),
+    linear-gradient(140deg,#131712,#293326 46%,#171b16);
+}
+.pzmap-grid{
+  position:absolute;
+  inset:0;
+  opacity:.22;
+  background-image:
+    linear-gradient(rgba(222,211,184,.16) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(222,211,184,.16) 1px,transparent 1px);
+  background-size:52px 52px;
+}
+.pzmap-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse at center,transparent 20%,rgba(0,0,0,.3) 85%),
+    repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.015) 4px);
+}
+.pzmap-copy{
+  position:absolute;
+  left:34px;
+  top:34px;
+  text-shadow:0 3px 8px #000;
+}
+.pzmap-kicker{
+  font:11px "Special Elite",monospace;
+  letter-spacing:.18em;
+  color:#aaa38f;
+}
+.pzmap-heading{
+  margin-top:8px;
+  font-family:"Archivo Black",sans-serif;
+  font-size:clamp(32px,5vw,62px);
+  line-height:.95;
+  color:#dfd3bb;
+  letter-spacing:.03em;
+}
+.pzmap-subtitle{
+  margin-top:14px;
+  font:12px "Special Elite",monospace;
+  letter-spacing:.12em;
+  color:#8d897c;
+}
+.pzmap-stamp{
+  position:absolute;
+  right:26px;
+  bottom:24px;
+  border:1px solid rgba(188,63,52,.65);
+  padding:9px 12px;
+  transform:rotate(-3deg);
+  font:12px "Special Elite",monospace;
+  color:#d27065;
+  letter-spacing:.16em;
+  background:rgba(35,13,11,.35);
+}
+.pzmap-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:22px;
+  padding:18px 20px;
+  border-top:1px solid rgba(224,214,192,.13);
+}
+.pzmap-message{
+  display:grid;
+  gap:5px;
+}
+.pzmap-message strong{
+  font-size:11px;
+  letter-spacing:.12em;
+  color:#d8cdb9;
+}
+.pzmap-message span{
+  max-width:760px;
+  color:#9e998f;
+  font-size:12px;
+  line-height:1.5;
+}
+.pzmap-button{
+  flex:0 0 auto;
+  padding:13px 16px;
+  border:1px solid rgba(177,62,51,.65);
+  background:linear-gradient(145deg,#6e312a,#3b211d);
+  color:#f0e4d0;
+  text-decoration:none;
+  font-weight:800;
+  letter-spacing:.08em;
+  box-shadow:0 8px 18px rgba(0,0,0,.22);
+  transition:transform .16s ease,filter .16s ease,border-color .16s ease;
+}
+.pzmap-button:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.1);
+  border-color:#bd6256;
+}
+
+/* CLIP ALEATORIO */
+#randomClip{
+  min-width:185px;
+  border:1px solid rgba(177,62,51,.72);
+  background:
+    linear-gradient(135deg,rgba(120,42,35,.95),rgba(54,25,22,.97));
+  color:#eee3d0;
+  box-shadow:0 7px 18px rgba(0,0,0,.26),inset 0 0 0 1px rgba(255,255,255,.03);
+  font-family:"Archivo Black",sans-serif;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  transition:transform .16s ease,filter .16s ease,box-shadow .16s ease;
+}
+#randomClip:hover{
+  transform:translateY(-1px);
+  filter:brightness(1.08);
+  box-shadow:0 10px 22px rgba(0,0,0,.32);
+}
+@media(max-width:760px){
+  .pzmap-art{min-height:340px}
+  .pzmap-footer{display:grid}
+  .pzmap-button{justify-self:start}
+}

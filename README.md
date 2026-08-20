@@ -87,3 +87,9 @@ Expanded Rasgos with the supplied trait catalog and wiki links, and added the re
 - Main selected clip player is on the left.
 - Available clip cards/list are in a dedicated right-hand column.
 - Responsive layout collapses to one column on smaller screens.
+
+
+## v38 updates
+- Removed the duplicate Feto participant; Fetodevaca is the only player for that person.
+- Replaced the blocked pzmap iframe with a themed external-link panel to pzmap.org.
+- Renamed the Clips random button to `CLIP ALEATORIO` and restyled it to match the site.
