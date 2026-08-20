@@ -246,30 +246,45 @@ const loreEntries=timeline.map((t,i)=>({
   id:`lore-${i}`,
   youtube:t.title==='PRÓLOGO'?'https://www.youtube.com/watch?v=cH18-brGf7k':null,
   text:t.title==='PRÓLOGO'
-    ?'Archivo audiovisual correspondiente al PRÓLOGO. El contenido se mostrará aquí mientras se desbloquea el resto del expediente.'
-    :'Archivo reservado. El lore de este acontecimiento se añadirá aquí cuando sea revelado durante el evento.'
+    ?'Archivo audiovisual correspondiente al PRÓLOGO.'
+    :'Falta información'
 }));
 
 function openLoreEntry(entry,element){
   document.querySelectorAll('.lore-item').forEach(item=>item.classList.remove('active'));
   if(element) element.classList.add('active');
-  loreDetailTitle.textContent=`${entry.title} // ${entry.date}`;
-  loreDetailText.textContent=entry.text;
+  if(loreDetailTitle) loreDetailTitle.textContent=`${entry.title} // ${entry.date}`;
+  if(loreDetailText) loreDetailText.textContent=entry.text;
+  if(!loreMedia) return;
   loreMedia.classList.remove('hidden');
+
   if(entry.youtube){
-    const id=new URL(entry.youtube).searchParams.get('v');
-    loreMedia.innerHTML=`<div class="lore-video-wrap"><iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" title="Proyecto C - ${entry.title}" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`;
-  }else{
-    loreMedia.innerHTML=`<div class="classified-placeholder"><span>EXPEDIENTE BLOQUEADO</span><strong>LORE PENDIENTE</strong><p>Este espacio está preparado para el texto, documentos y descubrimientos que se vayan conociendo durante el evento.</p></div>`;
+    let id='';
+    try { id=new URL(entry.youtube).searchParams.get('v') || ''; } catch(e) {}
+    loreMedia.innerHTML=id
+      ? `<div class="lore-video-wrap"><iframe src="https://www.youtube.com/embed/${id}?rel=0" title="Proyecto C - ${entry.title}" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`
+      : `<div class="classified-placeholder"><span>EXPEDIENTE BLOQUEADO</span><strong>Falta información</strong></div>`;
+  } else {
+    loreMedia.innerHTML=`<div class="classified-placeholder"><span>EXPEDIENTE</span><strong>Falta información</strong><p>Este espacio queda preparado para añadir el lore de ${entry.title} cuando lo tengamos.</p></div>`;
   }
 }
-timelineEl.innerHTML=loreEntries.map(entry=>`<article class="lore-item ${entry.title==='REUNIÓN'?'lore-completed':''}" data-lore-id="${entry.id}" role="button" tabindex="0"><small>${entry.date}</small><h3>${entry.title}</h3></article>`).join('');
+
+timelineEl.innerHTML=loreEntries.map(entry=>`<article class="lore-item ${entry.title==='REUNIÓN'?'lore-completed':''}" data-lore-id="${entry.id}" role="button" tabindex="0" aria-label="Abrir ${entry.title}"><small>${entry.date}</small><h3>${entry.title}</h3></article>`).join('');
+
 timelineEl.querySelectorAll('.lore-item').forEach((item,index)=>{
   const entry=loreEntries[index];
   item.addEventListener('click',()=>openLoreEntry(entry,item));
-  item.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openLoreEntry(entry,item)}});
+  item.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      openLoreEntry(entry,item);
+    }
+  });
 });
-openLoreEntry(loreEntries.find(e=>e.title==='PRÓLOGO')||loreEntries[0],timelineEl.querySelector('.lore-item:not(.lore-completed)')||timelineEl.firstElementChild);
+
+const initialEntry=loreEntries.find(e=>e.title==='PRÓLOGO') || loreEntries[0];
+const initialElement=timelineEl.querySelector(`[data-lore-id="${initialEntry.id}"]`);
+openLoreEntry(initialEntry,initialElement);
 const charGrid=document.getElementById('characterGrid');charGrid.innerHTML=characters.map(c=>`<article class="character-card"><div class="char-photo"><img src="/assets/silueta.png" alt="Silueta de personaje desconocido" loading="lazy" onerror="this.onerror=null;this.src='/assets/silueta.png';"><span class="silhouette-label">IDENTIDAD OCULTA</span></div><h3>${c.name}</h3><small>TRABAJO: ${c.role}</small><p>${c.desc}</p><span class="char-status">${c.status}</span></article>`).join('');
 
 const inputJugador=document.getElementById('input-jugador');

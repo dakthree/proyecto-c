@@ -100,8 +100,24 @@
 
     <!-- LORE -->
     <section id="lore" class="tab-panel page-section paper-section">
-      <div class="section-heading dark"><div><div class="folder-label">03 / LORE</div><h2>CALENDARIO</h2><p>Fechas y actos confirmados de Proyecto C.</p></div><div class="red-tag">CALENDARIO 2026</div></div>
-      <div class="timeline lore-calendar" id="timeline"></div>
+      <div class="section-heading dark"><div><div class="folder-label">03 / LORE</div><h2>CALENDARIO</h2><p>Fechas y actos confirmados de Proyecto C. Selecciona un evento para consultar el contenido conocido.</p></div><div class="red-tag">ARCHIVO // CLASIFICADO</div></div>
+      <div class="lore-workspace">
+        <div class="lore-timeline-panel">
+          <div class="lore-panel-title">CRONOLOGÍA</div>
+          <div class="timeline lore-calendar" id="timeline"></div>
+        </div>
+        <aside class="lore-detail-panel" id="loreDetail" aria-live="polite">
+          <div class="classified-document">
+            <div class="classified-stamp">CLASIFICADO</div>
+            <div class="classified-code">PROYECTO C // ARCHIVO DE LORE</div>
+            <h3 id="loreDetailTitle">SELECCIONA UN EVENTO</h3>
+            <div class="classified-rule"></div>
+            <p id="loreDetailText">Selecciona REUNIÓN, PRÓLOGO o uno de los ACTOS para abrir su archivo.</p>
+            <div id="loreMedia" class="lore-media hidden"></div>
+            <div class="classified-footer">AUTORIZACIÓN: PROYECTO C // ACCESO RESTRINGIDO</div>
+          </div>
+        </aside>
+      </div>
     </section>
 
     <!-- PERSONAJES -->

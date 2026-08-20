@@ -129,3 +129,9 @@ Expanded Rasgos with the supplied trait catalog and wiki links, and added the re
 - Added a large classified-document detail panel on the right.
 - Added the supplied YouTube video to PRÓLOGO with an embedded player.
 - Other entries show a ready-to-fill classified lore placeholder.
+
+
+## v46
+- Restored the Characters tab/rendering to the v44 version so its silhouettes and layout are unchanged.
+- Rebuilt the Lore click interactions with explicit event handlers.
+- PRÓLOGO loads the supplied YouTube video; all other lore entries display `Falta información`.
