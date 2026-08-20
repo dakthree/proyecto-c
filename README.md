@@ -49,3 +49,8 @@ Expanded Rasgos with the supplied trait catalog and wiki links, and added the re
 - Explicit Twitch associations: 34.
 - HOME LIVE and CLIPS now use Twitch participants only; YouTube is ignored for these two sections.
 - The public Mercado Negro navigation tab is hidden; one future '?' label is shown as 'MN'.
+
+
+## Latest fix
+- Added the newly supplied participant photos to their matching profiles.
+- Fixed Twitch clip discovery by ensuring every `started_at`/`ended_at` query stays within Twitch's maximum one-week range while still capturing clips created after the cutoff.
