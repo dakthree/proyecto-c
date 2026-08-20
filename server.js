@@ -14,18 +14,16 @@ const CLIP_START_DATE = process.env.CLIP_START_DATE || '2026-08-11T10:00:00Z';
 const TWITCH_PZ_GAME_ID = process.env.TWITCH_PZ_GAME_ID || null;
 let twitchPzGameIdCache = null;
 let clipCache = {expiresAt:0, data:[]};
-function envValue(name){ return String(process.env[name]||'').trim(); }
-
 
 async function twitchAppToken() {
-  if (!envValue('TWITCH_CLIENT_ID') || !envValue('TWITCH_CLIENT_SECRET')) {
+  if (!process.env.TWITCH_CLIENT_ID || !process.env.TWITCH_CLIENT_SECRET) {
     throw new Error('Faltan TWITCH_CLIENT_ID / TWITCH_CLIENT_SECRET en el entorno del servidor.');
   }
   if (twitchToken && Date.now() < twitchTokenExpiresAt - 60_000) return twitchToken;
 
   const body = new URLSearchParams({
-    client_id: envValue('TWITCH_CLIENT_ID'),
-    client_secret: envValue('TWITCH_CLIENT_SECRET'),
+    client_id: process.env.TWITCH_CLIENT_ID,
+    client_secret: process.env.TWITCH_CLIENT_SECRET,
     grant_type: 'client_credentials'
   });
   const res = await fetch('https://id.twitch.tv/oauth2/token', {
@@ -33,7 +31,7 @@ async function twitchAppToken() {
     headers: {'content-type': 'application/x-www-form-urlencoded'},
     body
   });
-  if (!res.ok) { const body=await res.text(); throw new Error(`Twitch OAuth HTTP ${res.status}: ${body.slice(0,300)}`); }
+  if (!res.ok) throw new Error(`Twitch token HTTP ${res.status}`);
   const data = await res.json();
   twitchToken = data.access_token;
   twitchTokenExpiresAt = Date.now() + (data.expires_in * 1000);
@@ -64,11 +62,11 @@ async function twitchLive() {
 
     const res = await fetch(`https://api.twitch.tv/helix/streams?${params.toString()}`, {
       headers: {
-        'Client-Id': envValue('TWITCH_CLIENT_ID'),
+        'Client-Id': process.env.TWITCH_CLIENT_ID,
         'Authorization': `Bearer ${token}`
       }
     });
-    if (!res.ok) { const body=await res.text(); throw new Error(`Twitch streams HTTP ${res.status}: ${body.slice(0,300)}`); }
+    if (!res.ok) throw new Error(`Twitch streams HTTP ${res.status}`);
     const data = await res.json();
 
     const byLogin = new Map(chunk.map(x => [x.login, x.candidate]));
@@ -105,12 +103,12 @@ async function youtubeChannelId(ref) {
   if (!ref) return null;
   if (ref.type === 'id') return ref.value;
   if (youtubeHandleCache.has(ref.value)) return youtubeHandleCache.get(ref.value);
-  if (!envValue('YOUTUBE_API_KEY')) return null;
+  if (!process.env.YOUTUBE_API_KEY) return null;
 
   const url = new URL('https://www.googleapis.com/youtube/v3/channels');
   url.searchParams.set('part', 'id');
   url.searchParams.set('forHandle', `@${ref.value}`);
-  url.searchParams.set('key', envValue('YOUTUBE_API_KEY'));
+  url.searchParams.set('key', process.env.YOUTUBE_API_KEY);
   const res = await fetch(url);
   if (!res.ok) throw new Error(`YouTube channel HTTP ${res.status}`);
   const data = await res.json();
@@ -126,7 +124,7 @@ async function youtubeLiveForChannel(channelId, candidate) {
   url.searchParams.set('eventType', 'live');
   url.searchParams.set('type', 'video');
   url.searchParams.set('maxResults', '5');
-  url.searchParams.set('key', envValue('YOUTUBE_API_KEY'));
+  url.searchParams.set('key', process.env.YOUTUBE_API_KEY);
   const res = await fetch(url);
   if (!res.ok) throw new Error(`YouTube search HTTP ${res.status}`);
   const data = await res.json();
@@ -143,7 +141,7 @@ async function youtubeLiveForChannel(channelId, candidate) {
 }
 
 async function youtubeLive() {
-  if (!envValue('YOUTUBE_API_KEY')) return [];
+  if (!process.env.YOUTUBE_API_KEY) return [];
   const ytCandidates = candidates.filter(x => x.youtube);
   const results = await Promise.all(ytCandidates.map(async candidate => {
     try {
@@ -163,7 +161,7 @@ async function youtubeLive() {
 async function twitchProjectZomboidGameId(token){
   if(twitchPzGameIdCache)return twitchPzGameIdCache;
   const params=new URLSearchParams({query:'Project Zomboid'});
-  const res=await fetch(`https://api.twitch.tv/helix/search/categories?${params}`,{headers:{'Client-Id':envValue('TWITCH_CLIENT_ID'),'Authorization':`Bearer ${token}`}});
+  const res=await fetch(`https://api.twitch.tv/helix/search/categories?${params}`,{headers:{'Client-Id':process.env.TWITCH_CLIENT_ID,'Authorization':`Bearer ${token}`}});
   if(!res.ok)throw new Error(`Twitch categories HTTP ${res.status}`);
   const data=await res.json();
   const exact=(data.data||[]).find(x=>x.name?.toLowerCase()==='project zomboid');
@@ -176,7 +174,7 @@ async function twitchUsersByLogin(logins){
   if(!unique.length)return[];
   const token=await twitchAppToken();
   const params=new URLSearchParams(); unique.forEach(login=>params.append('login',login));
-  const res=await fetch(`https://api.twitch.tv/helix/users?${params}`,{headers:{'Client-Id':envValue('TWITCH_CLIENT_ID'),'Authorization':`Bearer ${token}`}});
+  const res=await fetch(`https://api.twitch.tv/helix/users?${params}`,{headers:{'Client-Id':process.env.TWITCH_CLIENT_ID,'Authorization':`Bearer ${token}`}});
   if(!res.ok)throw new Error(`Twitch users HTTP ${res.status}`);
   return (await res.json()).data||[];
 }
@@ -186,7 +184,7 @@ function weekWindows(startIso,endDate){
   return windows;
 }
 async function twitchClips(){
-  if(!envValue('TWITCH_CLIENT_ID')||!envValue('TWITCH_CLIENT_SECRET'))return[];
+  if(!process.env.TWITCH_CLIENT_ID||!process.env.TWITCH_CLIENT_SECRET)return[];
   const tp=candidates.filter(x=>x.twitch);
   if(!tp.length)return[];
 
@@ -202,7 +200,7 @@ async function twitchClips(){
 
   const token=await twitchAppToken();
   const headers={
-    'Client-Id':envValue('TWITCH_CLIENT_ID'),
+    'Client-Id':process.env.TWITCH_CLIENT_ID,
     'Authorization':`Bearer ${token}`
   };
   const clipStart=new Date(CLIP_START_DATE);
@@ -272,13 +270,13 @@ async function twitchClips(){
   return out.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
 }
 async function youtubeClips(){
-  if(!envValue('YOUTUBE_API_KEY'))return[]; const out=[];
+  if(!process.env.YOUTUBE_API_KEY)return[]; const out=[];
   for(const c of candidates.filter(x=>x.youtube)){
     try{
       const id=await youtubeChannelId(parseYoutube(c.youtube)); if(!id)continue;
       const url=new URL('https://www.googleapis.com/youtube/v3/search');
       url.searchParams.set('part','snippet'); url.searchParams.set('channelId',id); url.searchParams.set('type','video');
-      url.searchParams.set('publishedAfter',CLIP_START_DATE); url.searchParams.set('order','date'); url.searchParams.set('maxResults','25'); url.searchParams.set('key',envValue('YOUTUBE_API_KEY'));
+      url.searchParams.set('publishedAfter',CLIP_START_DATE); url.searchParams.set('order','date'); url.searchParams.set('maxResults','25'); url.searchParams.set('key',process.env.YOUTUBE_API_KEY);
       const res=await fetch(url); if(!res.ok)throw new Error(`YouTube search HTTP ${res.status}`); const data=await res.json();
       for(const item of data.items||[]){
         const videoId=item.id?.videoId; if(!videoId)continue;
@@ -320,8 +318,8 @@ app.get('/api/clips',async(_req,res)=>{
 
 app.get('/api/health', (_req,res)=>res.json({
   ok:true,
-  twitchConfigured:Boolean(envValue('TWITCH_CLIENT_ID')&&envValue('TWITCH_CLIENT_SECRET')),
-  youtubeConfigured:Boolean(envValue('YOUTUBE_API_KEY'))
+  twitchConfigured:Boolean(process.env.TWITCH_CLIENT_ID&&process.env.TWITCH_CLIENT_SECRET),
+  youtubeConfigured:Boolean(process.env.YOUTUBE_API_KEY)
 }));
 
 app.get('/api/live', async (_req, res) => {
@@ -331,7 +329,7 @@ app.get('/api/live', async (_req, res) => {
       live,
       checkedAt: new Date().toISOString(),
       configured: {
-        twitch: Boolean(envValue('TWITCH_CLIENT_ID') && envValue('TWITCH_CLIENT_SECRET'))
+        twitch: Boolean(process.env.TWITCH_CLIENT_ID && process.env.TWITCH_CLIENT_SECRET)
       },
       errors: []
     });
@@ -339,20 +337,10 @@ app.get('/api/live', async (_req, res) => {
     res.status(500).json({
       live: [],
       configured: {
-        twitch: Boolean(envValue('TWITCH_CLIENT_ID') && envValue('TWITCH_CLIENT_SECRET'))
+        twitch: Boolean(process.env.TWITCH_CLIENT_ID && process.env.TWITCH_CLIENT_SECRET)
       },
       errors: [error.message]
     });
-  }
-});
-
-app.get('/api/twitch-diagnostic', async (_req,res)=>{
-  try{
-    const token=await twitchAppToken();
-    const live=await twitchLive();
-    res.json({ok:true,tokenAcquired:true,mappedTwitchPlayers:candidates.filter(x=>x.twitch).length,livePlayers:live.map(x=>x.player),checkedAt:new Date().toISOString()});
-  }catch(e){
-    res.status(500).json({ok:false,tokenAcquired:false,error:e.message,checkedAt:new Date().toISOString()});
   }
 });
 

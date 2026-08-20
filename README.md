@@ -69,3 +69,21 @@ Expanded Rasgos with the supplied trait catalog and wiki links, and added the re
 - CLIPS uses the same Twitch-only list and valid <=7-day API windows.
 - Interactive map updated to `https://pzmap.org/`.
 - Participant images include an automatic fallback to `assets/silueta.png` if an image fails to load.
+
+
+## Correction
+- Magikos uses the supplied `magikos(1).jpg` image.
+- The `Obrero / Albañil, Peleón / Aprendiz lento, Duro de oído` assignment belongs to Fetodevaca.
+
+
+## v36 updates
+- Feto and Fetodevaca are treated as the same player; only Fetodevaca remains.
+- Fetodevaca uses profession `Obrero`, positives `Albañil, Peleón`, negatives `Aprendiz lento, Duro de oído`.
+- Cere Twitch URL corrected to `https://www.twitch.tv/cere____`.
+- Clips layout updated to place the main player on the left and reserve a right-side column for the clip list.
+
+
+## v37 Clips layout
+- Main selected clip player is on the left.
+- Available clip cards/list are in a dedicated right-hand column.
+- Responsive layout collapses to one column on smaller screens.
