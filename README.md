@@ -157,3 +157,11 @@ Expanded Rasgos with the supplied trait catalog and wiki links, and added the re
 - Player display name changed from Tencachi to Tencachy.
 - Removed the stale `Feto` live-channel record by rebuilding `live-channels.json` from the participant roster.
 - Clips and Lives now derive their selectable Twitch player pool from the same current participant/Twitch mapping.
+
+
+## v50
+- Renamed participant `zigurath` to `zigurathz` in the participant roster, live-channels database, and Clips player naming.
+
+
+## v51
+- Corrected zigurathz Twitch URL in participant data and live-channels database to `https://www.twitch.tv/zigurathz`.
