@@ -1021,3 +1021,264 @@ main > .tab-panel:not(.active){display:none !important}
   transform:rotate(-8deg);
   transform-origin:center;
 }
+
+
+/* =========================
+   DADOS
+   ========================= */
+.dice-nav{
+  border-color:#72522e !important;
+  color:#d8c5a5 !important;
+}
+.dice-nav:hover,
+.dice-nav.active{
+  background:#5a4027 !important;
+  color:#fff !important;
+}
+.dice-section{
+  background:
+    radial-gradient(circle at 78% 7%,rgba(123,78,42,.10),transparent 30%),
+    linear-gradient(rgba(18,18,16,.98),rgba(16,16,14,.99));
+}
+.dice-workspace{
+  display:grid;
+  grid-template-columns:minmax(0,1.45fr) minmax(320px,.75fr);
+  gap:20px;
+  align-items:start;
+}
+.dice-main-card,
+.dice-config-card{
+  border:1px solid rgba(180,170,150,.16);
+  background:linear-gradient(145deg,#22221e,#171715);
+  box-shadow:0 14px 32px rgba(0,0,0,.22);
+}
+.dice-main-card{padding:26px}
+.dice-config-card{padding:20px}
+.dice-kicker{
+  color:#847d71;
+  font:10px "Special Elite",monospace;
+  letter-spacing:.15em;
+  margin-bottom:18px;
+}
+.dice-player-row{
+  display:grid;
+  gap:7px;
+  max-width:420px;
+}
+.dice-player-row label,
+.dice-config-group>label{
+  color:#8c867c;
+  font:10px "Special Elite",monospace;
+  letter-spacing:.13em;
+}
+.dice-control{
+  width:100%;
+  box-sizing:border-box;
+  border:1px solid rgba(180,170,150,.25);
+  background:#111210;
+  color:#e0d7c7;
+  min-height:40px;
+  padding:9px 11px;
+  outline:none;
+  font-family:inherit;
+}
+.dice-control:focus{
+  border-color:#8f5038;
+}
+select.dice-control{
+  appearance:auto;
+}
+.dice-machine{
+  margin:28px 0 18px;
+  min-height:340px;
+  border:1px solid rgba(178,161,128,.18);
+  background:
+    radial-gradient(circle at 50% 38%,rgba(139,95,43,.13),transparent 25%),
+    repeating-linear-gradient(0deg,transparent 0 6px,rgba(255,255,255,.012) 7px),
+    #111210;
+  display:grid;
+  place-content:center;
+  justify-items:center;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.dice-machine::before{
+  content:"";
+  position:absolute;
+  inset:12px;
+  border:1px solid rgba(180,170,150,.06);
+  pointer-events:none;
+}
+.dice-machine-label{
+  color:#777169;
+  font:10px "Special Elite",monospace;
+  letter-spacing:.18em;
+  margin-bottom:16px;
+}
+.dice-result{
+  width:min(300px,70vw);
+  min-height:150px;
+  display:grid;
+  place-items:center;
+  padding:15px;
+  border:2px solid rgba(174,64,53,.55);
+  background:linear-gradient(145deg,#2b1a17,#171311);
+  color:#e6d9c3;
+  font-family:"Archivo Black",sans-serif;
+  font-size:clamp(36px,5vw,72px);
+  line-height:1.05;
+  overflow-wrap:anywhere;
+  box-shadow:0 14px 32px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.025);
+}
+.dice-result-sub{
+  margin-top:13px;
+  color:#8d887e;
+  font:10px "Special Elite",monospace;
+  letter-spacing:.12em;
+}
+.dice-roll-button{
+  width:100%;
+  min-height:52px;
+  border:1px solid rgba(177,62,51,.72);
+  background:linear-gradient(145deg,#71352d,#3c211c);
+  color:#f0e4d2;
+  box-shadow:0 8px 20px rgba(0,0,0,.28);
+  font-family:"Archivo Black",sans-serif;
+  font-size:16px;
+  letter-spacing:.08em;
+  cursor:pointer;
+}
+.dice-roll-button:hover:not(:disabled){
+  filter:brightness(1.08);
+  transform:translateY(-1px);
+}
+.dice-roll-button:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+.dice-panel-title{
+  color:#8d877c;
+  font:10px "Special Elite",monospace;
+  letter-spacing:.15em;
+  padding-bottom:10px;
+  margin-bottom:13px;
+  border-bottom:1px solid rgba(180,170,150,.12);
+}
+.dice-config-group{
+  display:grid;
+  gap:8px;
+  margin-bottom:18px;
+}
+.dice-inline{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:8px;
+}
+.dice-small-button{
+  min-height:40px;
+  border:1px solid rgba(180,170,150,.23);
+  background:#1b1b18;
+  color:#c8c0b2;
+  padding:8px 12px;
+  font-weight:800;
+  letter-spacing:.05em;
+  cursor:pointer;
+}
+.dice-small-button:hover{
+  border-color:#815139;
+  background:#28201c;
+  color:#f0e8da;
+}
+.dice-small-button.primary{
+  border-color:#78503d;
+  background:#4e3024;
+}
+.dice-small-button.danger{
+  border-color:#6d302b;
+  color:#d1847c;
+}
+.dice-face-editor{
+  display:grid;
+  gap:6px;
+  max-height:350px;
+  overflow:auto;
+  padding-right:2px;
+}
+.dice-face-row{
+  display:grid;
+  grid-template-columns:32px 1fr;
+  gap:7px;
+  align-items:center;
+}
+.dice-face-row>span{
+  display:grid;
+  place-items:center;
+  min-height:38px;
+  border:1px solid rgba(180,170,150,.12);
+  background:#131412;
+  color:#777168;
+  font:10px "Special Elite",monospace;
+}
+.dice-note{
+  margin-top:16px;
+  border-top:1px solid rgba(180,170,150,.10);
+  padding-top:14px;
+  display:grid;
+  gap:5px;
+}
+.dice-note strong{
+  color:#8e3c34;
+  font:10px "Special Elite",monospace;
+  letter-spacing:.15em;
+}
+.dice-note span{
+  color:#77736a;
+  font-size:11px;
+  line-height:1.5;
+}
+.dice-history-wrap{margin-top:24px}
+.dice-history{
+  display:grid;
+  gap:7px;
+  max-height:300px;
+  overflow:auto;
+}
+.dice-history-item{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  border:1px solid rgba(180,170,150,.11);
+  background:#181916;
+  padding:10px 12px;
+}
+.dice-history-item>div{
+  display:grid;
+  gap:2px;
+}
+.dice-history-item strong{
+  color:#cfc5b4;
+  font-size:12px;
+}
+.dice-history-item span{
+  color:#b25a50;
+  font-weight:800;
+}
+.dice-history-item small{
+  color:#66635d;
+  font:10px "Special Elite",monospace;
+}
+.dice-empty{
+  padding:18px;
+  text-align:center;
+  color:#68645d;
+  font:10px "Special Elite",monospace;
+  border:1px dashed rgba(180,170,150,.14);
+}
+code{
+  color:#a58a67;
+}
+@media(max-width:950px){
+  .dice-workspace{grid-template-columns:1fr}
+}

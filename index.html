@@ -28,6 +28,7 @@
       <a href="#clips" data-tab="clips">CLIPS</a>
       <a href="#futuro1" data-tab="futuro1">MN</a>
       <a href="#futuro2" data-tab="futuro2">?</a>
+      <a href="#dados" data-tab="dados" class="dice-nav">DADOS</a>
       <a href="#donaciones" data-tab="donaciones" class="donate-nav">DONACIONES</a>
     </nav>
     <div class="live-status"><i></i><span id="liveStatus">PRÓXIMAMENTE</span></div>
@@ -417,6 +418,78 @@
           <article class="market-simple-card"><div class="market-simple-icon">🧵</div><div><h4>Hilo</h4><p>Material de costura.</p></div></article>
           <article class="market-simple-card"><div class="market-simple-icon">🥫</div><div><h4>Comida de calidad</h4><p>Alimentos de mayor valor dentro del sistema de intercambio.</p></div></article>
         </div>
+      </div>
+    </section>
+
+
+    <section id="dados" class="tab-panel page-section dice-section">
+      <div class="section-heading">
+        <div>
+          <div class="folder-label">/ DADOS</div>
+          <h2>SALA DE DADOS</h2>
+          <p>Configura los jugadores y las caras del dado. Las tiradas se guardan solo en este navegador.</p>
+        </div>
+        <div class="red-tag">MODO LOCAL</div>
+      </div>
+
+      <div class="dice-workspace">
+        <div class="dice-main-card">
+          <div class="dice-kicker">PROYECTO C // SISTEMA DE TIRADAS</div>
+          <div class="dice-player-row">
+            <label for="dicePlayerSelect">JUGADOR</label>
+            <select id="dicePlayerSelect" class="dice-control"></select>
+          </div>
+
+          <div class="dice-machine">
+            <div class="dice-machine-label">RESULTADO</div>
+            <div id="diceResult" class="dice-result">?</div>
+            <div id="diceResultSub" class="dice-result-sub">LISTO PARA TIRAR</div>
+          </div>
+
+          <button id="rollDiceButton" class="dice-roll-button" type="button">LANZAR DADO</button>
+
+          <div class="dice-history-wrap">
+            <div class="dice-panel-title">ÚLTIMAS TIRADAS</div>
+            <div id="diceHistory" class="dice-history">
+              <div class="dice-empty">AÚN NO HAY TIRADAS</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="dice-config-card">
+          <div class="dice-panel-title">CONFIGURACIÓN</div>
+
+          <div class="dice-config-group">
+            <label for="dicePlayerName">AÑADIR JUGADOR</label>
+            <div class="dice-inline">
+              <input id="dicePlayerName" class="dice-control" type="text" maxlength="40" placeholder="Nombre del jugador">
+              <button id="addDicePlayer" class="dice-small-button" type="button">AÑADIR</button>
+            </div>
+          </div>
+
+          <div class="dice-config-group">
+            <label for="diceFaceCount">NÚMERO DE CARAS</label>
+            <div class="dice-inline">
+              <input id="diceFaceCount" class="dice-control" type="number" min="1" max="100" value="6">
+              <button id="generateDiceFaces" class="dice-small-button" type="button">GENERAR</button>
+            </div>
+          </div>
+
+          <div class="dice-config-group">
+            <label>CARAS DEL DADO</label>
+            <div id="diceFaceEditor" class="dice-face-editor"></div>
+          </div>
+
+          <div class="dice-config-actions">
+            <button id="saveDiceConfig" class="dice-small-button primary" type="button">GUARDAR CONFIGURACIÓN</button>
+            <button id="clearDiceConfig" class="dice-small-button danger" type="button">BORRAR TODO</button>
+          </div>
+
+          <div class="dice-note">
+            <strong>NOTA</strong>
+            <span>Todo se guarda mediante <code>localStorage</code> en este navegador. No se comparte con otros visitantes.</span>
+          </div>
+        </aside>
       </div>
     </section>
 

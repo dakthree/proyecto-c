@@ -646,3 +646,154 @@ if (document.readyState === 'loading') {
 } else {
   initMercadoNegroTabs();
 }
+
+
+/* =========================
+   DADOS - LOCAL
+   ========================= */
+const diceStorageKey = 'proyectoC_dados_v1';
+const defaultDiceState = {
+  players: [],
+  faces: ['1','2','3','4','5','6'],
+  history: []
+};
+let diceState = loadDiceState();
+
+function loadDiceState(){
+  try{
+    const raw=localStorage.getItem(diceStorageKey);
+    if(!raw) return structuredClone(defaultDiceState);
+    const parsed=JSON.parse(raw);
+    return {
+      players:Array.isArray(parsed.players)?parsed.players.map(String).filter(Boolean):[],
+      faces:Array.isArray(parsed.faces)&&parsed.faces.length?parsed.faces.map(x=>String(x)):[...defaultDiceState.faces],
+      history:Array.isArray(parsed.history)?parsed.history.slice(0,30):[]
+    };
+  }catch(e){
+    return structuredClone(defaultDiceState);
+  }
+}
+function saveDiceState(){
+  localStorage.setItem(diceStorageKey,JSON.stringify(diceState));
+}
+function diceEscape(text){
+  return String(text).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+}
+const dicePlayerSelect=document.getElementById('dicePlayerSelect');
+const diceResult=document.getElementById('diceResult');
+const diceResultSub=document.getElementById('diceResultSub');
+const diceHistory=document.getElementById('diceHistory');
+const dicePlayerName=document.getElementById('dicePlayerName');
+const diceFaceCount=document.getElementById('diceFaceCount');
+const diceFaceEditor=document.getElementById('diceFaceEditor');
+const rollDiceButton=document.getElementById('rollDiceButton');
+
+function renderDicePlayers(){
+  if(!dicePlayerSelect) return;
+  dicePlayerSelect.innerHTML=diceState.players.length
+    ? diceState.players.map((name,i)=>`<option value="${i}">${diceEscape(name)}</option>`).join('')
+    : '<option value="">AÑADE UN JUGADOR</option>';
+  if(!diceState.players.length) rollDiceButton.disabled=true;
+  else rollDiceButton.disabled=false;
+}
+
+function renderDiceFaces(){
+  if(!diceFaceEditor) return;
+  diceFaceEditor.innerHTML=diceState.faces.map((face,i)=>`
+    <div class="dice-face-row">
+      <span>${i+1}</span>
+      <input class="dice-face-input dice-control" data-face-index="${i}" value="${diceEscape(face)}" maxlength="80" placeholder="Nombre de la cara ${i+1}">
+    </div>
+  `).join('');
+  diceFaceCount.value=diceState.faces.length;
+}
+
+function renderDiceHistory(){
+  if(!diceHistory) return;
+  if(!diceState.history.length){
+    diceHistory.innerHTML='<div class="dice-empty">AÚN NO HAY TIRADAS</div>';
+    return;
+  }
+  diceHistory.innerHTML=diceState.history.map(item=>`
+    <div class="dice-history-item">
+      <div>
+        <strong>${diceEscape(item.player)}</strong>
+        <span>${diceEscape(item.face)}</span>
+      </div>
+      <small>${diceEscape(item.time)}</small>
+    </div>
+  `).join('');
+}
+
+function renderDiceAll(){
+  renderDicePlayers();
+  renderDiceFaces();
+  renderDiceHistory();
+}
+
+document.getElementById('addDicePlayer')?.addEventListener('click',()=>{
+  const name=dicePlayerName.value.trim();
+  if(!name) return;
+  if(diceState.players.some(p=>p.toLowerCase()===name.toLowerCase())){
+    dicePlayerName.value='';
+    return;
+  }
+  diceState.players.push(name);
+  saveDiceState();
+  dicePlayerName.value='';
+  renderDicePlayers();
+  dicePlayerSelect.value=String(diceState.players.length-1);
+  dicePlayerName.focus();
+});
+
+dicePlayerName?.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    e.preventDefault();
+    document.getElementById('addDicePlayer')?.click();
+  }
+});
+
+document.getElementById('generateDiceFaces')?.addEventListener('click',()=>{
+  let count=Math.max(1,Math.min(100,Number(diceFaceCount.value)||6));
+  const old=[...diceState.faces];
+  diceState.faces=Array.from({length:count},(_,i)=>old[i]??String(i+1));
+  renderDiceFaces();
+});
+
+document.getElementById('saveDiceConfig')?.addEventListener('click',()=>{
+  document.querySelectorAll('.dice-face-input').forEach(input=>{
+    diceState.faces[Number(input.dataset.faceIndex)]=input.value.trim()||`Cara ${Number(input.dataset.faceIndex)+1}`;
+  });
+  saveDiceState();
+  renderDiceFaces();
+  diceResultSub.textContent='CONFIGURACIÓN GUARDADA';
+});
+
+document.getElementById('clearDiceConfig')?.addEventListener('click',()=>{
+  if(!confirm('¿Borrar jugadores, caras e historial de dados?')) return;
+  diceState=structuredClone(defaultDiceState);
+  saveDiceState();
+  diceResult.textContent='?';
+  diceResultSub.textContent='LISTO PARA TIRAR';
+  renderDiceAll();
+});
+
+rollDiceButton?.addEventListener('click',()=>{
+  if(!diceState.players.length || !diceState.faces.length) return;
+  const player=diceState.players[Number(dicePlayerSelect.value)]||diceState.players[0];
+  const bytes=new Uint32Array(1);
+  crypto.getRandomValues(bytes);
+  const faceIndex=bytes[0]%diceState.faces.length;
+  const face=diceState.faces[faceIndex];
+  diceResult.textContent=face;
+  diceResultSub.textContent=`${player.toUpperCase()} // CARA ${faceIndex+1}`;
+  diceState.history.unshift({
+    player,
+    face,
+    time:new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit',second:'2-digit'})
+  });
+  diceState.history=diceState.history.slice(0,30);
+  saveDiceState();
+  renderDiceHistory();
+});
+renderDiceAll();

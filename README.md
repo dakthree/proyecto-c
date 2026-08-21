@@ -135,3 +135,11 @@ Expanded Rasgos with the supplied trait catalog and wiki links, and added the re
 - Restored the Characters tab/rendering to the v44 version so its silhouettes and layout are unchanged.
 - Rebuilt the Lore click interactions with explicit event handlers.
 - PRÓLOGO loads the supplied YouTube video; all other lore entries display `Falta información`.
+
+
+## v47 — Dados
+- Added a new top-level DADOS tab.
+- Add/remove-free player management by name (add and use the player selector).
+- Configure 1–100 die faces and custom text for every face.
+- Roll locally in the browser with a visible result and recent-roll history.
+- State is stored in localStorage; no server or shared synchronization is used.
