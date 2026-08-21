@@ -778,22 +778,57 @@ document.getElementById('clearDiceConfig')?.addEventListener('click',()=>{
   renderDiceAll();
 });
 
+let diceRolling=false;
 rollDiceButton?.addEventListener('click',()=>{
-  if(!diceState.players.length || !diceState.faces.length) return;
+  if(diceRolling || !diceState.players.length || !diceState.faces.length) return;
   const player=diceState.players[Number(dicePlayerSelect.value)]||diceState.players[0];
+
   const bytes=new Uint32Array(1);
   crypto.getRandomValues(bytes);
-  const faceIndex=bytes[0]%diceState.faces.length;
-  const face=diceState.faces[faceIndex];
-  diceResult.textContent=face;
-  diceResultSub.textContent=`${player.toUpperCase()} // CARA ${faceIndex+1}`;
-  diceState.history.unshift({
-    player,
-    face,
-    time:new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit',second:'2-digit'})
-  });
-  diceState.history=diceState.history.slice(0,30);
-  saveDiceState();
-  renderDiceHistory();
+  const finalIndex=bytes[0]%diceState.faces.length;
+  const finalFace=diceState.faces[finalIndex];
+
+  diceRolling=true;
+  rollDiceButton.disabled=true;
+  diceResultSub.textContent=`${player.toUpperCase()} // TIRANDO...`;
+  diceResult.textContent='?';
+
+  const cube=document.getElementById('diceCube');
+  const visual=document.getElementById('diceVisual');
+  cube.classList.remove('rolling');
+  visual.classList.remove('rolling-glow');
+  // Force reflow so repeated rolls retrigger the animation.
+  void cube.offsetWidth;
+  cube.classList.add('rolling');
+  visual.classList.add('rolling-glow');
+
+  let ticks=0;
+  const totalTicks=12;
+  const tickMs=90;
+  const previewTimer=setInterval(()=>{
+    const poolIndex=(ticks + Math.floor(Math.random()*diceState.faces.length))%diceState.faces.length;
+    diceResult.textContent=diceState.faces[poolIndex];
+    ticks++;
+    if(ticks>=totalTicks){
+      clearInterval(previewTimer);
+      diceResult.textContent=finalFace;
+      diceResultSub.textContent=`${player.toUpperCase()} // CARA ${finalIndex+1}`;
+      diceState.history.unshift({
+        player,
+        face:finalFace,
+        time:new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit',second:'2-digit'})
+      });
+      diceState.history=diceState.history.slice(0,30);
+      saveDiceState();
+      renderDiceHistory();
+
+      setTimeout(()=>{
+        cube.classList.remove('rolling');
+        visual.classList.remove('rolling-glow');
+        diceRolling=false;
+        rollDiceButton.disabled=false;
+      },180);
+    }
+  },tickMs);
 });
 renderDiceAll();

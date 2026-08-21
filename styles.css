@@ -1116,27 +1116,8 @@ select.dice-control{
   letter-spacing:.18em;
   margin-bottom:16px;
 }
-.dice-result{
-  width:min(300px,70vw);
-  min-height:150px;
-  display:grid;
-  place-items:center;
-  padding:15px;
-  border:2px solid rgba(174,64,53,.55);
-  background:linear-gradient(145deg,#2b1a17,#171311);
-  color:#e6d9c3;
-  font-family:"Archivo Black",sans-serif;
-  font-size:clamp(36px,5vw,72px);
-  line-height:1.05;
-  overflow-wrap:anywhere;
-  box-shadow:0 14px 32px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.025);
-}
-.dice-result-sub{
-  margin-top:13px;
-  color:#8d887e;
-  font:10px "Special Elite",monospace;
-  letter-spacing:.12em;
-}
+
+
 .dice-roll-button{
   width:100%;
   min-height:52px;
@@ -1281,4 +1262,116 @@ code{
 }
 @media(max-width:950px){
   .dice-workspace{grid-template-columns:1fr}
+}
+
+/* DICE ROLL ANIMATION */
+.dice-visual{
+  position:relative;
+  width:240px;
+  height:220px;
+  display:grid;
+  place-items:center;
+  perspective:900px;
+}
+.dice-shadow{
+  position:absolute;
+  bottom:7px;
+  left:50%;
+  width:150px;
+  height:34px;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse,rgba(0,0,0,.55),rgba(0,0,0,0) 72%);
+  filter:blur(4px);
+  transition:transform .18s ease,opacity .18s ease;
+}
+.dice-cube{
+  position:relative;
+  width:140px;
+  height:140px;
+  transform-style:preserve-3d;
+  transform:rotateX(-16deg) rotateY(25deg) rotateZ(-3deg);
+  transition:transform .18s ease;
+  z-index:2;
+}
+.dice-face{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border:3px solid #c9b99e;
+  background:
+    radial-gradient(circle at 50% 30%,rgba(167,69,56,.18),transparent 38%),
+    linear-gradient(145deg,#30201d,#171311 70%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),inset 0 -20px 35px rgba(0,0,0,.26);
+  color:#efe2ca;
+  font-family:"Archivo Black",sans-serif;
+  text-align:center;
+}
+.dice-face::after{
+  content:"";
+  position:absolute;
+  inset:8px;
+  border:1px solid rgba(232,218,193,.08);
+}
+.dice-face span{
+  position:relative;
+  z-index:2;
+  max-width:90%;
+  max-height:90%;
+  overflow-wrap:anywhere;
+  font-size:28px;
+  line-height:1.05;
+  text-transform:uppercase;
+}
+.dice-face-front{transform:translateZ(70px)}
+.dice-face-back{transform:rotateY(180deg) translateZ(70px)}
+.dice-face-right{transform:rotateY(90deg) translateZ(70px)}
+.dice-face-left{transform:rotateY(-90deg) translateZ(70px)}
+.dice-face-top{transform:rotateX(90deg) translateZ(70px)}
+.dice-face-bottom{transform:rotateX(-90deg) translateZ(70px)}
+
+.dice-cube.rolling{
+  animation:diceRoll 1.22s cubic-bezier(.17,.67,.2,1);
+}
+.dice-visual.rolling-glow{
+  animation:diceGlow 1.22s ease-out;
+}
+.dice-visual.rolling-glow .dice-shadow{
+  animation:diceShadow 1.22s ease-out;
+}
+@keyframes diceRoll{
+  0%{transform:rotateX(-16deg) rotateY(25deg) rotateZ(-3deg) translateY(0) scale(1)}
+  16%{transform:rotateX(110deg) rotateY(210deg) rotateZ(42deg) translateY(-28px) scale(1.03)}
+  36%{transform:rotateX(250deg) rotateY(420deg) rotateZ(98deg) translateY(-42px) scale(1.06)}
+  58%{transform:rotateX(420deg) rotateY(650deg) rotateZ(150deg) translateY(-25px) scale(1.02)}
+  78%{transform:rotateX(545deg) rotateY(835deg) rotateZ(190deg) translateY(-8px) scale(1.01)}
+  100%{transform:rotateX(704deg) rotateY(965deg) rotateZ(237deg) translateY(0) scale(1)}
+}
+@keyframes diceGlow{
+  0%{filter:brightness(1)}
+  50%{filter:brightness(1.3)}
+  100%{filter:brightness(1)}
+}
+@keyframes diceShadow{
+  0%,100%{transform:translateX(-50%) scale(1);opacity:.55}
+  50%{transform:translateX(-50%) scale(.68);opacity:.3}
+}
+.dice-result-sub{
+  margin-top:3px;
+  color:#8d887e;
+  font:10px "Special Elite",monospace;
+  letter-spacing:.12em;
+  text-align:center;
+  min-height:14px;
+}
+@media(max-width:600px){
+  .dice-visual{width:210px;height:190px}
+  .dice-cube{width:120px;height:120px}
+  .dice-face-front{transform:translateZ(60px)}
+  .dice-face-back{transform:rotateY(180deg) translateZ(60px)}
+  .dice-face-right{transform:rotateY(90deg) translateZ(60px)}
+  .dice-face-left{transform:rotateY(-90deg) translateZ(60px)}
+  .dice-face-top{transform:rotateX(90deg) translateZ(60px)}
+  .dice-face-bottom{transform:rotateX(-90deg) translateZ(60px)}
 }

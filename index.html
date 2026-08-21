@@ -442,7 +442,17 @@
 
           <div class="dice-machine">
             <div class="dice-machine-label">RESULTADO</div>
-            <div id="diceResult" class="dice-result">?</div>
+            <div id="diceVisual" class="dice-visual" aria-live="polite">
+              <div class="dice-shadow"></div>
+              <div class="dice-cube" id="diceCube">
+                <div class="dice-face dice-face-front"><span id="diceResult">?</span></div>
+                <div class="dice-face dice-face-back"><span>?</span></div>
+                <div class="dice-face dice-face-right"><span>?</span></div>
+                <div class="dice-face dice-face-left"><span>?</span></div>
+                <div class="dice-face dice-face-top"><span>?</span></div>
+                <div class="dice-face dice-face-bottom"><span>?</span></div>
+              </div>
+            </div>
             <div id="diceResultSub" class="dice-result-sub">LISTO PARA TIRAR</div>
           </div>
 

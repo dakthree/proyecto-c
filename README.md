@@ -143,3 +143,9 @@ Expanded Rasgos with the supplied trait catalog and wiki links, and added the re
 - Configure 1–100 die faces and custom text for every face.
 - Roll locally in the browser with a visible result and recent-roll history.
 - State is stored in localStorage; no server or shared synchronization is used.
+
+
+## v48 — Dice animation
+- Replaced the static dice result box with a CSS 3D rolling die animation.
+- During the roll, face labels cycle rapidly before revealing the final configured result.
+- Supports arbitrary custom face text while using the cube purely as the visual animation.
