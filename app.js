@@ -10,13 +10,13 @@ const players = [
 {id:'asssucar',name:'Asssucar',image:'/assets/players/asssucar.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'PENDIENTE',positiveTraits:'PENDIENTE',negativeTraits:'PENDIENTE',twitch:'https://www.twitch.tv/asssucar',youtube:'https://www.youtube.com/@asssucar',bio:'Perfil pendiente de información del personaje.'},
 {id:'basquewanderer',name:'BasqueWanderer',image:'/assets/players/basquewanderer.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Herrero',positiveTraits:'Tallador, Aprendiz rápido',negativeTraits:'Hemofóbico, Asmático',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
 {id:'brunusop',name:'BrunusOP',image:'/assets/players/brunusop.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Desempleado',positiveTraits:'Atlético, Fuerte',negativeTraits:'Analfabeto, Cobarde',twitch:'https://www.twitch.tv/brunusop',youtube:null,bio:'Perfil pendiente de información del personaje.'},
-{id:'cere',name:'Cere',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Monitor de fitness',positiveTraits:'Gimnasta, Demonio de la velocidad',negativeTraits:'Desordenado, Dormilón',twitch:'https://www.twitch.tv/cere',youtube:'https://www.youtube.com/channel/UCE1ISk9jQb7ykFQXy56NbaA',bio:'Perfil pendiente de información del personaje.'},
-{id:'elpelas97',name:'elpelas97',image:'/assets/players/elpelas97.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Ganadero',positiveTraits:'Viejo explorador, Cazador',negativeTraits:'Sueño inquieto, Claustrofóbico',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+{id:'cere',name:'Cere',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Monitor de fitness',positiveTraits:'Gimnasta, Demonio de la velocidad',negativeTraits:'Desordenado, Dormilón',twitch:'https://www.twitch.tv/cere____',youtube:'https://www.youtube.com/channel/UCE1ISk9jQb7ykFQXy56NbaA',bio:'Perfil pendiente de información del personaje.'},
+{id:'elpelas97',name:'elpelas97',image:'/assets/players/elpelas97.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Ganadero',positiveTraits:'Viejo explorador, Cazador',negativeTraits:'Sueño inquieto, Claustrofóbico',twitch:null,twitch:'https://www.twitch.tv/elpelas97',youtube:null,bio:'Perfil pendiente de información del personaje.'},
 {id:'elponja92',name:'ElPonja92',image:'/assets/players/elponja92.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Veterano',positiveTraits:'Vista de águila, Hábil',negativeTraits:'Propenso a enfermar, Dormilón',twitch:'https://www.twitch.tv/elponja92',youtube:null,bio:'Perfil pendiente de información del personaje.'},
 {id:'emiliano-roca',name:'Emiliano Roca',image:'/assets/players/emiliano-roca.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Desempleado',positiveTraits:'Peleón, Robusto',negativeTraits:'Mucha sed, Dedos gordos',twitch:'https://www.twitch.tv/emilianorocaa',youtube:null,bio:'Perfil pendiente de información del personaje.'},
 {id:'evarath',name:'evarath',image:'/assets/players/evarath.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Guía de pesca',positiveTraits:'Oído fino, Tallador',negativeTraits:'Torpe, Visible',twitch:'https://www.twitch.tv/evarathz',youtube:null,bio:'Perfil pendiente de información del personaje.'},
 {id:'ferrox',name:'Ferrox',image:'/assets/players/ferrox.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Desempleado',positiveTraits:'Oído fino, Vista de águila',negativeTraits:'Cobarde',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-{id:'bertok',name:'Bertok',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Electricista',positiveTraits:'Manitas, Mecánico aficionado',negativeTraits:'Propenso a enfermar, Hemofóbico',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+{id:'bertok',name:'Bertok',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Electricista',positiveTraits:'Manitas, Mecánico aficionado',negativeTraits:'Propenso a enfermar, Hemofóbico',twitch:null,twitch:'https://www.twitch.tv/el_bertok',youtube:null,bio:'Perfil pendiente de información del personaje.'},
 {id:'fichi',name:'Fichi',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Obrero',positiveTraits:'Artesano, Piel dura',negativeTraits:'Enclenque, Fuera de forma',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
 {id:'fetodevaca',name:'Fetodevaca',image:'/assets/players/fetodevaca.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Obrero',positiveTraits:'Albañil, Peleón',negativeTraits:'Aprendiz lento, Duro de oído',twitch:'https://www.twitch.tv/fetodevaca',youtube:null,bio:'Perfil pendiente de información del personaje.'},
 {id:'goblinpeke',name:'GoblinPeke',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Obrero metalúrgico',positiveTraits:'Jugador de beisbol, Peleón',negativeTraits:'Sueño inquieto, Propenso a enfermar',twitch:'https://www.twitch.tv/goblinpeke',youtube:null,bio:'Perfil pendiente de información del personaje.'},
@@ -46,9 +46,9 @@ const players = [
 {id:'storvi',name:'Storvi',image:'/assets/players/storvi.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'PENDIENTE',positiveTraits:'PENDIENTE',negativeTraits:'PENDIENTE',twitch:'https://www.twitch.tv/storviii',youtube:null,bio:'Perfil pendiente de información del personaje.'},
 {id:'tamashiiv',name:'TAMASHIIV',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Guardia de seguridad',positiveTraits:'Albañil, Artesano',negativeTraits:'Cobarde, Comilón',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
 {id:'temecuidas',name:'TeMeCuidaS',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Enfermera',positiveTraits:'Excursionista, En forma',negativeTraits:'Pacifista, Sueño inquieto',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-{id:'tencachi',name:'Tencachi',image:'/assets/players/tencachi.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'PENDIENTE',positiveTraits:'PENDIENTE',negativeTraits:'PENDIENTE',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+{id:'tencachi',name:'Tencachy',image:'/assets/players/tencachi.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'PENDIENTE',positiveTraits:'PENDIENTE',negativeTraits:'PENDIENTE',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
 {id:'terohis',name:'Terohis',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Sastre',positiveTraits:'Costurero, En forma',negativeTraits:'Dormilón, Cobarde',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-{id:'titohc',name:'Titohc',image:'/assets/players/titohc.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Guardia de seguridad',positiveTraits:'Peleón, Socorrista',negativeTraits:'Sueño inquieto, Dedos gordos',twitch:'https://www.twitch.tv/titohc',youtube:null,bio:'Perfil pendiente de información del personaje.'},
+{id:'titohc',name:'Titohc',image:'/assets/players/titohc.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Guardia de seguridad',positiveTraits:'Peleón, Socorrista',negativeTraits:'Sueño inquieto, Dedos gordos',twitch:'https://www.twitch.tv/tit0hc',youtube:null,bio:'Perfil pendiente de información del personaje.'},
 {id:'toni18',name:'Toni18',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Agente de policía',positiveTraits:'Demonio de la velocidad, Jugador de beisbol',negativeTraits:'Fumador, Aprendiz lento',twitch:'https://www.twitch.tv/tonism18',youtube:null,bio:'Perfil pendiente de información del personaje.'},
 {id:'tyzenh',name:'TyzenH',image:'/assets/players/tyzenh.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Aprendiz de cocina',positiveTraits:'Comedor ligero, Pescador',negativeTraits:'Dedos gordos, Metabolismo rápido',twitch:'https://www.twitch.tv/tyzenh',youtube:null,bio:'Perfil pendiente de información del personaje.'},
 {id:'vichum',name:'vichum',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Médico',positiveTraits:'Hábil, Socorrista',negativeTraits:'Sanador lento, Dominguero',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
@@ -490,9 +490,18 @@ function resetClipFilter(){
 }
 
 function setClipFilters(){
-  cargarListaJugadores();
-  const current=String(inputJugador?.value||'');
-  if(current && !jugadoresConTwitch.some(p=>normalizarTexto(p.name)===normalizarTexto(current)) && normalizarTexto(current)!=='todos') resetClipFilter();
+  const select=document.getElementById('clipPlayerSelect');
+  const box=document.getElementById('jugadorDropdown');
+  const input=document.getElementById('inputJugador');
+  const items=clipPlayers.length ? clipPlayers : players.filter(p=>p.twitch).map(p=>p.name);
+  const unique=[...new Set(items)];
+  if(select){
+    select.innerHTML='<option value="">TODOS</option>'+unique.map(name=>`<option value="${String(name).replace(/"/g,'&quot;')}">${String(name).replace(/</g,'&lt;')}</option>`).join('');
+    if(select.value!==getClipFilterValue()) select.value='';
+  }
+  if(box){
+    box.innerHTML='<button type="button" class="jugador-option" data-value="">TODOS</button>'+unique.map(name=>`<button type="button" class="jugador-option" data-value="${String(name).replace(/"/g,'&quot;')}">${String(name).replace(/</g,'&lt;')}</button>`).join('');
+  }
 }
 
 function selectClip(c, esClickManual=false){

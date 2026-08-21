@@ -1,5 +1,10 @@
 [
   {
+    "player": "Solcius",
+    "twitch": "https://www.twitch.tv/Solcius",
+    "youtube": null
+  },
+  {
     "player": "Abost",
     "twitch": null,
     "youtube": null
@@ -46,7 +51,7 @@
   },
   {
     "player": "elpelas97",
-    "twitch": null,
+    "twitch": "https://www.twitch.tv/elpelas97",
     "youtube": null
   },
   {
@@ -70,13 +75,8 @@
     "youtube": null
   },
   {
-    "player": "Feto",
-    "twitch": null,
-    "youtube": null
-  },
-  {
     "player": "Bertok",
-    "twitch": null,
+    "twitch": "https://www.twitch.tv/el_bertok",
     "youtube": null
   },
   {
@@ -205,11 +205,6 @@
     "youtube": null
   },
   {
-    "player": "Solcius",
-    "twitch": "https://www.twitch.tv/Solcius",
-    "youtube": null
-  },
-  {
     "player": "SoulReaperDK",
     "twitch": "https://www.twitch.tv/soulreaperdk_",
     "youtube": null
@@ -230,7 +225,7 @@
     "youtube": null
   },
   {
-    "player": "Tencachi",
+    "player": "Tencachy",
     "twitch": null,
     "youtube": null
   },
@@ -241,7 +236,7 @@
   },
   {
     "player": "Titohc",
-    "twitch": "https://www.twitch.tv/titohc",
+    "twitch": "https://www.twitch.tv/tit0hc",
     "youtube": null
   },
   {

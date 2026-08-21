@@ -149,3 +149,11 @@ Expanded Rasgos with the supplied trait catalog and wiki links, and added the re
 - Replaced the static dice result box with a CSS 3D rolling die animation.
 - During the roll, face labels cycle rapidly before revealing the final configured result.
 - Supports arbitrary custom face text while using the cube purely as the visual animation.
+
+
+## v49 — Twitch roster sync
+- Applied the user's newest Twitch list as the authoritative Twitch mapping.
+- Cere corrected to `cere____`; Titohc corrected to `tit0hc`; Bertok set to `el_bertok`.
+- Player display name changed from Tencachi to Tencachy.
+- Removed the stale `Feto` live-channel record by rebuilding `live-channels.json` from the participant roster.
+- Clips and Lives now derive their selectable Twitch player pool from the same current participant/Twitch mapping.
