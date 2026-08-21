@@ -165,3 +165,9 @@ Expanded Rasgos with the supplied trait catalog and wiki links, and added the re
 
 ## v51
 - Corrected zigurathz Twitch URL in participant data and live-channels database to `https://www.twitch.tv/zigurathz`.
+
+
+## v52 — Rosa Koala and profile photos
+- Added `rosa koala` as a participant with Twitch `rosa_koala`.
+- Corrected participant display name and Twitch for `zigurathz`.
+- Updated profile images for Rosa Koala, meremiau, Nemma, Leissar, Liss, and zigurathz from the supplied files.
