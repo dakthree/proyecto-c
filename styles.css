@@ -1375,3 +1375,27 @@ code{
   .dice-face-top{transform:rotateX(90deg) translateZ(60px)}
   .dice-face-bottom{transform:rotateX(-90deg) translateZ(60px)}
 }
+
+/* LORE TEXT EXPEDIENT */
+.classified-lore-text{
+  max-height:620px;
+  overflow:auto;
+  padding:5px 14px 20px 2px;
+  color:#aaa295;
+  line-height:1.7;
+  font-size:13px;
+}
+.classified-lore-text h4{
+  margin:24px 0 8px;
+  color:#d0c5b2;
+  font-family:"Archivo Black",sans-serif;
+  font-size:17px;
+  letter-spacing:.02em;
+  text-transform:uppercase;
+}
+.classified-lore-text h4:first-child{margin-top:0}
+.classified-lore-text p{margin:0 0 13px}
+.classified-lore-text strong{color:#d9cdb9}
+.classified-lore-text::-webkit-scrollbar{width:6px}
+.classified-lore-text::-webkit-scrollbar-track{background:#141412}
+.classified-lore-text::-webkit-scrollbar-thumb{background:#4b4034}

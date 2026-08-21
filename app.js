@@ -182,6 +182,7 @@ setInterval(refreshLiveChannels, 60_000);
 const timeline = [
   {date:'20 AGOSTO 2026',title:'REUNIÓN'},
   {date:'21 AGOSTO 2026',title:'PRÓLOGO'},
+  {date:'21 AGOSTO 2026',title:'PRÓLOGO — PARTE II'},
   {date:'28 AGOSTO 2026',title:'ACTO I'},
   {date:'29 AGOSTO 2026',title:'ACTO I'},
   {date:'30 AGOSTO 2026',title:'ACTO I'},
@@ -195,12 +196,26 @@ const timeline = [
   {date:'13 SEPTIEMBRE 2026',title:'ACTO III'}
 ];
 
-const characters = Array.from({length:6}, () => ({
-  name:'DESCONOCIDO',
-  role:'DESCONOCIDO',
-  status:'DESCONOCIDO',
-  desc:'DESCONOCIDA'
-}));
+const characters = [
+  ...Array.from({length:6}, () => ({
+    name:'DESCONOCIDO',
+    role:'DESCONOCIDO',
+    status:'DESCONOCIDO',
+    desc:'DESCONOCIDA'
+  })),
+  {
+    name:'Dr. Mercer',
+    role:'CIENTÍFICO',
+    status:'EN EL BÚNKER',
+    desc:'Científico que estudiaba el virus en los niveles inferiores del búnker.'
+  },
+  {
+    name:'Comandante de la División 29',
+    role:'COMANDANTE',
+    status:'ACTIVO',
+    desc:'Paranoico, furioso y radical. Convencido de que los científicos son responsables del virus y dispuesto a eliminar cualquier amenaza para contenerlo.'
+  }
+];
 
 let clips = [];
 let clipPlayers = [];
@@ -242,13 +257,41 @@ const loreDetailTitle=document.getElementById('loreDetailTitle');
 const loreDetailText=document.getElementById('loreDetailText');
 const loreMedia=document.getElementById('loreMedia');
 
+const loreParteII = `
+<h4>La Ilusión de Seguridad</h4>
+<p>Los primeros días del apocalipsis sumieron al mundo en el caos absoluto, pero un afortunado grupo de civiles (los jugadores) logró ser evacuado a un inmenso búnker subterráneo gestionado por una especie de coalición militar y científica. Durante un tiempo, la vida allí abajo parecía tranquila.</p>
+<p>Sin embargo, los civiles tenían prohibido el acceso a los niveles inferiores. Allí, el <strong>Dr. Mercer y su equipo de científicos</strong> llevaban a cabo diversas pruebas e investigaciones sobre el nuevo virus que convertía a todo el infectado en un cadáver andante.</p>
+
+<h4>El Detonante</h4>
+<p>La tensión en el búnker escalaba. Los guardias veían cosas extrañas, escuchaban gritos ahogados desde los conductos y notaban que la "investigación para la cura" se parecía cada vez más a una carnicería.</p>
+<p>El punto de no retorno ocurrió a la hora de la comida, en el abarrotado comedor del búnker. El <strong>Comandante de los guardias</strong>, presa de la paranoia y la furia, irrumpió en la sala flanqueado por sus hombres más leales. Agarró a uno de los científicos principales por el cuello de la bata y le exigió a gritos saber dónde demonios se escondía el Dr. Mercer y qué estaban creando realmente.</p>
+<p>El científico, aterrorizado y leal a Mercer, se negó a hablar. Sin mediar una palabra más, <strong>el Comandante sacó su arma y le voló la cabeza delante de todos los civiles presentes</strong>.</p>
+
+<h4>El Discurso y el Protocolo de Limpieza</h4>
+<p>Con el cadáver del científico desangrándose en el suelo del comedor, el Comandante se dirigió a sus tropas y a los aterrorizados supervivientes. En ese instante, nació la ideología radical de <strong>La División 29</strong>.</p>
+<p>El Comandante declaró que no existía ninguna cura. Acusó a los científicos del mundo de ser los verdaderos culpables de haber desatado el virus zombi por jugar a ser dioses. Dictaminó que todos los inventos de Mercer eran aberraciones biológicas y que la única forma de detener la propagación era la destrucción y la contención absoluta.</p>
+<p>Su orden fue clara: <strong>Nadie ni nada sale de este búnker, excepto ellos.</strong> El Comandante y sus hombres abandonaron el comedor y fueron a activar el <strong>"Protocolo de Limpieza"</strong>: inundar el sistema de ventilación de la zona civil y científica con un gas venenoso letal para aniquilar a todos los presentes y enterrar los secretos de Mercer para siempre.</p>
+
+<h4>La intervención de Mercer</h4>
+<p>Con las alarmas sonando en rojo y el siseo del gas tóxico empezando a filtrarse por las rejillas del techo, el pánico estalló. Estaban condenados a morir asfixiados como ratas de laboratorio.</p>
+<p>Pero de repente, apareció de un escondite el mismísimo <strong>Dr. Mercer</strong>. Les arrojó unas cuantas <strong>máscaras antigás</strong> y les indicó que la única forma de salir con vida era descender a los túneles del nivel inferior, una zona que ya había sido invadida por zombis errantes.</p>
+
+<h4>El Descenso y la Huida</h4>
+<p>Arriba, se escuchaban los ecos de los disparos; los guardias de la División 29 estaban ejecutando a cualquier científico o civil que intentara huir. Abajo, los jugadores tenían que abrirse paso a golpes en el lodo y la oscuridad contra los infectados que bloqueaban la salida de emergencia.</p>
+<p>Tras un combate extenuante y casi sin oxígeno, los jugadores lograron llegar a la pesada escotilla de la salida de emergencia que daba al exterior. Una vez en la superficie, <strong>destrozaron y sepultaron la salida de emergencia tras ellos</strong>.</p>
+<p>La División 29 quedó atrapada bajo tierra lidiando con los zombis y el gas, mientras los jugadores, agotados y traumatizados, huyeron hacia la noche.</p>
+`;
+
 const loreEntries=timeline.map((t,i)=>({
   ...t,
   id:`lore-${i}`,
   youtube:t.title==='PRÓLOGO'?'https://www.youtube.com/watch?v=cH18-brGf7k':null,
+  htmlText:t.title==='PRÓLOGO — PARTE II'?loreParteII:null,
   text:t.title==='PRÓLOGO'
     ?'Archivo audiovisual correspondiente al PRÓLOGO.'
-    :'Falta información'
+    :t.title==='PRÓLOGO — PARTE II'
+      ?'Expediente narrativo: el origen de la División 29 y la huida del búnker.'
+      :'Falta información'
 }));
 
 function openLoreEntry(entry,element){
@@ -265,6 +308,8 @@ function openLoreEntry(entry,element){
     loreMedia.innerHTML=id
       ? `<div class="lore-video-wrap"><iframe src="https://www.youtube.com/embed/${id}?rel=0" title="Proyecto C - ${entry.title}" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`
       : `<div class="classified-placeholder"><span>EXPEDIENTE BLOQUEADO</span><strong>Falta información</strong></div>`;
+  } else if(entry.htmlText){
+    loreMedia.innerHTML=`<article class="classified-lore-text">${entry.htmlText}</article>`;
   } else {
     loreMedia.innerHTML=`<div class="classified-placeholder"><span>EXPEDIENTE</span><strong>Falta información</strong><p>Este espacio queda preparado para añadir el lore de ${entry.title} cuando lo tengamos.</p></div>`;
   }

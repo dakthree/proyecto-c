@@ -171,3 +171,9 @@ Expanded Rasgos with the supplied trait catalog and wiki links, and added the re
 - Added `rosa koala` as a participant with Twitch `rosa_koala`.
 - Corrected participant display name and Twitch for `zigurathz`.
 - Updated profile images for Rosa Koala, meremiau, Nemma, Leissar, Liss, and zigurathz from the supplied files.
+
+
+## v53 — Lore Parte II + personajes
+- Added `PRÓLOGO — PARTE II` directly below PRÓLOGO in the Lore timeline.
+- PRÓLOGO keeps the YouTube video; PRÓLOGO — PARTE II opens the supplied classified narrative.
+- Added Dr. Mercer and the Commander of Division 29 to the Characters tab with concise descriptions based only on the supplied prologue.
