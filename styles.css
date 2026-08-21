@@ -1399,3 +1399,18 @@ code{
 .classified-lore-text::-webkit-scrollbar{width:6px}
 .classified-lore-text::-webkit-scrollbar-track{background:#141412}
 .classified-lore-text::-webkit-scrollbar-thumb{background:#4b4034}
+
+/* Completed lore entries: full diagonal strike across the event card */
+.lore-item.lore-completed{
+  overflow:hidden;
+}
+.lore-item.lore-completed::after{
+  left:-10%;
+  width:120%;
+  top:50%;
+  height:4px;
+  background:#a5322e;
+  transform:rotate(-8deg);
+  transform-origin:center;
+  box-shadow:0 1px 4px rgba(0,0,0,.65);
+}

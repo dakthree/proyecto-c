@@ -181,8 +181,8 @@ setInterval(refreshLiveChannels, 60_000);
 
 const timeline = [
   {date:'20 AGOSTO 2026',title:'REUNIÓN'},
-  {date:'21 AGOSTO 2026',title:'PRÓLOGO'},
-  {date:'21 AGOSTO 2026',title:'PRÓLOGO — PARTE II'},
+  {date:'21 AGOSTO 2026',title:'PRÓLOGO VIDEO'},
+  {date:'21 AGOSTO 2026',title:'PRÓLOGO: RESUMEN'},
   {date:'28 AGOSTO 2026',title:'ACTO I'},
   {date:'29 AGOSTO 2026',title:'ACTO I'},
   {date:'30 AGOSTO 2026',title:'ACTO I'},
@@ -197,24 +197,24 @@ const timeline = [
 ];
 
 const characters = [
-  ...Array.from({length:6}, () => ({
-    name:'DESCONOCIDO',
-    role:'DESCONOCIDO',
-    status:'DESCONOCIDO',
-    desc:'DESCONOCIDA'
-  })),
   {
     name:'Dr. Mercer',
     role:'CIENTÍFICO',
-    status:'EN EL BÚNKER',
+    status:'PARADERO DESCONOCIDO',
     desc:'Científico que estudiaba el virus en los niveles inferiores del búnker.'
   },
   {
     name:'Comandante de la División 29',
     role:'COMANDANTE',
-    status:'ACTIVO',
+    status:'PARADERO DESCONOCIDO',
     desc:'Paranoico, furioso y radical. Convencido de que los científicos son responsables del virus y dispuesto a eliminar cualquier amenaza para contenerlo.'
-  }
+  },
+  ...Array.from({length:6}, () => ({
+    name:'DESCONOCIDO',
+    role:'DESCONOCIDO',
+    status:'DESCONOCIDO',
+    desc:'DESCONOCIDA'
+  }))
 ];
 
 let clips = [];
@@ -285,9 +285,9 @@ const loreParteII = `
 const loreEntries=timeline.map((t,i)=>({
   ...t,
   id:`lore-${i}`,
-  youtube:t.title==='PRÓLOGO'?'https://www.youtube.com/watch?v=cH18-brGf7k':null,
-  htmlText:t.title==='PRÓLOGO — PARTE II'?loreParteII:null,
-  text:t.title==='PRÓLOGO'
+  youtube:t.title==='PRÓLOGO VIDEO'?'https://www.youtube.com/watch?v=cH18-brGf7k':null,
+  htmlText:t.title==='PRÓLOGO: RESUMEN'?loreParteII:null,
+  text:t.title==='PRÓLOGO VIDEO'
     ?'Archivo audiovisual correspondiente al PRÓLOGO.'
     :t.title==='PRÓLOGO — PARTE II'
       ?'Expediente narrativo: el origen de la División 29 y la huida del búnker.'
@@ -315,7 +315,7 @@ function openLoreEntry(entry,element){
   }
 }
 
-timelineEl.innerHTML=loreEntries.map(entry=>`<article class="lore-item ${entry.title==='REUNIÓN'?'lore-completed':''}" data-lore-id="${entry.id}" role="button" tabindex="0" aria-label="Abrir ${entry.title}"><small>${entry.date}</small><h3>${entry.title}</h3></article>`).join('');
+timelineEl.innerHTML=loreEntries.map(entry=>`<article class="lore-item ${(entry.title==='REUNIÓN'||entry.title==='PRÓLOGO VIDEO')?'lore-completed':''}" data-lore-id="${entry.id}" role="button" tabindex="0" aria-label="Abrir ${entry.title}"><small>${entry.date}</small><h3>${entry.title}</h3></article>`).join('');
 
 timelineEl.querySelectorAll('.lore-item').forEach((item,index)=>{
   const entry=loreEntries[index];
@@ -328,7 +328,7 @@ timelineEl.querySelectorAll('.lore-item').forEach((item,index)=>{
   });
 });
 
-const initialEntry=loreEntries.find(e=>e.title==='PRÓLOGO') || loreEntries[0];
+const initialEntry=loreEntries.find(e=>e.title==='PRÓLOGO VIDEO') || loreEntries[0];
 const initialElement=timelineEl.querySelector(`[data-lore-id="${initialEntry.id}"]`);
 openLoreEntry(initialEntry,initialElement);
 const charGrid=document.getElementById('characterGrid');charGrid.innerHTML=characters.map(c=>`<article class="character-card"><div class="char-photo"><img src="/assets/silueta.png" alt="Silueta de personaje desconocido" loading="lazy" onerror="this.onerror=null;this.src='/assets/silueta.png';"><span class="silhouette-label">IDENTIDAD OCULTA</span></div><h3>${c.name}</h3><small>TRABAJO: ${c.role}</small><p>${c.desc}</p><span class="char-status">${c.status}</span></article>`).join('');

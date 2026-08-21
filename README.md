@@ -177,3 +177,10 @@ Expanded Rasgos with the supplied trait catalog and wiki links, and added the re
 - Added `PRÓLOGO — PARTE II` directly below PRÓLOGO in the Lore timeline.
 - PRÓLOGO keeps the YouTube video; PRÓLOGO — PARTE II opens the supplied classified narrative.
 - Added Dr. Mercer and the Commander of Division 29 to the Characters tab with concise descriptions based only on the supplied prologue.
+
+
+## v54
+- Renamed lore entries to `PRÓLOGO VIDEO` and `PRÓLOGO: RESUMEN`.
+- `PRÓLOGO VIDEO` now uses the same completed diagonal red strike as REUNIÓN, edge-to-edge.
+- Moved Dr. Mercer and the Commander of Division 29 to the first two character slots.
+- Set both characters' status to `PARADERO DESCONOCIDO`.
