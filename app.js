@@ -222,13 +222,28 @@ let clipPlayers = [];
 let clipDataLoaded = false;
 
 const navLinks = [...document.querySelectorAll('[data-tab]')];
+let previousTabId = document.querySelector('.tab-panel.active')?.id || 'inicio';
 function openTab(id){
+  const currentActive = document.querySelector('.tab-panel.active');
+  if(currentActive && currentActive.id !== id && id === 'pl-bloqueado'){
+    previousTabId = currentActive.id;
+  }
   document.querySelectorAll('.tab-panel').forEach(el=>el.classList.toggle('active',el.id===id));
   navLinks.forEach(a=>a.classList.toggle('active',a.dataset.tab===id));
   history.replaceState(null,'','#'+id);
   window.scrollTo({top:0,behavior:'smooth'});
 }
 navLinks.forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openTab(a.dataset.tab)}));
+document.getElementById('pl-bloqueado')?.addEventListener('click', e=>{
+  if(e.target.closest('.future-card')){
+    openTab(previousTabId);
+  }
+});
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape' && document.getElementById('pl-bloqueado')?.classList.contains('active')){
+    openTab(previousTabId);
+  }
+});
 const initial = location.hash.slice(1); if(initial && document.getElementById(initial)) openTab(initial);
 
 const EVENT = new Date(EVENT_DATE);
