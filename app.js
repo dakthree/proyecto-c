@@ -70,10 +70,18 @@ function liveSourceKey(source){
   return [source.platform, source.channel || '', source.videoId || '', source.url || ''].join('|');
 }
 
+function getTwitchParents(){
+  const host = location.hostname;
+  if(host === 'proyecto.win' || host === 'www.proyecto.win') return ['proyecto.win','www.proyecto.win'];
+  if(!host) return [];
+  return [host];
+}
 function twitchEmbedUrl(source){
   if (!/^https?:$/.test(location.protocol) || !location.hostname) return null;
-  const parent = location.hostname.replace(/^www\./i, '');
-  return `https://player.twitch.tv/?channel=${encodeURIComponent(source.channel)}&parent=${encodeURIComponent(parent)}&autoplay=true`;
+  const parents = getTwitchParents();
+  if(!parents.length) return null;
+  const parentQs = parents.map(p=>`parent=${encodeURIComponent(p)}`).join('&');
+  return `https://player.twitch.tv/?channel=${encodeURIComponent(source.channel)}&${parentQs}&autoplay=true`;
 }
 
 function renderLiveSource(source, force=false){
@@ -366,13 +374,13 @@ let clipActualSlug=null;
 function clipKey(c){ return `${c.platform}|${c.id||c.videoId||c.url||''}`; }
 
 function twitchClipSrc(c){
-  const parent=location.hostname.replace(/^www\\./i,'');
-  if(!parent || !c?.id) return '';
-  const params=new URLSearchParams({
-    clip:String(c.id),
-    parent,
-    autoplay:'true',
-  });
+  if(!c?.id) return '';
+  const parents = getTwitchParents();
+  if(!parents.length) return '';
+  const params=new URLSearchParams();
+  params.set('clip', String(c.id));
+  parents.forEach(p=>params.append('parent', p));
+  params.set('autoplay','true');
   return `https://clips.twitch.tv/embed?${params.toString()}`;
 }
 function youtubeClipSrc(c){
