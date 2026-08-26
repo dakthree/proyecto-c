@@ -1,4 +1,4 @@
-const EVENT_DATE = '2026-08-21T18:00:00+02:00';
+const EVENT_DATE = '2026-08-28T18:00:00+02:00';
 
 const players = [
 {id:'solcius',name:'Solcius',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'dead',profession:'PENDIENTE',positiveTraits:'PENDIENTE',negativeTraits:'PENDIENTE',twitch:'https://www.twitch.tv/Solcius',youtube:null,bio:'Perfil pendiente de información del personaje.'},

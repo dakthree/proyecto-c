@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&family=Special+Elite&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="proyectolike/proyectolike.css">
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -26,10 +27,11 @@
       <a href="#personajes" data-tab="personajes">PERSONAJES</a>
       <a href="#mapa" data-tab="mapa">MAPA</a>
       <a href="#clips" data-tab="clips">CLIPS</a>
-      <a href="#futuro1" data-tab="futuro1">MN</a>
+      <a href="#futuro1" data-tab="futuro1">Mercado Negro</a>
       <a href="#futuro2" data-tab="futuro2">?</a>
       <a href="#dados" data-tab="dados" class="dice-nav">DADOS</a>
       <a href="#donaciones" data-tab="donaciones" class="donate-nav">DONACIONES</a>
+      <a href="#proyectolike" data-tab="proyectolike" class="pl-nav">PL</a>
     </nav>
     <div class="live-status"><i></i><span id="liveStatus">PRÓXIMAMENTE</span></div>
   </header>
@@ -45,7 +47,7 @@
         <div class="hero-content">
           <div class="case-stamp">EXPEDIENTE C-01</div>
           <p class="eyebrow">NO HAY SEGUNDAS OPORTUNIDADES: LA MUERTE ES PARA SIEMPRE</p>
-          <h1>PROYECTO <span>C</span></h1>
+          <h1>PROYECTO: <span>CHLOE</span></h1>
           <p class="hero-copy">El mundo cayó. Ellos sobrevivieron. Ahora tendrán que descubrir por qué.</p>
           <div class="countdown-card">
             <div class="countdown-header"><span>INICIO DEL EVENTO</span><b id="eventDate">FECHA POR CONFIRMAR</b></div>
@@ -597,9 +599,22 @@
       </div>
     </section>
 
+    <!-- ═══════════════════════════════════════════════════════════
+         PROYECTOLIKE — módulo aislado (MICROFASE 0.1 · INTEGRACIÓN)
+         JS/CSS propios en /proyectolike/. app.js NO se modifica:
+         el sistema de data-tab del sitio ya conecta este panel.
+         ═══════════════════════════════════════════════════════════ -->
+    <section id="proyectolike" class="tab-panel">
+      <div class="pl-placeholder">
+        <h1 class="pl-placeholder-title">PROYECTOLIKE</h1>
+        <p class="pl-placeholder-sub">MICROFASE 0.1 — INTEGRACIÓN</p>
+      </div>
+    </section>
+
   </main>
 
   <div class="modal" id="playerModal" aria-hidden="true"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><div id="modalContent"></div></div></div>
   <script src="app.js"></script>
+  <script src="proyectolike/proyectolike.js"></script>
 </body>
 </html>
