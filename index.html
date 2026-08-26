@@ -4,12 +4,40 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#141411">
+  <meta name="app-version" content="2026-08-26-9cefd89-1845">
+  <script>
+  // Cache busting por versión de despliegue — detección temprana
+  (function(){
+    try{
+      var VERSION_URL='version.json';
+      var STORAGE_KEY='project_app_version';
+      var RELOAD_GUARD='project_app_reload_guard';
+      var SESSION_GUARD='project_app_version_reloading';
+      fetch(VERSION_URL+'?t='+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache'}})
+        .then(function(r){return r.ok?r.json():null;})
+        .then(function(data){
+          if(!data||!data.version) return;
+          var current=String(data.version);
+          var stored=localStorage.getItem(STORAGE_KEY);
+          if(!stored){ localStorage.setItem(STORAGE_KEY,current); return; }
+          if(stored!==current){
+            if(localStorage.getItem(RELOAD_GUARD)===current) return;
+            if(sessionStorage.getItem(SESSION_GUARD)===current) return;
+            localStorage.setItem(STORAGE_KEY,current);
+            localStorage.setItem(RELOAD_GUARD,current);
+            try{ sessionStorage.setItem(SESSION_GUARD,current); }catch(e){}
+            location.reload();
+          }
+        }).catch(function(){});
+    }catch(e){}
+  })();
+  </script>
   <title>PROYECTO C — Archivo de Supervivencia</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&family=Special+Elite&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="proyectolike/proyectolike.css">
+  <link rel="stylesheet" href="styles.css?v=2026-08-26-9cefd89-1845">
+  <link rel="stylesheet" href="proyectolike/proyectolike.css?v=2026-08-26-9cefd89-1845">
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -624,7 +652,7 @@
   </main>
 
   <div class="modal" id="playerModal" aria-hidden="true"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><div id="modalContent"></div></div></div>
-  <script src="app.js"></script>
-  <script src="proyectolike/proyectolike.js"></script>
+  <script src="app.js?v=2026-08-26-9cefd89-1845"></script>
+  <script src="proyectolike/proyectolike.js?v=2026-08-26-9cefd89-1845"></script>
 </body>
 </html>

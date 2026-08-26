@@ -82,7 +82,7 @@
     { id: "soulreaperdk", name: "SoulReaperDK", profession: "Electricista", status: "registered" },
     { id: "storvi", name: "Storvi", profession: "PENDIENTE", status: "registered" },
     { id: "tamashiiv", name: "TAMASHIIV", profession: "Guardia de seguridad", status: "registered" },
-    { id: "temecuidas", name: "TeMeCuidaS", profession: "Enfermera", status: "registered" },
+    { id: "batracio", name: "Batracio", profession: "Desempleado", status: "registered" },
     { id: "tencachi", name: "Tencachy", profession: "PENDIENTE", status: "registered" },
     { id: "terohis", name: "Terohis", profession: "Sastre", status: "registered" },
     { id: "titohc", name: "Titohc", profession: "Guardia de seguridad", status: "registered" },

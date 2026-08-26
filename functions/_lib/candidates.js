@@ -220,9 +220,9 @@ export default [
     "youtube": null
   },
   {
-    "player": "TeMeCuidaS",
-    "twitch": null,
-    "youtube": null
+    "player": "Batracio",
+    "twitch": "https://www.twitch.tv/batraciosr",
+    "youtube": "https://www.youtube.com/@batraciosr"
   },
   {
     "player": "Tencachy",

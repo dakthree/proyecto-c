@@ -1,10 +1,22 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
-const candidates = require(path.join(ROOT, 'live-channels.json'));
+function getCandidates() {
+  try {
+    const raw = fs.readFileSync(path.join(ROOT, 'live-channels.json'), 'utf8');
+    const data = JSON.parse(raw);
+    return Array.isArray(data) ? data : [];
+  } catch (e) {
+    console.error('Failed to load live-channels.json:', e.message);
+    return [];
+  }
+}
+// Initial load kept for compatibility, but dynamic reads use getCandidates() per request
+const candidates = getCandidates();
 
 let twitchToken = null;
 let twitchTokenExpiresAt = 0;
@@ -45,7 +57,7 @@ async function twitchLive() {
   // Do not use Twitch search because approximate matches can select the wrong channel.
   // HOME LIVE: only the Twitch login explicitly stored for each participant is used.
   // YouTube URLs are deliberately ignored for this Twitch player list.
-  const mapped = candidates
+  const mapped = getCandidates()
     .map(candidate => ({
       candidate,
       login: candidate.twitch ? String(candidate.twitch).split('/').filter(Boolean).pop().toLowerCase() : null
@@ -142,7 +154,7 @@ async function youtubeLiveForChannel(channelId, candidate) {
 
 async function youtubeLive() {
   if (!process.env.YOUTUBE_API_KEY) return [];
-  const ytCandidates = candidates.filter(x => x.youtube);
+  const ytCandidates = getCandidates().filter(x => x.youtube);
   const results = await Promise.all(ytCandidates.map(async candidate => {
     try {
       const ref = parseYoutube(candidate.youtube);
@@ -185,7 +197,7 @@ function weekWindows(startIso,endDate){
 }
 async function twitchClips(){
   if(!process.env.TWITCH_CLIENT_ID||!process.env.TWITCH_CLIENT_SECRET)return[];
-  const tp=candidates.filter(x=>x.twitch);
+  const tp=getCandidates().filter(x=>x.twitch);
   if(!tp.length)return[];
 
   const users=await twitchUsersByLogin(tp.map(x=>String(x.twitch).split('/').filter(Boolean).pop()));
@@ -271,7 +283,7 @@ async function twitchClips(){
 }
 async function youtubeClips(){
   if(!process.env.YOUTUBE_API_KEY)return[]; const out=[];
-  for(const c of candidates.filter(x=>x.youtube)){
+  for(const c of getCandidates().filter(x=>x.youtube)){
     try{
       const id=await youtubeChannelId(parseYoutube(c.youtube)); if(!id)continue;
       const url=new URL('https://www.googleapis.com/youtube/v3/search');
@@ -287,12 +299,15 @@ async function youtubeClips(){
   return out;
 }
 app.get('/api/clips',async(_req,res)=>{
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
   if(Date.now()<clipCache.expiresAt){
     return res.json({
       clips:clipCache.data,
       checkedAt:new Date().toISOString(),
       startDate:CLIP_START_DATE,
-      twitchPlayers:candidates.filter(x=>x.twitch).map(x=>x.player)
+      twitchPlayers:getCandidates().filter(x=>x.twitch).map(x=>x.player)
     });
   }
   try{
@@ -301,7 +316,7 @@ app.get('/api/clips',async(_req,res)=>{
     clipCache={expiresAt:Date.now()+30000,data:sorted};
     res.json({
       clips:sorted,
-      twitchPlayers:candidates.filter(x=>x.twitch).map(x=>x.player),
+      twitchPlayers:getCandidates().filter(x=>x.twitch).map(x=>x.player),
       checkedAt:new Date().toISOString(),
       startDate:CLIP_START_DATE,
       errors:[]
@@ -309,7 +324,7 @@ app.get('/api/clips',async(_req,res)=>{
   }catch(e){
     res.status(500).json({
       clips:[],
-      twitchPlayers:candidates.filter(x=>x.twitch).map(x=>x.player),
+      twitchPlayers:getCandidates().filter(x=>x.twitch).map(x=>x.player),
       error:e.message,
       startDate:CLIP_START_DATE
     })
@@ -323,6 +338,9 @@ app.get('/api/health', (_req,res)=>res.json({
 }));
 
 app.get('/api/live', async (_req, res) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
   try {
     const live = await twitchLive();
     res.json({
@@ -344,7 +362,22 @@ app.get('/api/live', async (_req, res) => {
   }
 });
 
-app.use(express.static(ROOT));
+// Version file: never cache (used for deploy detection)
+app.get('/version.json', (req, res) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  res.sendFile(path.join(ROOT, 'version.json'));
+});
+
+app.use(express.static(ROOT, {
+  // Allow CDN caching for versioned assets; version.json handled above
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('version.json')) {
+      res.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+    }
+  }
+}));
 app.use((_req, res) => res.sendFile(path.join(ROOT, 'index.html')));
 
 app.listen(PORT, () => {

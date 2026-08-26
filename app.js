@@ -1,4 +1,5 @@
 const EVENT_DATE = '2026-08-28T18:00:00+02:00';
+const APP_VERSION = "2026-08-26-9cefd89-1845";
 
 const players = [
 {id:'solcius',name:'Solcius',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'dead',profession:'PENDIENTE',positiveTraits:'PENDIENTE',negativeTraits:'PENDIENTE',twitch:'https://www.twitch.tv/Solcius',youtube:null,bio:'Perfil pendiente de información del personaje.'},
@@ -45,7 +46,7 @@ const players = [
 {id:'soulreaperdk',name:'SoulReaperDK',image:'/assets/players/soulreaperdk.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Electricista',positiveTraits:'Gimnasta, Jugador de beisbol',negativeTraits:'Visible, Sanador lento',twitch:'https://www.twitch.tv/soulreaperdk_',youtube:'https://www.youtube.com/channel/UCwvqn9OZhmkLBjHOw0us5ZA',bio:'Perfil pendiente de información del personaje.'},
 {id:'storvi',name:'Storvi',image:'/assets/players/storvi.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'PENDIENTE',positiveTraits:'PENDIENTE',negativeTraits:'PENDIENTE',twitch:'https://www.twitch.tv/storviii',youtube:null,bio:'Perfil pendiente de información del personaje.'},
 {id:'tamashiiv',name:'TAMASHIIV',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Guardia de seguridad',positiveTraits:'Albañil, Artesano',negativeTraits:'Cobarde, Comilón',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
-{id:'temecuidas',name:'TeMeCuidaS',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Enfermera',positiveTraits:'Excursionista, En forma',negativeTraits:'Pacifista, Sueño inquieto',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
+{id:'batracio',name:'Batracio',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Desempleado',positiveTraits:'Conocimiento de la naturaleza, Manitas',negativeTraits:'Claustrofóbico, Visible',twitch:'https://www.twitch.tv/batraciosr',youtube:'https://www.youtube.com/@batraciosr',bio:'Perfil pendiente de información del personaje.'},
 {id:'tencachi',name:'Tencachy',image:'/assets/players/tencachi.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'PENDIENTE',positiveTraits:'PENDIENTE',negativeTraits:'PENDIENTE',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
 {id:'terohis',name:'Terohis',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Sastre',positiveTraits:'Costurero, En forma',negativeTraits:'Dormilón, Cobarde',twitch:null,youtube:null,bio:'Perfil pendiente de información del personaje.'},
 {id:'titohc',name:'Titohc',image:'/assets/players/titohc.webp',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'registered',profession:'Guardia de seguridad',positiveTraits:'Peleón, Socorrista',negativeTraits:'Sueño inquieto, Dedos gordos',twitch:'https://www.twitch.tv/tit0hc',youtube:null,bio:'Perfil pendiente de información del personaje.'},
@@ -163,7 +164,7 @@ async function refreshLiveChannels(){
   selector.disabled=true;
   if(count) count.textContent='COMPROBANDO...';
   try{
-    const res=await fetch(API_ENDPOINT, {cache:'no-store'});
+    const res=await fetch(API_ENDPOINT + '?v=' + encodeURIComponent(APP_VERSION), {cache:'no-store'});
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload=await res.json();
     onlineSources=Array.isArray(payload.live) ? payload.live : [];
@@ -491,7 +492,7 @@ async function cargarListaJugadores(){
 
   // live-channels.json is the source of truth for all explicit Twitch associations.
   try{
-    const res=await fetch('/live-channels.json',{cache:'no-store'});
+    const res=await fetch('/live-channels.json?v=' + encodeURIComponent(APP_VERSION));
     if(res.ok){
       const rows=await res.json();
       if(Array.isArray(rows)){
@@ -659,7 +660,7 @@ clipGrid.addEventListener('click',e=>{
 
 async function loadClips(){
   try{
-    const res=await fetch('/api/clips',{cache:'no-store'});
+    const res=await fetch('/api/clips?v=' + encodeURIComponent(APP_VERSION),{cache:'no-store'});
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload=await res.json();
     const previousKey=selectedClipKey;
