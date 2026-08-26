@@ -1,0 +1,33 @@
+/* ═══════════════════════════════════════════════════════════════
+   PROYECTOLIKE — MICROFASE 0.1 · INTEGRACIÓN
+   Todos los selectores están scopeados bajo #proyectolike.
+   Prefijo de clases del módulo: pl-.
+   ═══════════════════════════════════════════════════════════════ */
+
+#proyectolike .pl-placeholder{
+  min-height:100vh;
+  display:grid;
+  place-content:center;
+  text-align:center;
+  padding:120px 5vw 80px;
+  background:
+    radial-gradient(circle at 16% 6%, rgba(122,42,33,.10), transparent 34%),
+    radial-gradient(circle at 84% 2%, rgba(64,74,52,.12), transparent 42%),
+    #0b0c0a;
+  color:#e7dec8;
+}
+#proyectolike .pl-placeholder-title{
+  margin:0 0 14px;
+  font-family:'Archivo Black',sans-serif;
+  font-size:clamp(46px,7vw,84px);
+  line-height:.9;
+  letter-spacing:-2px;
+  color:#efe6d2;
+  text-shadow:3px 4px 0 rgba(0,0,0,.4);
+}
+#proyectolike .pl-placeholder-sub{
+  margin:0;
+  font:18px 'Special Elite',monospace;
+  letter-spacing:2.2px;
+  color:#bdb39d;
+}

@@ -1,0 +1,302 @@
+export default [
+  {
+    "player": "Solcius",
+    "twitch": "https://www.twitch.tv/Solcius",
+    "youtube": null
+  },
+  {
+    "player": "Abost",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "Acedion87",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "Andreshouse",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "AnselHoenheim",
+    "twitch": "https://www.twitch.tv/anselhoenheim",
+    "youtube": null
+  },
+  {
+    "player": "ArCe",
+    "twitch": "https://www.twitch.tv/arcedelah",
+    "youtube": null
+  },
+  {
+    "player": "Asssucar",
+    "twitch": "https://www.twitch.tv/asssucar",
+    "youtube": null
+  },
+  {
+    "player": "BasqueWanderer",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "BrunusOP",
+    "twitch": "https://www.twitch.tv/brunusop",
+    "youtube": null
+  },
+  {
+    "player": "Cere",
+    "twitch": "https://www.twitch.tv/cere____",
+    "youtube": null
+  },
+  {
+    "player": "elpelas97",
+    "twitch": "https://www.twitch.tv/elpelas97",
+    "youtube": null
+  },
+  {
+    "player": "ElPonja92",
+    "twitch": "https://www.twitch.tv/elponja92",
+    "youtube": null
+  },
+  {
+    "player": "Emiliano Roca",
+    "twitch": "https://www.twitch.tv/emilianorocaa",
+    "youtube": null
+  },
+  {
+    "player": "evarath",
+    "twitch": "https://www.twitch.tv/evarathz",
+    "youtube": null
+  },
+  {
+    "player": "Ferrox",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "Bertok",
+    "twitch": "https://www.twitch.tv/el_bertok",
+    "youtube": null
+  },
+  {
+    "player": "Fichi",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "Fetodevaca",
+    "twitch": "https://www.twitch.tv/fetodevaca",
+    "youtube": null
+  },
+  {
+    "player": "GoblinPeke",
+    "twitch": "https://www.twitch.tv/goblinpeke",
+    "youtube": null
+  },
+  {
+    "player": "Hax",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "JosueTn",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "Juanen",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "K4la",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "Kira",
+    "twitch": "https://www.twitch.tv/og_kiradr",
+    "youtube": null
+  },
+  {
+    "player": "LaGataRata",
+    "twitch": "https://www.twitch.tv/xkattty",
+    "youtube": null
+  },
+  {
+    "player": "Leissar",
+    "twitch": "https://www.twitch.tv/leissar",
+    "youtube": null
+  },
+  {
+    "player": "Liss",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "lordzacas",
+    "twitch": "https://www.twitch.tv/lordzacas",
+    "youtube": null
+  },
+  {
+    "player": "LuisGG",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "Magikos",
+    "twitch": "https://www.twitch.tv/m4gikos",
+    "youtube": null
+  },
+  {
+    "player": "meremiau",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "Miguel",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "Miniarre",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "Miniyo2",
+    "twitch": "https://www.twitch.tv/miniyo2",
+    "youtube": null
+  },
+  {
+    "player": "Nemma",
+    "twitch": "https://www.twitch.tv/nemmacanon",
+    "youtube": null
+  },
+  {
+    "player": "pupi",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "RastaFrikki",
+    "twitch": "https://www.twitch.tv/rastafrikki",
+    "youtube": null
+  },
+  {
+    "player": "romgarrr",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "Rubaso",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "Sarah",
+    "twitch": "https://www.twitch.tv/sarahgk92",
+    "youtube": null
+  },
+  {
+    "player": "Shikafu6",
+    "twitch": "https://www.twitch.tv/shikafu6",
+    "youtube": null
+  },
+  {
+    "player": "SoulReaperDK",
+    "twitch": "https://www.twitch.tv/soulreaperdk_",
+    "youtube": null
+  },
+  {
+    "player": "Storvi",
+    "twitch": "https://www.twitch.tv/storviii",
+    "youtube": null
+  },
+  {
+    "player": "TAMASHIIV",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "TeMeCuidaS",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "Tencachy",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "Terohis",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "Titohc",
+    "twitch": "https://www.twitch.tv/tit0hc",
+    "youtube": null
+  },
+  {
+    "player": "Toni18",
+    "twitch": "https://www.twitch.tv/tonism18",
+    "youtube": null
+  },
+  {
+    "player": "TyzenH",
+    "twitch": "https://www.twitch.tv/tyzenh",
+    "youtube": null
+  },
+  {
+    "player": "vichum",
+    "twitch": null,
+    "youtube": null
+  },
+  {
+    "player": "xL𝑜K𝑜Vic",
+    "twitch": "https://www.twitch.tv/xlokovic",
+    "youtube": null
+  },
+  {
+    "player": "yonkimiyagui",
+    "twitch": "https://www.twitch.tv/miyagui85",
+    "youtube": null
+  },
+  {
+    "player": "Z3TTII",
+    "twitch": "https://www.twitch.tv/z3ttii",
+    "youtube": null
+  },
+  {
+    "player": "Zelune",
+    "twitch": "https://www.twitch.tv/Zelune86",
+    "youtube": null
+  },
+  {
+    "player": "zigurathz",
+    "twitch": "https://www.twitch.tv/zigurathz",
+    "youtube": null
+  },
+  {
+    "player": "Zonenzonao",
+    "twitch": "https://www.twitch.tv/zonenzonao",
+    "youtube": null
+  },
+  {
+    "player": "Zripht",
+    "twitch": "https://www.twitch.tv/Zripht",
+    "youtube": null
+  },
+  {
+    "player": "winwerin",
+    "twitch": "https://www.twitch.tv/winwerin",
+    "youtube": null
+  },
+  {
+    "player": "rosa koala",
+    "twitch": "https://www.twitch.tv/rosa_koala",
+    "youtube": null
+  }
+];
