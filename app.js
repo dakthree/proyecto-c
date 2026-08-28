@@ -1,5 +1,5 @@
 const EVENT_DATE = '2026-08-28T18:00:00+02:00';
-const APP_VERSION = "2026-08-26-9cefd89-1845";
+const APP_VERSION = "2026-08-28-4d2cc7a-0750";
 
 const players = [
 {id:'solcius',name:'Solcius',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'dead',profession:'PENDIENTE',positiveTraits:'PENDIENTE',negativeTraits:'PENDIENTE',twitch:'https://www.twitch.tv/Solcius',youtube:null,bio:'Perfil pendiente de información del personaje.'},
@@ -306,16 +306,25 @@ const loreParteII = `
 <p>La División 29 quedó atrapada bajo tierra lidiando con los zombis y el gas, mientras los jugadores, agotados y traumatizados, huyeron hacia la noche.</p>
 `;
 
+const loreActoI = `
+<h4>ACTO I</h4>
+<p>Los jugadores que escaparon del bunker bloquearon la salida de emergencia del bunker y, junto a otros que se fueron añadiendo más tarde, acabaron por formar una comunidad en la zona de Dixie.</p>
+<p>Han estado sobreviviendo por la zona como han podido durante cerca de 4 años hasta que...</p>
+<p><strong>Empieza el Acto I.</strong></p>
+`;
+
 const loreEntries=timeline.map((t,i)=>({
   ...t,
   id:`lore-${i}`,
   youtube:t.title==='PRÓLOGO VIDEO'?'https://www.youtube.com/watch?v=cH18-brGf7k':null,
-  htmlText:t.title==='PRÓLOGO: RESUMEN'?loreParteII:null,
+  htmlText:t.title==='PRÓLOGO: RESUMEN'?loreParteII:t.title==='ACTO I'?loreActoI:null,
   text:t.title==='PRÓLOGO VIDEO'
     ?'Archivo audiovisual correspondiente al PRÓLOGO.'
-    :t.title==='PRÓLOGO — PARTE II'
+    :t.title==='PRÓLOGO: RESUMEN'
       ?'Expediente narrativo: el origen de la División 29 y la huida del búnker.'
-      :'Falta información'
+      :t.title==='ACTO I'
+        ?'Los jugadores que escaparon del bunker formaron una comunidad en Dixie. Tras casi 4 años sobreviviendo, empieza el Acto I.'
+        :'Falta información'
 }));
 
 function openLoreEntry(entry,element){
@@ -339,7 +348,7 @@ function openLoreEntry(entry,element){
   }
 }
 
-timelineEl.innerHTML=loreEntries.map(entry=>`<article class="lore-item ${(entry.title==='REUNIÓN'||entry.title==='PRÓLOGO VIDEO')?'lore-completed':''}" data-lore-id="${entry.id}" role="button" tabindex="0" aria-label="Abrir ${entry.title}"><small>${entry.date}</small><h3>${entry.title}</h3></article>`).join('');
+timelineEl.innerHTML=loreEntries.map(entry=>`<article class="lore-item ${(entry.title==='REUNIÓN'||entry.title==='PRÓLOGO VIDEO'||entry.title==='PRÓLOGO: RESUMEN')?'lore-completed':''}" data-lore-id="${entry.id}" role="button" tabindex="0" aria-label="Abrir ${entry.title}"><small>${entry.date}</small><h3>${entry.title}</h3></article>`).join('');
 
 timelineEl.querySelectorAll('.lore-item').forEach((item,index)=>{
   const entry=loreEntries[index];
