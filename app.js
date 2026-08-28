@@ -1,5 +1,5 @@
 const EVENT_DATE = '2026-08-28T18:00:00+02:00';
-const APP_VERSION = "2026-08-28-4d2cc7a-0750";
+const APP_VERSION = "2026-08-28-4eb7809-0803";
 
 const players = [
 {id:'solcius',name:'Solcius',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'dead',profession:'PENDIENTE',positiveTraits:'PENDIENTE',negativeTraits:'PENDIENTE',twitch:'https://www.twitch.tv/Solcius',youtube:null,bio:'Perfil pendiente de información del personaje.'},
@@ -364,6 +364,33 @@ timelineEl.querySelectorAll('.lore-item').forEach((item,index)=>{
 const initialEntry=loreEntries.find(e=>e.title==='PRÓLOGO VIDEO') || loreEntries[0];
 const initialElement=timelineEl.querySelector(`[data-lore-id="${initialEntry.id}"]`);
 openLoreEntry(initialEntry,initialElement);
+// Calendario clicable en portada → navegación interna a Lore sin recarga (reutiliza openTab/openLoreEntry)
+(function initHomeCalendarNav(){
+  const calendarMap = {
+    reunion: 'REUNIÓN',
+    prologo: 'PRÓLOGO VIDEO',
+    acto1: 'ACTO I',
+    acto2: 'ACTO II',
+    acto3: 'ACTO III'
+  };
+  const attach = () => {
+    document.querySelectorAll('.home-calendar [data-lore]').forEach(btn=>{
+      btn.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const key = btn.dataset.lore;
+        const title = calendarMap[key];
+        if(!title) return;
+        const entry = loreEntries.find(en=>en.title===title);
+        if(!entry) return;
+        openTab('lore');
+        const el = document.querySelector(`[data-lore-id="${entry.id}"]`);
+        requestAnimationFrame(()=>openLoreEntry(entry, el));
+      });
+    });
+  };
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', attach);
+  else attach();
+})();
 const charGrid=document.getElementById('characterGrid');charGrid.innerHTML=characters.map(c=>`<article class="character-card"><div class="char-photo"><img src="/assets/silueta.png" alt="Silueta de personaje desconocido" loading="lazy" onerror="this.onerror=null;this.src='/assets/silueta.png';"><span class="silhouette-label">IDENTIDAD OCULTA</span></div><h3>${c.name}</h3><small>TRABAJO: ${c.role}</small><p>${c.desc}</p><span class="char-status">${c.status}</span></article>`).join('');
 
 const inputJugador=document.getElementById('input-jugador');
