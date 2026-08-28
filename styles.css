@@ -55,13 +55,14 @@ button.cal-tag[data-lore]:focus-visible{outline:2px solid #9e3b32;outline-offset
 .hero-content .countdown em{font-size:36px;padding-bottom:10px}
 .hero-content .countdown div{min-width:92px}
 /* CONTADOR ENCIMA DEL LIVE — mismo tamaño reducido, respiración visual */
-.live-hero-panel .countdown-card{width:100%;margin:0 0 12px 0;padding:14px 16px;box-shadow:6px 7px 0 rgba(0,0,0,.18),0 10px 26px rgba(0,0,0,.22);transform:rotate(-.5deg)}
+.live-hero-panel .countdown-card{width:100%;margin:0 0 28px 0;padding:14px 16px;box-shadow:6px 7px 0 rgba(0,0,0,.18),0 10px 26px rgba(0,0,0,.22);transform:rotate(-.5deg)}
 .live-hero-panel .countdown-card:before{inset:5px}
 .live-hero-panel .countdown-header{font-size:11px;gap:12px;margin-bottom:10px}
 .live-hero-panel .countdown strong{font-size:38px}
 .live-hero-panel .countdown em{font-size:26px;padding-bottom:7px}
 .live-hero-panel .countdown div{min-width:72px}
 .live-hero-panel .countdown span{font-size:10px}
+.live-hero-panel .countdown [data-unit="hours"]{color:#b7463b}
 .home-hero .live-hero-panel{top:52%;transform:translateY(-40%)}
 /* LORE — imagen Acto1 Día1 y cabecera compacta */
 .lore-heading--compact{margin-bottom:18px}
