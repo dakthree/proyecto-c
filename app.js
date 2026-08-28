@@ -1,5 +1,5 @@
 const EVENT_DATE = '2026-08-28T18:00:00+02:00';
-const APP_VERSION = "2026-08-28-5219650-1253";
+const APP_VERSION = "2026-08-28-b895e6d-1305";
 
 const players = [
 {id:'solcius',name:'Solcius',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'dead',profession:'PENDIENTE',positiveTraits:'PENDIENTE',negativeTraits:'PENDIENTE',twitch:'https://www.twitch.tv/Solcius',youtube:null,bio:'Perfil pendiente de información del personaje.'},
@@ -401,7 +401,8 @@ openLoreEntry(initialEntry,initialElement);
   else attach();
 })();
 // ==================================================
-// ENTRENAMIENTO — VIKTOR THORNE / RULETA RUSA
+// ENTRENAMIENTO — VIKTOR THORNE / RULETA RUSA (CORREGIDO)
+// Flujo: POS/NEG -> TIER -> DISPARAR (random del tier) -> RESULTADO
 // ==================================================
 const trainingPositive = [
   {name:'Lector rápido',cost:5},
@@ -500,7 +501,6 @@ const trainingNegative = [
   {name:'Desordenado',cost:30},
   {name:'Demacrado',cost:30}
 ];
-// Tiers positivos por coste — 5 normales + 1 especial
 const positiveTiers = [
   {id:'p1',label:'TIER 1',range:'5 — 15 PUNTOS',traits:trainingPositive.filter(t=>[5,10,15].includes(t.cost))},
   {id:'p2',label:'TIER 2',range:'20 — 25 PUNTOS',traits:trainingPositive.filter(t=>[20,25].includes(t.cost))},
@@ -509,13 +509,31 @@ const positiveTiers = [
   {id:'p5',label:'TIER 5',range:'60 — 1.000.000.000 PUNTOS',traits:trainingPositive.filter(t=>[60,70,80,1000000000].includes(t.cost))},
   {id:'special',label:'TIER ESPECIAL',range:'100 PUNTOS',traits:trainingSpecial,isSpecial:true}
 ];
-// Tiers negativos — 4 tiers equilibrados por coste
 const negativeTiers = [
   {id:'n1',label:'TIER 1',range:'0 — 5 PUNTOS',traits:trainingNegative.filter(t=>t.cost===0||t.cost===5)},
   {id:'n2',label:'TIER 2',range:'10 PUNTOS',traits:trainingNegative.filter(t=>t.cost===10)},
   {id:'n3',label:'TIER 3',range:'15 — 20 PUNTOS',traits:trainingNegative.filter(t=>t.cost===15||t.cost===20)},
   {id:'n4',label:'TIER 4',range:'25 — 30 PUNTOS',traits:trainingNegative.filter(t=>t.cost===25||t.cost===30)}
 ];
+// Pool exclusivo por tipo+tier — función pura para validación y uso
+function getTrainingPool(selectedType, selectedTierId){
+  const tiers = selectedType==='positiva'?positiveTiers:selectedType==='negativa'?negativeTiers:null;
+  if(!tiers||!selectedTierId) return [];
+  const tier = tiers.find(t=>t.id===selectedTierId);
+  return tier?[...tier.traits]:[];
+}
+function randomTrait(selectedType, selectedTierId){
+  const pool=getTrainingPool(selectedType, selectedTierId);
+  if(!pool.length) return null;
+  // Crypto random si disponible, fallback Math.random
+  let idx;
+  try{
+    const arr=new Uint32Array(1);
+    crypto.getRandomValues(arr);
+    idx=arr[0]%pool.length;
+  }catch(e){ idx=Math.floor(Math.random()*pool.length); }
+  return pool[idx];
+}
 (function initTraining(){
   const stageEl=document.getElementById('trainingStage');
   if(!stageEl) return;
@@ -523,33 +541,32 @@ const negativeTiers = [
   const flash=document.getElementById('revolverFlash');
   const smoke=document.getElementById('revolverSmoke');
   const statusEl=document.getElementById('trainingStatus');
-  const startBtn=document.getElementById('trainingStartBtn');
   const choiceEl=document.getElementById('trainingChoice');
   const tiersEl=document.getElementById('trainingTiers');
-  const traitsEl=document.getElementById('trainingTraits');
+  const disparoEl=document.getElementById('trainingDisparo');
   const resultEl=document.getElementById('trainingResult');
   const tierGrid=document.getElementById('trainingTierGrid');
-  const traitGrid=document.getElementById('trainingTraitGrid');
   const tiersLabel=document.getElementById('trainingTiersLabel');
-  const traitsLabel=document.getElementById('trainingTraitsLabel');
+  const disparoLabel=document.getElementById('trainingDisparoLabel');
+  const disparoBtn=document.getElementById('trainingDisparoBtn');
   let isSpinning=false;
   let selectedType=null; // 'positiva' | 'negativa'
   let selectedTier=null;
   function showOnly(...els){
-    [choiceEl,tiersEl,traitsEl,resultEl].forEach(e=>e&&e.classList.add('hidden'));
+    [choiceEl,tiersEl,disparoEl,resultEl].forEach(e=>e&&e.classList.add('hidden'));
     els.forEach(e=>e&&e.classList.remove('hidden'));
   }
   function resetTraining(){
     isSpinning=false;
     selectedType=null;
     selectedTier=null;
-    if(startBtn) startBtn.disabled=false;
-    if(statusEl){statusEl.textContent='LISTO PARA LA PRUEBA';statusEl.classList.remove('firing');}
+    if(disparoBtn) disparoBtn.disabled=false;
+    if(statusEl){statusEl.textContent='ELIGE TU TIRADA';statusEl.classList.remove('firing');}
     if(revolver) revolver.classList.remove('spinning');
     if(flash) flash.classList.remove('active');
     if(smoke) smoke.classList.remove('active');
-    showOnly();
-    if(stageEl) stageEl.dataset.stage='idle';
+    showOnly(choiceEl);
+    if(stageEl) stageEl.dataset.stage='choice';
   }
   function renderTierGrid(type){
     const tiers = type==='positiva'?positiveTiers:negativeTiers;
@@ -567,28 +584,12 @@ const negativeTiers = [
         const tier=tiers.find(x=>x.id===tierId);
         if(!tier) return;
         selectedTier=tier;
-        renderTraitGrid(tier, type);
+        if(disparoLabel) disparoLabel.textContent=`TIER SELECCIONADO: ${tier.label}`;
+        showOnly(disparoEl);
+        if(stageEl) stageEl.dataset.stage='disparo';
+        if(statusEl) statusEl.textContent=`${tier.label} — LISTO PARA DISPARAR`;
       });
     });
-  }
-  function renderTraitGrid(tier, type){
-    if(!traitGrid||!traitsLabel) return;
-    traitsLabel.textContent=`${tier.label} — ${tier.range}`;
-    traitGrid.innerHTML=tier.traits.map(tr=>`
-      <button type="button" class="training-trait-card ${tier.isSpecial?'training-trait-card--special':''}" data-name="${tr.name.replace(/"/g,'&quot;')}" data-cost="${tr.cost}">
-        <strong>${tr.name}</strong>
-        <span>${tr.cost===1000000000?'1.000.000.000':tr.cost} PTS</span>
-      </button>
-    `).join('');
-    traitGrid.querySelectorAll('.training-trait-card').forEach(btn=>{
-      btn.addEventListener('click',()=>{
-        const name=btn.dataset.name;
-        const cost=btn.dataset.cost;
-        showResult(type, tier.label, name, cost);
-      });
-    });
-    showOnly(traitsEl);
-    if(stageEl) stageEl.dataset.stage='traits';
   }
   function showResult(type, tierLabel, name, cost){
     const isPos=type==='positiva';
@@ -600,32 +601,34 @@ const negativeTiers = [
     if(typeEl) typeEl.style.color=isPos?'#8ea07a':'#b7463b';
     if(tierEl) tierEl.textContent=tierLabel;
     if(nameEl) nameEl.textContent=name;
-    if(costEl) costEl.textContent=(cost==='1000000000'?'1.000.000.000':cost)+' PUNTOS';
+    if(costEl) costEl.textContent=(String(cost)==='1000000000'?'1.000.000.000':cost)+' PUNTOS';
     showOnly(resultEl);
     if(stageEl) stageEl.dataset.stage='result';
   }
-  if(startBtn){
-    startBtn.addEventListener('click',()=>{
-      if(isSpinning) return;
-      isSpinning=true;
-      startBtn.disabled=true;
-      if(statusEl){statusEl.textContent='GIRANDO EL CILINDRO...';statusEl.classList.add('firing');}
-      if(revolver){revolver.classList.remove('spinning');void revolver.offsetWidth;revolver.classList.add('spinning');}
-      if(stageEl) stageEl.dataset.stage='spinning';
-      setTimeout(()=>{
-        if(flash){flash.classList.remove('active');void flash.offsetWidth;flash.classList.add('active');}
-        if(smoke){smoke.classList.remove('active');void smoke.offsetWidth;smoke.classList.add('active');}
-        if(statusEl){statusEl.textContent='¡DISPARO!';}
-        // vibración sutil si disponible
-        try{if(navigator.vibrate) navigator.vibrate(60);}catch(e){}
-      },1550);
-      setTimeout(()=>{
-        isSpinning=false;
-        if(statusEl){statusEl.textContent='ELIGE TU DESTINO';statusEl.classList.remove('firing');}
-        showOnly(choiceEl);
-        if(stageEl) stageEl.dataset.stage='choice';
-      },1900);
-    });
+  function spinAndResolve(){
+    if(isSpinning||!selectedType||!selectedTier) return;
+    isSpinning=true;
+    if(disparoBtn) disparoBtn.disabled=true;
+    if(statusEl){statusEl.textContent='GIRANDO EL CILINDRO...';statusEl.classList.add('firing');}
+    if(revolver){revolver.classList.remove('spinning');void revolver.offsetWidth;revolver.classList.add('spinning');}
+    if(stageEl) stageEl.dataset.stage='spinning';
+    setTimeout(()=>{
+      if(flash){flash.classList.remove('active');void flash.offsetWidth;flash.classList.add('active');}
+      if(smoke){smoke.classList.remove('active');void smoke.offsetWidth;smoke.classList.add('active');}
+      if(statusEl){statusEl.textContent='¡DISPARO!';}
+      try{if(navigator.vibrate) navigator.vibrate(60);}catch(e){}
+    },1550);
+    setTimeout(()=>{
+      const picked=randomTrait(selectedType, selectedTier.id);
+      isSpinning=false;
+      if(statusEl){statusEl.textContent='TIRADA COMPLETADA';statusEl.classList.remove('firing');}
+      if(picked){
+        showResult(selectedType, selectedTier.label, picked.name, picked.cost);
+      } else {
+        if(statusEl) statusEl.textContent='ERROR: POOL VACÍO';
+        if(disparoBtn) disparoBtn.disabled=false;
+      }
+    },1900);
   }
   const posBtn=document.getElementById('trainingPositiveBtn');
   const negBtn=document.getElementById('trainingNegativeBtn');
@@ -635,6 +638,7 @@ const negativeTiers = [
     renderTierGrid('positiva');
     showOnly(tiersEl);
     if(stageEl) stageEl.dataset.stage='tiers';
+    if(statusEl) statusEl.textContent='SELECCIONA TIER POSITIVO';
   });
   if(negBtn) negBtn.addEventListener('click',()=>{
     selectedType='negativa';
@@ -642,20 +646,30 @@ const negativeTiers = [
     renderTierGrid('negativa');
     showOnly(tiersEl);
     if(stageEl) stageEl.dataset.stage='tiers';
+    if(statusEl) statusEl.textContent='SELECCIONA TIER NEGATIVO';
   });
+  if(disparoBtn) disparoBtn.addEventListener('click',spinAndResolve);
   const backFromTiers=document.getElementById('trainingBackFromTiers');
   if(backFromTiers) backFromTiers.addEventListener('click',()=>{
     showOnly(choiceEl);
     if(stageEl) stageEl.dataset.stage='choice';
+    if(statusEl) statusEl.textContent='ELIGE TU TIRADA';
   });
-  const backFromTraits=document.getElementById('trainingBackFromTraits');
-  if(backFromTraits) backFromTraits.addEventListener('click',()=>{
+  const backFromDisparo=document.getElementById('trainingBackFromDisparo');
+  if(backFromDisparo) backFromDisparo.addEventListener('click',()=>{
     if(selectedType) renderTierGrid(selectedType);
     showOnly(tiersEl);
     if(stageEl) stageEl.dataset.stage='tiers';
+    if(statusEl) statusEl.textContent='SELECCIONA TIER';
   });
   const resetBtn=document.getElementById('trainingResetBtn');
   if(resetBtn) resetBtn.addEventListener('click',resetTraining);
+  // Estado inicial: elección visible
+  showOnly(choiceEl);
+  if(stageEl) stageEl.dataset.stage='choice';
+  if(statusEl) statusEl.textContent='ELIGE TU TIRADA';
+  // Exponer para tests automatizados (no afecta producción)
+  window.__trainingTest={getPool:getTrainingPool,randomTrait,positiveTiers,negativeTiers,trainingPositive,trainingSpecial,trainingNegative};
 })();
 const charGrid=document.getElementById('characterGrid');charGrid.innerHTML=characters.map(c=>`<article class="character-card"><div class="char-photo"><img src="/assets/silueta.png" alt="Silueta de personaje desconocido" loading="lazy" onerror="this.onerror=null;this.src='/assets/silueta.png';"><span class="silhouette-label">IDENTIDAD OCULTA</span></div><h3>${c.name}</h3><small>TRABAJO: ${c.role}</small><p>${c.desc}</p><span class="char-status">${c.status}</span></article>`).join('');
 

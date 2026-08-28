@@ -583,7 +583,10 @@ main > .tab-panel:not(.active){display:none !important}
 .training-choice--negative .choice-mark{color:#b7463b;background:rgba(183,70,59,.08)}
 .training-choice-btn strong{font:14px 'Archivo Black';letter-spacing:.04em}
 .training-choice-btn small{font:9px 'Special Elite';letter-spacing:.08em;color:#8e887c}
-.training-tiers,.training-traits,.training-result{position:relative}
+.training-tiers,.training-traits,.training-result,.training-disparo{position:relative}
+.training-disparo{text-align:center;position:relative}
+.training-disparo-actions{margin-top:12px}
+.training-disparo .training-tiers-head{margin-bottom:14px}
 .training-tiers-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(180,170,150,.08)}
 .training-tiers-head span{font:10px 'Special Elite';letter-spacing:.14em;color:#c2b8a0}
 .training-back-btn{background:transparent;border:1px solid rgba(180,170,150,.14);color:#8e887c;padding:6px 10px;font:9px 'Special Elite';cursor:pointer}
