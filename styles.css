@@ -517,6 +517,38 @@ main > .tab-panel:not(.active){display:none !important}
 .misiones-empty strong{font:14px 'Archivo Black',sans-serif;letter-spacing:.04em;color:#e8e0d0}
 .misiones-empty p{margin:0;max-width:520px;color:#9e9a91;font:12px/1.6 'Special Elite',monospace}
 .misiones-foot{position:relative;display:flex;justify-content:space-between;gap:12px;margin-top:18px;padding-top:12px;border-top:1px solid rgba(180,170,150,.08);font:8px 'Special Elite',monospace;letter-spacing:.12em;color:#777169}
+/* TABLÓN DE MADERA — 7 MISIONES */
+.misiones-board--wood{background:
+  linear-gradient(90deg,rgba(0,0,0,.08) 1px,transparent 1px),
+  linear-gradient(rgba(0,0,0,.06) 1px,transparent 1px),
+  linear-gradient(180deg,#3d2b1a 0%,#2e2114 25%,#4a3520 48%,#2b1e12 72%,#3a2a18 100%);
+  background-size:42px 42px, 42px 42px, 100% 100%;
+  background-color:#2f2212;
+  border:1px solid rgba(60,40,20,.55);
+  box-shadow:0 14px 32px rgba(0,0,0,.38),inset 0 0 0 1px rgba(255,255,255,.04),inset 0 0 40px rgba(0,0,0,.35);
+  padding:22px 18px 18px;
+}
+.misiones-board--wood:before{inset:10px;border-color:rgba(90,60,30,.18)}
+.misiones-board--wood:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.14;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E");mix-blend-mode:multiply}
+.misiones-board--wood .misiones-board-header{border-bottom-color:rgba(90,60,30,.18)}
+.misiones-board--wood .misiones-kicker{color:#b8a088}
+.misiones-board--wood .misiones-board-header h3{color:#f5e6c8;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.misiones-board--wood .misiones-rule{background:rgba(90,60,30,.18)}
+.misiones-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;position:relative}
+.mision-paper{position:relative;background:linear-gradient(180deg,#f5e6c8 0%,#e8dcc0 55%,#d8c9a6 100%);border:1px solid rgba(60,40,20,.18);padding:14px 14px 10px;box-shadow:0 6px 14px rgba(0,0,0,.22),0 1px 3px rgba(0,0,0,.14);transform:rotate(var(--r,0deg));transition:transform .16s ease,box-shadow .16s ease;overflow:visible}
+.mision-paper:hover{transform:rotate(0deg) translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.28)}
+.mision-paper:before{content:"";position:absolute;inset:6px;border:1px solid rgba(60,40,20,.07);pointer-events:none}
+.mision-pin{position:absolute;left:50%;top:-7px;width:14px;height:14px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle at 30% 30%,#d4a574 0%,#8c3a2a 45%,#5a1a14 100%);border:1px solid rgba(0,0,0,.35);box-shadow:0 2px 6px rgba(0,0,0,.45),inset 0 1px 2px rgba(255,255,255,.4)}
+.mision-pin:after{content:"";position:absolute;left:50%;top:50%;width:4px;height:4px;transform:translate(-50%,-50%);border-radius:50%;background:#2b0f0d;box-shadow:inset 0 1px 2px rgba(0,0,0,.6)}
+.mision-tape{position:absolute;right:8px;top:-6px;width:42px;height:14px;background:linear-gradient(180deg,rgba(210,180,140,.85),rgba(180,150,110,.75));border:1px solid rgba(60,40,20,.18);box-shadow:0 2px 6px rgba(0,0,0,.18);transform:rotate(2deg);opacity:.9}
+.mision-num{font:8px 'Special Elite',monospace;letter-spacing:.14em;color:#8c3a2a;margin-bottom:6px;position:relative}
+.mision-paper h4{margin:0 0 8px;font:12px/1.35 'Archivo Black',sans-serif;letter-spacing:.01em;color:#221f18;position:relative}
+.mision-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;position:relative}
+.mision-meta span{font:7px 'Special Elite',monospace;letter-spacing:.10em;color:#5a3a1a;background:rgba(60,40,20,.07);border:1px solid rgba(60,40,20,.12);padding:3px 6px}
+.misiones-board--wood .misiones-foot{border-top-color:rgba(90,60,30,.18);color:#8c7a5a}
+.misiones-board--wood .misiones-foot span{color:#8c7a5a}
+@media(max-width:900px){.misiones-grid{grid-template-columns:1fr;gap:12px}.mision-paper{transform:none !important}}
+@media(max-width:650px){.misiones-board--wood{padding:16px 12px}.mision-paper{padding:12px 12px 10px}.mision-paper h4{font-size:11px}}
 @media(max-width:650px){.shop-tabs .market-tab{flex:1 1 auto;text-align:center}}
 .shop-side{position:sticky;top:88px;align-self:start}
 .shop-map-label{font:9px 'Special Elite',monospace;letter-spacing:.16em;color:#8e887c;text-align:center;margin-bottom:8px;position:relative}
