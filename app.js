@@ -1,5 +1,5 @@
 const EVENT_DATE = '2026-08-28T18:00:00+02:00';
-const APP_VERSION = "2026-08-28-4eb7809-0803";
+const APP_VERSION = "2026-08-28-3bc4954-0838";
 
 const players = [
 {id:'solcius',name:'Solcius',character:'POR ASIGNAR',role:'PARTICIPANTE',status:'dead',profession:'PENDIENTE',positiveTraits:'PENDIENTE',negativeTraits:'PENDIENTE',twitch:'https://www.twitch.tv/Solcius',youtube:null,bio:'Perfil pendiente de información del personaje.'},
@@ -312,12 +312,15 @@ const loreActoI = `
 <p>Han estado sobreviviendo por la zona como han podido durante cerca de 4 años hasta que...</p>
 <p><strong>Empieza el Acto I.</strong></p>
 `;
+const loreActoI_Dia1 = `
+<div class="lore-acto-image-wrap"><img src="assets/Acto1Dia1.png" alt="Acto I — Día 1" class="lore-acto-image" loading="lazy"></div>
+` + loreActoI;
 
 const loreEntries=timeline.map((t,i)=>({
   ...t,
   id:`lore-${i}`,
   youtube:t.title==='PRÓLOGO VIDEO'?'https://www.youtube.com/watch?v=cH18-brGf7k':null,
-  htmlText:t.title==='PRÓLOGO: RESUMEN'?loreParteII:t.title==='ACTO I'?loreActoI:null,
+  htmlText:t.title==='PRÓLOGO: RESUMEN'?loreParteII:(t.title==='ACTO I'&&i===3)?loreActoI_Dia1:t.title==='ACTO I'?loreActoI:null,
   text:t.title==='PRÓLOGO VIDEO'
     ?'Archivo audiovisual correspondiente al PRÓLOGO.'
     :t.title==='PRÓLOGO: RESUMEN'
@@ -367,20 +370,26 @@ openLoreEntry(initialEntry,initialElement);
 // Calendario clicable en portada → navegación interna a Lore sin recarga (reutiliza openTab/openLoreEntry)
 (function initHomeCalendarNav(){
   const calendarMap = {
-    reunion: 'REUNIÓN',
-    prologo: 'PRÓLOGO VIDEO',
-    acto1: 'ACTO I',
-    acto2: 'ACTO II',
-    acto3: 'ACTO III'
+    reunion: 'lore-0',
+    prologo: 'lore-1',
+    'acto1-1': 'lore-3',
+    'acto1-2': 'lore-4',
+    'acto1-3': 'lore-5',
+    'acto2-1': 'lore-7',
+    'acto2-2': 'lore-8',
+    'acto2-3': 'lore-9',
+    'acto3-1': 'lore-11',
+    'acto3-2': 'lore-12',
+    'acto3-3': 'lore-13'
   };
   const attach = () => {
     document.querySelectorAll('.home-calendar [data-lore]').forEach(btn=>{
       btn.addEventListener('click', (e)=>{
         e.preventDefault();
         const key = btn.dataset.lore;
-        const title = calendarMap[key];
-        if(!title) return;
-        const entry = loreEntries.find(en=>en.title===title);
+        const loreId = calendarMap[key];
+        if(!loreId) return;
+        const entry = loreEntries.find(en=>en.id===loreId);
         if(!entry) return;
         openTab('lore');
         const el = document.querySelector(`[data-lore-id="${entry.id}"]`);

@@ -54,6 +54,22 @@ button.cal-tag[data-lore]:focus-visible{outline:2px solid #9e3b32;outline-offset
 .hero-content .countdown strong{font-size:50px}
 .hero-content .countdown em{font-size:36px;padding-bottom:10px}
 .hero-content .countdown div{min-width:92px}
+/* CONTADOR ENCIMA DEL LIVE — mismo tamaño reducido, respiración visual */
+.live-hero-panel .countdown-card{width:100%;margin:0 0 12px 0;padding:14px 16px;box-shadow:6px 7px 0 rgba(0,0,0,.18),0 10px 26px rgba(0,0,0,.22);transform:rotate(-.5deg)}
+.live-hero-panel .countdown-card:before{inset:5px}
+.live-hero-panel .countdown-header{font-size:11px;gap:12px;margin-bottom:10px}
+.live-hero-panel .countdown strong{font-size:38px}
+.live-hero-panel .countdown em{font-size:26px;padding-bottom:7px}
+.live-hero-panel .countdown div{min-width:72px}
+.live-hero-panel .countdown span{font-size:10px}
+.home-hero .live-hero-panel{top:52%;transform:translateY(-40%)}
+/* LORE — imagen Acto1 Día1 y cabecera compacta */
+.lore-heading--compact{margin-bottom:18px}
+#lore.page-section{padding-top:92px}
+.lore-acto-image-wrap{margin:0 0 14px 0;border:1px solid rgba(180,170,150,.18);background:#0d0d0c;padding:6px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.lore-acto-image{display:block;width:100%;height:auto;max-height:520px;object-fit:contain;background:#0d0d0c}
+@media(max-width:820px){.live-hero-panel .countdown-card{padding:12px 14px}.live-hero-panel .countdown strong{font-size:34px}.live-hero-panel .countdown em{font-size:24px}
+#lore.page-section{padding-top:78px}}
 @media(max-width:1100px){.hero-content .home-calendar-wrap.hero-calendar--top .home-calendar-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:820px){.hero-content{padding-top:92px}.hero-content .home-calendar-wrap.hero-calendar--top{margin-bottom:12px}}
 @media(max-width:560px){.hero-content .home-calendar-wrap.hero-calendar--top .home-calendar-grid{grid-template-columns:1fr}}
