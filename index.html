@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#141411">
-  <meta name="app-version" content="2026-08-28-b895e6d-1305">
+  <meta name="app-version" content="2026-08-28-5219650-1253">
   <script>
   // Cache busting por versión de despliegue — detección temprana
   (function(){
@@ -36,8 +36,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&family=Special+Elite&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=2026-08-28-b895e6d-1305">
-  <link rel="stylesheet" href="proyectolike/proyectolike.css?v=2026-08-28-b895e6d-1305">
+  <link rel="stylesheet" href="styles.css?v=2026-08-28-5219650-1253">
+  <link rel="stylesheet" href="proyectolike/proyectolike.css?v=2026-08-28-5219650-1253">
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -376,7 +376,7 @@
         </div>
 
         <div class="training-main-panel">
-          <div class="training-stage" id="trainingStage" data-stage="choice">
+          <div class="training-stage" id="trainingStage" data-stage="idle">
             <!-- REVOLVER -->
             <div class="training-revolver-wrap" id="trainingRevolverWrap">
               <div class="training-revolver-label">REVÓLVER // CILINDRO</div>
@@ -396,12 +396,18 @@
                 <div class="revolver-flash" id="revolverFlash"></div>
                 <div class="revolver-smoke" id="revolverSmoke"></div>
               </div>
-              <div class="training-revolver-status" id="trainingStatus">ELIGE TU TIRADA</div>
+              <div class="training-revolver-status" id="trainingStatus">LISTO PARA LA PRUEBA</div>
             </div>
 
-            <!-- ELECCION POS/NEG — ESTADO 1 -->
-            <div class="training-choice" id="trainingChoice">
-              <div class="training-choice-title">ELIGE TU TIRADA</div>
+            <!-- ACCION PRINCIPAL -->
+            <div class="training-actions" id="trainingActions">
+              <button type="button" class="training-start-btn" id="trainingStartBtn">[ INICIAR TIRADA ]</button>
+              <div class="training-hint">Viktor observa. Un solo disparo decide tu destino.</div>
+            </div>
+
+            <!-- ELECCION POS/NEG -->
+            <div class="training-choice hidden" id="trainingChoice">
+              <div class="training-choice-title">EL CILINDRO SE HA DETENIDO</div>
               <div class="training-choice-grid">
                 <button type="button" class="training-choice-btn training-choice--positive" id="trainingPositiveBtn">
                   <span class="choice-mark">+</span>
@@ -416,28 +422,25 @@
               </div>
             </div>
 
-            <!-- TIERS — ESTADO 2 -->
+            <!-- TIERS -->
             <div class="training-tiers hidden" id="trainingTiers">
               <div class="training-tiers-head">
-                <span id="trainingTiersLabel">SELECCIONA TIER</span>
+                <span id="trainingTiersLabel">SELECCIONA UN TIER</span>
                 <button type="button" class="training-back-btn" id="trainingBackFromTiers">← VOLVER</button>
               </div>
               <div class="training-tier-grid" id="trainingTierGrid"></div>
             </div>
 
-            <!-- DISPARO — ESTADO 3 -->
-            <div class="training-disparo hidden" id="trainingDisparo">
+            <!-- RASGOS DEL TIER -->
+            <div class="training-traits hidden" id="trainingTraits">
               <div class="training-tiers-head">
-                <span id="trainingDisparoLabel">TIER SELECCIONADO: TIER 1</span>
-                <button type="button" class="training-back-btn" id="trainingBackFromDisparo">← TIERS</button>
+                <span id="trainingTraitsLabel">RASGOS DISPONIBLES</span>
+                <button type="button" class="training-back-btn" id="trainingBackFromTraits">← TIERS</button>
               </div>
-              <div class="training-disparo-actions">
-                <button type="button" class="training-start-btn" id="trainingDisparoBtn">[ DISPARAR ]</button>
-                <div class="training-hint">Viktor aprieta el gatillo...</div>
-              </div>
+              <div class="training-trait-grid" id="trainingTraitGrid"></div>
             </div>
 
-            <!-- RESULTADO FINAL — ESTADO 4 -->
+            <!-- RESULTADO FINAL -->
             <div class="training-result hidden" id="trainingResult">
               <div class="training-result-stamp">TIRADA COMPLETADA</div>
               <div class="training-result-card">
@@ -448,7 +451,7 @@
                 <div class="training-result-rule"></div>
                 <p class="training-result-note">Estructura preparada para futura información adicional del rasgo.</p>
               </div>
-              <button type="button" class="training-reset-btn" id="trainingResetBtn">↻ NUEVA TIRADA</button>
+              <button type="button" class="training-reset-btn" id="trainingResetBtn">↻ REINICIAR TIRADA</button>
             </div>
           </div>
         </div>
@@ -874,7 +877,7 @@
   </footer>
 
   <div class="modal" id="playerModal" aria-hidden="true"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><div id="modalContent"></div></div></div>
-  <script src="app.js?v=2026-08-28-b895e6d-1305"></script>
-  <script src="proyectolike/proyectolike.js?v=2026-08-28-b895e6d-1305"></script>
+  <script src="app.js?v=2026-08-28-5219650-1253"></script>
+  <script src="proyectolike/proyectolike.js?v=2026-08-28-5219650-1253"></script>
 </body>
 </html>
