@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#141411">
-  <meta name="app-version" content="2026-08-28-3bc4954-0838">
+  <meta name="app-version" content="2026-08-28-5219650-1253">
   <script>
   // Cache busting por versión de despliegue — detección temprana
   (function(){
@@ -36,8 +36,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&family=Special+Elite&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=2026-08-28-3bc4954-0838">
-  <link rel="stylesheet" href="proyectolike/proyectolike.css?v=2026-08-28-3bc4954-0838">
+  <link rel="stylesheet" href="styles.css?v=2026-08-28-5219650-1253">
+  <link rel="stylesheet" href="proyectolike/proyectolike.css?v=2026-08-28-5219650-1253">
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -56,7 +56,7 @@
       <a href="#mapa" data-tab="mapa">MAPA</a>
       <a href="#clips" data-tab="clips">CLIPS</a>
       <a href="#futuro1" data-tab="futuro1">MERCADO NEGRO</a>
-      <a href="#futuro2" data-tab="futuro2">?</a>
+      <a href="#entrenamiento" data-tab="entrenamiento" class="training-nav">ENTRENAMIENTO</a>
       <a href="#dados" data-tab="dados" class="dice-nav">DADOS</a>
       <a href="#donaciones" data-tab="donaciones" class="donate-nav">DONACIONES</a>
       <a href="#pl-bloqueado" data-tab="pl-bloqueado" class="pl-nav">PL</a>
@@ -255,23 +255,206 @@
         </aside>
       </div>
     </section>
-    <!-- FUTURO 1 -->
-    <section id="futuro1" class="tab-panel future-panel">
-      <div class="future-card">
-        <span class="future-mark">?</span>
-        <div class="folder-label">06 / CLASIFICADO</div>
-        <h2>?</h2>
-        <p>Esta sección será desbloqueada próximamente.</p>
+    <!-- MERCADO NEGRO — TIENDA CLANDESTINA (SOLO LOCAL) -->
+    <section id="futuro1" class="tab-panel page-section market-section shop-section">
+      <div class="section-heading shop-heading-compact-v2">
+        <div>
+          <div class="folder-label">06 / MERCADO NEGRO</div>
+          <h2>MERCADO NEGRO</h2>
+        </div>
+        <div class="red-tag">TIENDA // CLANDESTINA</div>
+      </div>
+
+      <div class="shop-layout">
+        <div class="shop-main">
+          <div class="shop-viktor-block">
+            <p>Sistema de compra venta aplicado por Viktor Thorne. El precio lo pone él.</p>
+            <p>Para realizar negocios dirigirse a:</p>
+          </div>
+
+      <div class="shop-grid">
+        <article class="shop-card">
+          <div class="shop-card-top">
+            <span class="shop-kicker">01 — VEHÍCULOS</span>
+          </div>
+          <div class="shop-media">
+            <img src="assets/MN/Coche.png" alt="Vehículos" class="shop-card-image shop-card-image--photo" loading="lazy">
+          </div>
+          <h3>VEHÍCULOS</h3>
+          <p>Vehículos de diferentes calidades.</p>
+          <div class="shop-qualities" aria-label="Calidades de coches">
+            <span>BÁSICO</span>
+            <span>MEJORADO</span>
+            <span>SUPERIOR</span>
+          </div>
+        </article>
+
+        <article class="shop-card">
+          <div class="shop-card-top">
+            <span class="shop-kicker">02 — ARSENAL</span>
+          </div>
+          <div class="shop-media">
+            <img src="assets/MN/Hacha.png" alt="Armas melee" class="shop-card-image" loading="lazy">
+          </div>
+          <h3>ARMAS MELEE</h3>
+          <p>Armamento cuerpo a cuerpo del catálogo clandestino.</p>
+        </article>
+
+        <article class="shop-card">
+          <div class="shop-card-top">
+            <span class="shop-kicker">03 — ARSENAL</span>
+          </div>
+          <div class="shop-media">
+            <img src="assets/MN/Armas.png" alt="Armas a distancia" class="shop-card-image shop-card-image--photo" loading="lazy">
+          </div>
+          <h3>ARMAS A DISTANCIA</h3>
+          <p>Armamento a distancia del mercado negro.</p>
+        </article>
+
+        <article class="shop-card">
+          <div class="shop-card-top">
+            <span class="shop-kicker">04 — MUNICIÓN</span>
+          </div>
+          <div class="shop-media">
+            <img src="assets/MN/Balas.png" alt="Balas" class="shop-card-image" loading="lazy">
+          </div>
+          <h3>BALAS</h3>
+          <p>Balas de todos los calibres.</p>
+        </article>
+
+        <article class="shop-card">
+          <div class="shop-card-top">
+            <span class="shop-kicker">05 — SUMINISTROS</span>
+          </div>
+          <div class="shop-media">
+            <img src="assets/MN/Medicinas.webp" alt="Medicinas" class="shop-card-image shop-card-image--medicine" loading="lazy">
+          </div>
+          <h3>MEDICINAS</h3>
+          <p>Suministros médicos y tratamientos.</p>
+        </article>
+      </div>
+        </div>
+        <aside class="shop-side" aria-label="Mapa del Mercado Negro">
+          <div class="shop-map-label">PUNTO DE NEGOCIACIÓN</div>
+          <div class="shop-map-wrap shop-map-wrap--side">
+            <img src="assets/mapa_MN.png" alt="Mapa del Mercado Negro — punto de encuentro" class="shop-map-image" loading="lazy">
+          </div>
+        </aside>
       </div>
     </section>
 
     <!-- FUTURO 2 -->
-    <section id="futuro2" class="tab-panel future-panel">
-      <div class="future-card">
-        <span class="future-mark">?</span>
-        <div class="folder-label">07 / CLASIFICADO</div>
-        <h2>?</h2>
-        <p>Esta sección será desbloqueada próximamente.</p>
+    <section id="entrenamiento" class="tab-panel page-section training-section">
+      <div class="section-heading">
+        <div>
+          <div class="folder-label">07 / ENTRENAMIENTO</div>
+          <h2>ENTRENAMIENTO</h2>
+          <p>Sistema de Viktor Thorne. Una tirada de ruleta rusa decide si obtienes un rasgo positivo o negativo. El precio lo pone él.</p>
+        </div>
+        <div class="red-tag">VIKTOR THORNE // RULETA RUSA</div>
+      </div>
+
+      <div class="training-workspace">
+        <div class="training-viktor-panel">
+          <div class="training-viktor-card">
+            <div class="training-viktor-stamp">VIKTOR THORNE</div>
+            <div class="training-viktor-subtitle">INSTRUCTOR // SUPERVIVENCIA EXTREMA</div>
+            <h3>LA PRUEBA DEL REVÓLVER</h3>
+            <div class="training-viktor-rule"></div>
+            <p>"Cada entrenamiento es un trato. Yo giro el cilindro, tú asumes las consecuencias. Un rasgo te hará más fuerte. Otro te perseguirá hasta la tumba."</p>
+            <p class="training-viktor-note">La ruleta rusa no perdona. Elige con cuidado.</p>
+            <div class="training-viktor-stats">
+              <span><b>ORIGEN</b> DIXIE — ZONA INDUSTRIAL</span>
+              <span><b>MÉTODO</b> REVÓLVER 6 ALVEOLOS</span>
+              <span><b>RIESGO</b> POSITIVO / NEGATIVO</span>
+            </div>
+          </div>
+          <div class="training-viktor-warning">
+            <strong>ADVERTENCIA</strong>
+            <span>Durante la animación del revólver los controles quedan bloqueados para evitar dobles tiradas.</span>
+          </div>
+        </div>
+
+        <div class="training-main-panel">
+          <div class="training-stage" id="trainingStage" data-stage="idle">
+            <!-- REVOLVER -->
+            <div class="training-revolver-wrap" id="trainingRevolverWrap">
+              <div class="training-revolver-label">REVÓLVER // CILINDRO</div>
+              <div class="training-revolver" id="trainingRevolver" aria-label="Revólver de Viktor">
+                <div class="revolver-frame">
+                  <div class="revolver-cylinder" id="revolverCylinder">
+                    <span class="chamber" data-index="0"></span>
+                    <span class="chamber" data-index="1"></span>
+                    <span class="chamber" data-index="2"></span>
+                    <span class="chamber" data-index="3"></span>
+                    <span class="chamber" data-index="4"></span>
+                    <span class="chamber chamber--bullet" data-index="5"><i></i></span>
+                  </div>
+                  <div class="revolver-center"></div>
+                  <div class="revolver-barrel"></div>
+                </div>
+                <div class="revolver-flash" id="revolverFlash"></div>
+                <div class="revolver-smoke" id="revolverSmoke"></div>
+              </div>
+              <div class="training-revolver-status" id="trainingStatus">LISTO PARA LA PRUEBA</div>
+            </div>
+
+            <!-- ACCION PRINCIPAL -->
+            <div class="training-actions" id="trainingActions">
+              <button type="button" class="training-start-btn" id="trainingStartBtn">[ INICIAR TIRADA ]</button>
+              <div class="training-hint">Viktor observa. Un solo disparo decide tu destino.</div>
+            </div>
+
+            <!-- ELECCION POS/NEG -->
+            <div class="training-choice hidden" id="trainingChoice">
+              <div class="training-choice-title">EL CILINDRO SE HA DETENIDO</div>
+              <div class="training-choice-grid">
+                <button type="button" class="training-choice-btn training-choice--positive" id="trainingPositiveBtn">
+                  <span class="choice-mark">+</span>
+                  <strong>POSITIVA</strong>
+                  <small>RASGO BENEFICIOSO</small>
+                </button>
+                <button type="button" class="training-choice-btn training-choice--negative" id="trainingNegativeBtn">
+                  <span class="choice-mark">−</span>
+                  <strong>NEGATIVA</strong>
+                  <small>RASGO PERJUDICIAL</small>
+                </button>
+              </div>
+            </div>
+
+            <!-- TIERS -->
+            <div class="training-tiers hidden" id="trainingTiers">
+              <div class="training-tiers-head">
+                <span id="trainingTiersLabel">SELECCIONA UN TIER</span>
+                <button type="button" class="training-back-btn" id="trainingBackFromTiers">← VOLVER</button>
+              </div>
+              <div class="training-tier-grid" id="trainingTierGrid"></div>
+            </div>
+
+            <!-- RASGOS DEL TIER -->
+            <div class="training-traits hidden" id="trainingTraits">
+              <div class="training-tiers-head">
+                <span id="trainingTraitsLabel">RASGOS DISPONIBLES</span>
+                <button type="button" class="training-back-btn" id="trainingBackFromTraits">← TIERS</button>
+              </div>
+              <div class="training-trait-grid" id="trainingTraitGrid"></div>
+            </div>
+
+            <!-- RESULTADO FINAL -->
+            <div class="training-result hidden" id="trainingResult">
+              <div class="training-result-stamp">TIRADA COMPLETADA</div>
+              <div class="training-result-card">
+                <div class="training-result-type" id="resultType">POSITIVA</div>
+                <div class="training-result-tier" id="resultTier">TIER III</div>
+                <div class="training-result-name" id="resultName">Rasgo</div>
+                <div class="training-result-cost" id="resultCost">35 PUNTOS</div>
+                <div class="training-result-rule"></div>
+                <p class="training-result-note">Estructura preparada para futura información adicional del rasgo.</p>
+              </div>
+              <button type="button" class="training-reset-btn" id="trainingResetBtn">↻ REINICIAR TIRADA</button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -306,7 +489,7 @@
         <button class="market-tab active" data-market-tab="farmacia" type="button">FARMACIA</button>
         <button class="market-tab" data-market-tab="rasgos" type="button">RASGOS</button>
         <button class="market-tab" data-market-tab="armas" type="button">ARMAS</button>
-        <button class="market-tab" data-market-tab="coches" type="button">COCHES</button>
+        <button class="market-tab" data-market-tab="coches" type="button">VEHÍCULOS</button>
         <button class="market-tab" data-market-tab="objetos" type="button">OBJETOS</button>
       </div>
 
@@ -469,7 +652,7 @@
       <div id="market-coches" class="market-panel">
         <div class="market-subheading">
           <div>
-            <span class="folder-label">COCHES / CATÁLOGO</span>
+            <span class="folder-label">VEHÍCULOS / CATÁLOGO</span>
             <h3>VEHÍCULOS</h3>
             <p>Vehículos disponibles para el catálogo del Mercado Negro.</p>
           </div>
@@ -687,8 +870,14 @@
 
   </main>
 
+  <footer class="site-credit" aria-label="Créditos del proyecto" role="contentinfo">
+    <div class="site-credit-inner">
+      <span>EVENTO CREADO POR ZIGURATH, RUINA Y SOLCIUS // WEB CREADA POR SOLCIUS</span>
+    </div>
+  </footer>
+
   <div class="modal" id="playerModal" aria-hidden="true"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><div id="modalContent"></div></div></div>
-  <script src="app.js?v=2026-08-28-3bc4954-0838"></script>
-  <script src="proyectolike/proyectolike.js?v=2026-08-28-3bc4954-0838"></script>
+  <script src="app.js?v=2026-08-28-5219650-1253"></script>
+  <script src="proyectolike/proyectolike.js?v=2026-08-28-5219650-1253"></script>
 </body>
 </html>
