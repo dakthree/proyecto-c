@@ -326,7 +326,7 @@ const loreEntries=timeline.map((t,i)=>({
     :t.title==='PRÓLOGO: RESUMEN'
       ?'Expediente narrativo: el origen de la División 29 y la huida del búnker.'
       :t.title==='ACTO I'
-        ?'Los jugadores que escaparon del bunker formaron una comunidad en Dixie. Tras casi 4 años sobreviviendo, empieza el Acto I.'
+        ?''
         :'Falta información'
 }));
 
