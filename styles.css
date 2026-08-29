@@ -68,7 +68,28 @@ button.cal-tag[data-lore]:focus-visible{outline:2px solid #9e3b32;outline-offset
 .lore-heading--compact{margin-bottom:18px}
 #lore.page-section{padding-top:92px}
 .lore-acto-image-wrap{margin:0 0 14px 0;border:1px solid rgba(180,170,150,.18);background:#0d0d0c;padding:6px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.lore-acto-image-wrap--book{position:relative;padding:6px}
+.lore-acto-image-wrap--book .lore-page-btn--overlay{position:absolute;right:-9px;top:50%;transform:translateY(-50%);width:44px;height:44px;display:grid;place-items:center;padding:0;border-radius:50%;background:rgba(20,18,16,.78);border:1px solid #b7463b;color:#b7463b;font:18px 'Archivo Black';line-height:1;box-shadow:0 4px 12px rgba(0,0,0,.32);backdrop-filter:blur(4px);z-index:2}
+.lore-acto-image-wrap--book .lore-page-btn--overlay:hover{background:rgba(183,70,59,.18);border-color:#ff5a4a;color:#fff;filter:brightness(1.08)}
+#lorePage2-28{position:relative}
+.lore-page-content-wrap{position:relative}
+#lorePage2-28 .lore-page-btn--overlay-left{position:absolute;left:-26px;top:50%;transform:translateY(-50%);width:44px;height:44px;display:grid;place-items:center;padding:0;border-radius:50%;background:rgba(20,18,16,.78);border:1px solid #b7463b;color:#b7463b;font:18px 'Archivo Black';line-height:1;box-shadow:0 4px 12px rgba(0,0,0,.32);backdrop-filter:blur(4px);z-index:2}
+#lorePage2-28 .lore-page-btn--overlay-left:hover{background:rgba(183,70,59,.18);border-color:#ff5a4a;color:#fff}
+#lorePage2-28 .lore-page-content-wrap .classified-lore-text{padding-left:28px}
+@media(max-width:560px){#lorePage2-28 .lore-page-btn--overlay-left{width:38px;height:38px;left:-22px;font-size:16px}#lorePage2-28 .lore-page-content-wrap .classified-lore-text{padding-left:22px}.lore-acto-image-wrap--book .lore-page-btn--overlay{width:38px;height:38px;right:-7px;font-size:16px}}
 .lore-acto-image{display:block;width:100%;height:auto;max-height:520px;object-fit:contain;background:#0d0d0c}
+.lore-book{position:relative}
+.lore-page{position:relative;animation:lorePageIn .22s ease}
+.lore-page-num{font:8px 'Special Elite',monospace;letter-spacing:.14em;color:#8e887c;text-align:left;margin-bottom:8px;padding-bottom:6px;border-bottom:1px dashed rgba(180,170,150,.18)}
+.lore-page-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:16px;padding-top:12px;border-top:1px solid rgba(180,170,150,.12)}
+.lore-page-nav--back{justify-content:flex-start}
+.lore-page-nav--single{justify-content:center}
+.lore-page-nav--single .lore-page-indicator{margin:0 auto}
+.lore-page-btn{appearance:none;background:transparent;border:1px solid rgba(140,49,42,.35);color:#8c312a;padding:8px 14px;font:10px 'Special Elite',monospace;letter-spacing:.10em;cursor:pointer;transition:background .15s, color .15s, border-color .15s}
+.lore-page-btn:hover{background:rgba(140,49,42,.06);border-color:#8c312a;color:#5a1a14}
+.lore-page-indicator{font:8px 'Special Elite',monospace;letter-spacing:.12em;color:#8e887c}
+@keyframes lorePageIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:560px){.lore-page-num{font-size:7px}.lore-page-btn{padding:7px 12px;font-size:9px}}
 @media(max-width:820px){.hero-side-stack .countdown-card,.live-hero-panel .countdown-card{padding:12px 14px}.hero-side-stack .countdown strong,.live-hero-panel .countdown strong{font-size:34px}.hero-side-stack .countdown em,.live-hero-panel .countdown em{font-size:24px}
 #lore.page-section{padding-top:78px}}
 @media(max-width:1100px){.hero-content .home-calendar-wrap.hero-calendar--top .home-calendar-grid{grid-template-columns:1fr 1fr}}

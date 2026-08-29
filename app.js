@@ -361,7 +361,7 @@ const loreActoI_Dia1_Page2 = `
 const loreActoI_Dia1_Paginated = `
 <div class="lore-book" id="loreBook-28">
   <div class="lore-page lore-page--active" id="lorePage1-28">
-    <div class="lore-page-num">PÁGINA 1 / 2 — EXPEDIENTE C-28</div>
+    <div class="lore-page-num">EXPEDIENTE C-</div>
     <div class="lore-acto-image-wrap lore-acto-image-wrap--book">
       <img src="assets/Acto1Dia1.png" alt="Acto I — Día 1" class="lore-acto-image" loading="lazy">
       <button type="button" class="lore-page-btn lore-page-btn--overlay" data-lore-page="2" aria-label="Siguiente página">→</button>
@@ -372,7 +372,7 @@ const loreActoI_Dia1_Paginated = `
     </div>
   </div>
   <div class="lore-page" id="lorePage2-28" hidden>
-    <div class="lore-page-num">PÁGINA 2 / 2 — EXPEDIENTE C-28</div>
+    <div class="lore-page-num">EXPEDIENTE C-</div>
     <div class="lore-page-content-wrap" style="position:relative">
       <button type="button" class="lore-page-btn lore-page-btn--overlay-left" data-lore-page="1" aria-label="Página anterior">←</button>
       <article class="classified-lore-text">${loreActoI_Dia1_Page2}</article>
