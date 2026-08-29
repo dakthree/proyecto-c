@@ -566,6 +566,10 @@ main > .tab-panel:not(.active){display:none !important}
 .mision-paper h4{margin:0 0 8px;font:12px/1.35 'Archivo Black',sans-serif;letter-spacing:.01em;color:#221f18;position:relative}
 .mision-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;position:relative}
 .mision-meta span{font:7px 'Special Elite',monospace;letter-spacing:.10em;color:#5a3a1a;background:rgba(60,40,20,.07);border:1px solid rgba(60,40,20,.12);padding:3px 6px}
+.mision-badge--new{position:absolute;right:-8px;top:10px;z-index:3;background:#b7463b;border:1px solid #7a1f18;color:#fff8f0;font:8px 'Archivo Black',sans-serif;letter-spacing:.08em;padding:4px 7px;box-shadow:0 3px 8px rgba(0,0,0,.28),0 1px 2px rgba(0,0,0,.2);transform:rotate(3.5deg);text-shadow:0 1px 1px rgba(0,0,0,.3)}
+.mision-paper:nth-child(6) .mision-badge--new{transform:rotate(2.5deg)}
+.mision-paper:nth-child(8) .mision-badge--new{transform:rotate(-2.8deg)}
+.mision-paper:nth-child(9) .mision-badge--new{transform:rotate(3deg)}
 .misiones-board--wood .misiones-foot{border-top-color:rgba(90,60,30,.18);color:#8c7a5a}
 .misiones-board--wood .misiones-foot span{color:#8c7a5a}
 @media(max-width:900px){.misiones-grid{grid-template-columns:1fr;gap:12px}.mision-paper{transform:none !important}}
