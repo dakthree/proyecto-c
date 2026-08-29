@@ -207,9 +207,31 @@ const timeline = [
 
 const characters = [
   {
+    name:'VIKTOR THORNE',
+    role:'MERCADO NEGRO',
+    status:'Dixie',
+    image:'assets/personajes/Viktor.png',
+    desc:'Viktor Thorne es el líder del Mercado Negro, un personaje tan peculiar como impredecible. Desprecia a los perdedores y encuentra su mayor entretenimiento en observar y manipular cuanto sucede a su alrededor. Controla la información que circula por la zona y mueve los hilos de buena parte de sus negocios.'
+  },
+  {
+    name:'ELIAS',
+    role:'DESCONOCIDO',
+    status:'Muerto',
+    image:'assets/personajes/Elias.png',
+    desc:'Elias era como un padre para Chloe. Llevaban cuatro años viajando juntos. Era muy protector e inteligente. Murió tras encontrarse con la gente de Dixie: fue devorado por zombis delante de Chloe.'
+  },
+  {
+    name:'CHLOE',
+    role:'DESCONOCIDO',
+    status:'con los jugadores',
+    image:'assets/personajes/Chloe.png',
+    desc:'Es inmune al virus y es la clave para salvar a la humanidad, pero necesita protección constante.'
+  },
+  {
     name:'Dr. Mercer',
     role:'CIENTÍFICO',
     status:'PARADERO DESCONOCIDO',
+    image:'assets/personajes/DrMerecer.png',
     desc:'Científico que estudiaba el virus en los niveles inferiores del búnker.'
   },
   {
@@ -218,12 +240,24 @@ const characters = [
     status:'PARADERO DESCONOCIDO',
     desc:'Paranoico, furioso y radical. Convencido de que los científicos son responsables del virus y dispuesto a eliminar cualquier amenaza para contenerlo.'
   },
-  ...Array.from({length:6}, () => ({
+  {
     name:'DESCONOCIDO',
     role:'DESCONOCIDO',
     status:'DESCONOCIDO',
     desc:'DESCONOCIDA'
-  }))
+  },
+  {
+    name:'DESCONOCIDO',
+    role:'DESCONOCIDO',
+    status:'DESCONOCIDO',
+    desc:'DESCONOCIDA'
+  },
+  {
+    name:'DESCONOCIDO',
+    role:'DESCONOCIDO',
+    status:'DESCONOCIDO',
+    desc:'DESCONOCIDA'
+  }
 ];
 
 let clips = [];
@@ -315,12 +349,46 @@ const loreActoI = `
 const loreActoI_Dia1 = `
 <div class="lore-acto-image-wrap"><img src="assets/Acto1Dia1.png" alt="Acto I — Día 1" class="lore-acto-image" loading="lazy"></div>
 ` + loreActoI;
+const loreActoI_Dia1_Page2 = `
+<h4>ACTO I — CONTINUACIÓN</h4>
+<p>Llegaron a Pixie Chloe y Elias, parecían asustados, los han estado persiguiendo unos tipos armados que iban tras la niña. Ella es inmune al virus y por eso parece ser la clave para salvar el mundo. Aunque parece que no todos quieren eso y están dispuestos a cualquier cosa para evitarlo. Eso sí, Chloe necesita inyectarse unos estabilizadores para que el virus no siga mutando, pero ya no quedan casi y los científicos han sido perseguidos y aniquilados.</p>
+<p>Elias mandó dos encargos: Reparar la vieja estación de radio para establecer conexión con el jefe de la zona, Viktor, quien les podría llegar a dar información sobre los paraderos de los estabilizadores que quedan.</p>
+<p>También les mandó la ubicación del último estabilizador que conocían, un hospital plagado de zombis.</p>
+<p>Aunque ambos trabajos se llevaron a cabo, hubieron algunas bajas por el camino.</p>
+<p>Ahora todos están en contacto con el peculiar Viktor y tienen acceso a sus negocios.</p>
+<p>¿Conseguirán entre todos, cuidar de la niña y salvar el mundo?</p>
+`;
+const loreActoI_Dia1_Paginated = `
+<div class="lore-book" id="loreBook-28">
+  <div class="lore-page lore-page--active" id="lorePage1-28">
+    <div class="lore-page-num">PÁGINA 1 / 2 — EXPEDIENTE C-28</div>
+    <div class="lore-acto-image-wrap lore-acto-image-wrap--book">
+      <img src="assets/Acto1Dia1.png" alt="Acto I — Día 1" class="lore-acto-image" loading="lazy">
+      <button type="button" class="lore-page-btn lore-page-btn--overlay" data-lore-page="2" aria-label="Siguiente página">→</button>
+    </div>
+    <article class="classified-lore-text"><h4>ACTO I</h4><p>Los jugadores que escaparon del bunker bloquearon la salida de emergencia del bunker y, junto a otros que se fueron añadiendo más tarde, acabaron por formar una comunidad en la zona de Dixie.</p><p>Han estado sobreviviendo por la zona como han podido durante cerca de 4 años hasta que...</p><p><strong>Empieza el Acto I.</strong></p></article>
+    <div class="lore-page-nav lore-page-nav--single">
+      <span class="lore-page-indicator">1 / 2</span>
+    </div>
+  </div>
+  <div class="lore-page" id="lorePage2-28" hidden>
+    <div class="lore-page-num">PÁGINA 2 / 2 — EXPEDIENTE C-28</div>
+    <div class="lore-page-content-wrap" style="position:relative">
+      <button type="button" class="lore-page-btn lore-page-btn--overlay-left" data-lore-page="1" aria-label="Página anterior">←</button>
+      <article class="classified-lore-text">${loreActoI_Dia1_Page2}</article>
+    </div>
+    <div class="lore-page-nav lore-page-nav--single">
+      <span class="lore-page-indicator">2 / 2</span>
+    </div>
+  </div>
+</div>
+`;
 
 const loreEntries=timeline.map((t,i)=>({
   ...t,
   id:`lore-${i}`,
   youtube:t.title==='PRÓLOGO VIDEO'?'https://www.youtube.com/watch?v=cH18-brGf7k':null,
-  htmlText:t.title==='PRÓLOGO: RESUMEN'?loreParteII:(t.title==='ACTO I'&&i===3)?loreActoI_Dia1:t.title==='ACTO I'?loreActoI:null,
+  htmlText:t.title==='PRÓLOGO: RESUMEN'?loreParteII:(t.title==='ACTO I'&&i===3)?loreActoI_Dia1_Paginated:t.title==='ACTO I'?loreActoI:null,
   text:t.title==='PRÓLOGO VIDEO'
     ?'Archivo audiovisual correspondiente al PRÓLOGO.'
     :t.title==='PRÓLOGO: RESUMEN'
@@ -345,7 +413,34 @@ function openLoreEntry(entry,element){
       ? `<div class="lore-video-wrap"><iframe src="https://www.youtube.com/embed/${id}?rel=0" title="Proyecto C - ${entry.title}" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`
       : `<div class="classified-placeholder"><span>EXPEDIENTE BLOQUEADO</span><strong>Falta información</strong></div>`;
   } else if(entry.htmlText){
-    loreMedia.innerHTML=`<article class="classified-lore-text">${entry.htmlText}</article>`;
+    // Para ACTO I Día 1 (lore-3) el htmlText ya es un libro paginado, no envolver de nuevo
+    if(entry.id==='lore-3'){
+      loreMedia.innerHTML=entry.htmlText;
+      // Reset a página 1 y enlazar navegación sin recarga
+      const page1=loreMedia.querySelector('#lorePage1-28');
+      const page2=loreMedia.querySelector('#lorePage2-28');
+      const toPage2=loreMedia.querySelector('[data-lore-page="2"]');
+      const toPage1=loreMedia.querySelector('[data-lore-page="1"]');
+      if(page1&&page2){
+        page1.hidden=false; page1.classList.add('lore-page--active');
+        page2.hidden=true; page2.classList.remove('lore-page--active');
+        // Transición suave reutilizando sistema existente (fade)
+        const switchPage=(show, hide)=>{
+          hide.style.opacity='0';
+          hide.style.transition='opacity .18s ease';
+          setTimeout(()=>{
+            hide.hidden=true; hide.classList.remove('lore-page--active');
+            show.hidden=false; show.classList.add('lore-page--active');
+            show.style.opacity='0';
+            requestAnimationFrame(()=>{ show.style.transition='opacity .22s ease'; show.style.opacity='1'; });
+          },180);
+        };
+        if(toPage2) toPage2.addEventListener('click', (e)=>{ e.preventDefault(); switchPage(page2, page1); });
+        if(toPage1) toPage1.addEventListener('click', (e)=>{ e.preventDefault(); switchPage(page1, page2); });
+      }
+    } else {
+      loreMedia.innerHTML=`<article class="classified-lore-text">${entry.htmlText}</article>`;
+    }
   } else {
     loreMedia.innerHTML=`<div class="classified-placeholder"><span>EXPEDIENTE</span><strong>Falta información</strong><p>Este espacio queda preparado para añadir el lore de ${entry.title} cuando lo tengamos.</p></div>`;
   }
@@ -697,7 +792,7 @@ function randomTrait(selectedType, selectedTierId){
   // Exponer para tests automatizados (no afecta producción)
   window.__trainingTest={getPool:getTrainingPool,randomTrait,positiveTiers,negativeTiers,trainingPositive,trainingSpecial,trainingNegative};
 })();
-const charGrid=document.getElementById('characterGrid');charGrid.innerHTML=characters.map(c=>`<article class="character-card"><div class="char-photo"><img src="/assets/silueta.png" alt="Silueta de personaje desconocido" loading="lazy" onerror="this.onerror=null;this.src='/assets/silueta.png';"><span class="silhouette-label">IDENTIDAD OCULTA</span></div><h3>${c.name}</h3><small>TRABAJO: ${c.role}</small><p>${c.desc}</p><span class="char-status">${c.status}</span></article>`).join('');
+const charGrid=document.getElementById('characterGrid');charGrid.innerHTML=characters.map(c=>{const img=c.image||'/assets/silueta.png';const alt=c.image?`Retrato de ${c.name}`:'Silueta de personaje desconocido';const label=c.name==='DESCONOCIDO'?'IDENTIDAD OCULTA':'';return `<article class="character-card"><div class="char-photo"><img src="${img}" alt="${alt}" loading="lazy" onerror="this.onerror=null;this.src='/assets/silueta.png';">${label?`<span class="silhouette-label">${label}</span>`:''}</div><h3>${c.name}</h3><small>TRABAJO: ${c.role}</small><p>${c.desc}</p><span class="char-status">${c.status}</span></article>`}).join('');
 
 const inputJugador=document.getElementById('input-jugador');
 const jugadorDropdown=document.getElementById('lista-jugadores');
